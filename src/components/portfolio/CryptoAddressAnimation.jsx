@@ -14,11 +14,11 @@ export default function CryptoAddressAnimation({ isDark }) {
   };
 
   const [transactions, setTransactions] = useState({
-    BTC: { hash: generateRandomHash('BTC'), explorerUrl: '#', crypto: 'BTC' },
-    ETH: { hash: generateRandomHash('ETH'), explorerUrl: '#', crypto: 'ETH' },
-    LINK: { hash: generateRandomHash('LINK'), explorerUrl: '#', crypto: 'LINK' },
-    BNB: { hash: generateRandomHash('BNB'), explorerUrl: '#', crypto: 'BNB' },
-    XRP: { hash: generateRandomHash('XRP'), explorerUrl: '#', crypto: 'XRP' },
+    BTC: { hash: generateRandomHash('BTC'), explorerUrl: 'https://blockchain.info/', crypto: 'BTC' },
+    ETH: { hash: generateRandomHash('ETH'), explorerUrl: 'https://etherscan.io/', crypto: 'ETH' },
+    LINK: { hash: generateRandomHash('LINK'), explorerUrl: 'https://etherscan.io/', crypto: 'LINK' },
+    BNB: { hash: generateRandomHash('BNB'), explorerUrl: 'https://bscscan.com/', crypto: 'BNB' },
+    XRP: { hash: generateRandomHash('XRP'), explorerUrl: 'https://xrpscan.com/', crypto: 'XRP' },
   });
   const [prices, setPrices] = useState({ BTC: 0, ETH: 0, XRP: 0, BNB: 0, LINK: 0 });
 
