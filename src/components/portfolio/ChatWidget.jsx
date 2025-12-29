@@ -138,7 +138,7 @@ export default function ChatWidget({ isDark }) {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className={`fixed bottom-28 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] max-h-[600px] rounded-3xl shadow-2xl overflow-hidden ${
+            className={`fixed bottom-28 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] rounded-3xl shadow-2xl overflow-hidden ${
               isDark 
                 ? 'bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460]' 
                 : 'bg-gradient-to-br from-white via-blue-50 to-purple-50'
