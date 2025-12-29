@@ -266,35 +266,23 @@ export default function BlockchainAnimation({ isDark }) {
                     ${block.status === 'verifying' ? 'animate-pulse' : ''}
                   `}>
                     {/* Status badge */}
-                    <div className="absolute -top-2.5 -right-2.5 z-10">
+                    <div className="absolute -top-1.5 -right-1.5 z-10">
                       {block.status === 'confirmed' && (
                         <motion.div
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          className={`${block.type === 'genesis' ? 'bg-purple-500' : 'bg-green-500'} rounded-full p-1.5 shadow-lg`}
-                        >
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        </motion.div>
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className={`w-2 h-2 rounded-sm ${block.type === 'genesis' ? 'bg-purple-500' : 'bg-green-500'}`}
+                        />
                       )}
                       {block.status === 'verifying' && (
                         <motion.div
                           animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          className={`${isDark ? 'bg-purple-500' : 'bg-purple-600'} rounded-full p-1.5 shadow-lg`}
-                        >
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                        </motion.div>
+                          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                          className={`w-2 h-2 ${isDark ? 'bg-purple-500' : 'bg-purple-600'}`}
+                        />
                       )}
                       {block.status === 'pending' && (
-                        <div className={`rounded-full p-1.5 ${isDark ? 'bg-gray-600' : 'bg-gray-500'} shadow-md`}>
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
+                        <div className={`w-2 h-2 rounded-sm ${isDark ? 'bg-gray-600' : 'bg-gray-500'}`} />
                       )}
                     </div>
 
@@ -344,29 +332,7 @@ export default function BlockchainAnimation({ isDark }) {
           </AnimatePresence>
         </div>
 
-        {/* Block counter */}
-        <div className={`text-center text-[10px] font-mono mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-          <span className="font-bold text-purple-500">{totalBlocks}</span> BLOCKS IN CHAIN
-          {totalBlocks > 3 && (
-            <span className="text-[8px] block mt-0.5">(Showing last 3)</span>
-          )}
-        </div>
 
-        {/* Legend */}
-        <div className={`flex gap-3 justify-center text-[8px] ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <span>Verified</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-            <span>Verifying</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-gray-600' : 'bg-gray-500'}`}></div>
-            <span>Pending</span>
-          </div>
-        </div>
       </div>
     </div>
   );
