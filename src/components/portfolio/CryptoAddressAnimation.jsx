@@ -2,12 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CryptoAddressAnimation({ isDark }) {
+  // יצירת hash אקראי לאתחול
+  const generateRandomHash = (crypto) => {
+    const chars = '0123456789abcdef';
+    const length = 64;
+    let hash = '';
+    for (let i = 0; i < length; i++) {
+      hash += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return hash;
+  };
+
   const [transactions, setTransactions] = useState({
-    BTC: null,
-    ETH: null,
-    LINK: null,
-    BNB: null,
-    XRP: null,
+    BTC: { hash: generateRandomHash('BTC'), explorerUrl: '#', crypto: 'BTC' },
+    ETH: { hash: generateRandomHash('ETH'), explorerUrl: '#', crypto: 'ETH' },
+    LINK: { hash: generateRandomHash('LINK'), explorerUrl: '#', crypto: 'LINK' },
+    BNB: { hash: generateRandomHash('BNB'), explorerUrl: '#', crypto: 'BNB' },
+    XRP: { hash: generateRandomHash('XRP'), explorerUrl: '#', crypto: 'XRP' },
   });
   const [prices, setPrices] = useState({ BTC: 0, ETH: 0, XRP: 0, BNB: 0, LINK: 0 });
 
