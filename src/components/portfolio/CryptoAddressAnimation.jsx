@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 export default function CryptoAddressAnimation({ isDark }) {
-  const [transactions, setTransactions] = useState([]);
+  const [allTransactions, setAllTransactions] = useState([]);
+  const [displayedTransactions, setDisplayedTransactions] = useState([]);
   const [btcPrice, setBtcPrice] = useState(0);
   const [animatingTx, setAnimatingTx] = useState(null);
-  const [lastUpdateTime, setLastUpdateTime] = useState(Date.now());
+  const [loadingIndex, setLoadingIndex] = useState(0);
 
   // Fetch Bitcoin price
   useEffect(() => {
@@ -57,14 +58,9 @@ export default function CryptoAddressAnimation({ isDark }) {
         }
         
         if (newTransactions.length > 0) {
-          const newTxList = newTransactions.slice(0, 4);
-          setTransactions(newTxList);
-          setLastUpdateTime(Date.now());
-          // Trigger animation on first new transaction
-          if (newTxList.length > 0) {
-            setAnimatingTx(newTxList[0].id);
-            setTimeout(() => setAnimatingTx(null), 2000);
-          }
+          setAllTransactions(newTransactions.slice(0, 10)); // Store more transactions
+          setDisplayedTransactions([]); // Reset displayed
+          setLoadingIndex(0); // Reset loading index
         }
       } catch (error) {
         console.error('Error fetching BTC:', error);
@@ -76,31 +72,34 @@ export default function CryptoAddressAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, [btcPrice]);
 
-  // Trigger animation every 5 seconds - only when data is stable
+  // Gradually load transactions - one every 4-5 seconds with 2 second animation
   useEffect(() => {
-    if (transactions.length === 0) return;
+    if (allTransactions.length === 0) return;
+    if (displayedTransactions.length >= 4) return; // Stop at 4 transactions
 
-    // Don't start animation loop immediately after data load
-    const timeSinceUpdate = Date.now() - lastUpdateTime;
-    if (timeSinceUpdate < 3000) return; // Wait 3 seconds after data load
+    const nextIndex = loadingIndex;
+    if (nextIndex >= allTransactions.length) return;
 
-    let currentIndex = 1; // Start from second transaction
-    const animateNext = () => {
-      if (transactions.length === 0) return;
-      setAnimatingTx(transactions[currentIndex].id);
+    const timer = setTimeout(() => {
+      const newTx = allTransactions[nextIndex];
+      setDisplayedTransactions(prev => [...prev, newTx]);
+      setAnimatingTx(newTx.id);
+      
+      // Stop animation after 2 seconds
       setTimeout(() => setAnimatingTx(null), 2000);
-      currentIndex = (currentIndex + 1) % transactions.length;
-    };
+      
+      // Move to next transaction
+      setLoadingIndex(prev => prev + 1);
+    }, nextIndex === 0 ? 0 : 4500); // First one immediate, others after 4.5 seconds
 
-    const interval = setInterval(animateNext, 5000);
-    return () => clearInterval(interval);
-  }, [transactions, lastUpdateTime]);
+    return () => clearTimeout(timer);
+  }, [allTransactions, loadingIndex, displayedTransactions.length]);
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full space-y-1.5">
         <AnimatePresence mode="popLayout">
-          {transactions.map((tx) => {
+          {displayedTransactions.map((tx) => {
             const isAnimating = animatingTx === tx.id;
             
             return (
@@ -192,9 +191,15 @@ export default function CryptoAddressAnimation({ isDark }) {
           })}
         </AnimatePresence>
         
-        {transactions.length === 0 && (
+        {displayedTransactions.length === 0 && (
           <div className={`text-center py-4 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>
-            <p className="text-xs">Waiting for transactions over $100,000...</p>
+            <p className="text-xs">Loading live Bitcoin transactions...</p>
+          </div>
+        )}
+        
+        {displayedTransactions.length > 0 && displayedTransactions.length < 4 && (
+          <div className={`text-center py-2 ${isDark ? 'text-white/30' : 'text-[#141225]/30'}`}>
+            <p className="text-xs">Loading more... ({displayedTransactions.length}/4)</p>
           </div>
         )}
       </div>
