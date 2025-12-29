@@ -1,66 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const generateHash = () => {
-  const chars = '0123456789ABCDEF';
-  return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-};
-
 export default function BlockchainAnimation({ isDark }) {
   const [blocks, setBlocks] = useState([]);
-  const [blockCounter, setBlockCounter] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Add new block every 2 seconds
+  // Fetch real Kaspa blocks
   useEffect(() => {
-    const addInterval = setInterval(() => {
-      setBlockCounter(prev => prev + 1);
-      setBlocks(prev => [...prev, {
-        id: Date.now(),
-        blockNum: blockCounter,
-        status: 'mining',
-        hash: '',
-        progress: 0
-      }]);
-    }, 2000);
-
-    return () => clearInterval(addInterval);
-  }, [blockCounter]);
-
-  // Update block statuses
-  useEffect(() => {
-    const updateInterval = setInterval(() => {
-      setBlocks(prev => prev.map(block => {
-        if (block.status === 'mining') {
-          if (block.progress >= 100) {
-            return { ...block, status: 'verifying', hash: generateHash(), progress: 0 };
-          }
-          return { ...block, progress: block.progress + 10 };
+    const fetchBlocks = async () => {
+      try {
+        const response = await fetch('https://api.kaspa.org/blocks/recent');
+        const data = await response.json();
+        if (data && data.blocks) {
+          setBlocks(data.blocks.slice(0, 8).map(b => ({
+            id: b.hash?.substring(0, 8) || Math.random().toString(36).substring(7),
+            hash: b.hash?.substring(0, 8) || '????????',
+            height: b.height || 0,
+            timestamp: b.timestamp || Date.now(),
+            isNew: false
+          })));
         }
-        if (block.status === 'verifying') {
-          if (block.progress >= 100) {
-            return { ...block, status: 'verified', progress: 100 };
-          }
-          return { ...block, progress: block.progress + 20 };
-        }
-        return block;
-      }));
-    }, 200);
+      } catch (error) {
+        // Fallback to simulated blocks
+        setBlocks(Array.from({ length: 6 }, (_, i) => ({
+          id: Math.random().toString(36).substring(7),
+          hash: Math.random().toString(36).substring(2, 10).toUpperCase(),
+          height: 50000000 + i,
+          timestamp: Date.now() - (6 - i) * 2000,
+          isNew: false
+        })));
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    return () => clearInterval(updateInterval);
+    fetchBlocks();
+
+    // Refresh blocks periodically
+    const interval = setInterval(fetchBlocks, 3000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Keep only last 8 blocks
+  // Add new block animation
   useEffect(() => {
-    if (blocks.length > 8) {
-      setBlocks(prev => prev.slice(-8));
-    }
-  }, [blocks]);
+    if (blocks.length === 0 || isLoading) return;
 
-  const getColor = (status) => {
-    if (status === 'mining') return isDark ? '#a855f7' : '#8b5cf6';
-    if (status === 'verifying') return isDark ? '#3b82f6' : '#2563eb';
-    return isDark ? '#10b981' : '#059669';
-  };
+    const newBlockInterval = setInterval(() => {
+      const newBlock = {
+        id: Math.random().toString(36).substring(7),
+        hash: Math.random().toString(36).substring(2, 10).toUpperCase(),
+        height: (blocks[blocks.length - 1]?.height || 0) + 1,
+        timestamp: Date.now(),
+        isNew: true
+      };
+
+      setBlocks(prev => {
+        const updated = [...prev, newBlock];
+        return updated.slice(-8);
+      });
+
+      // Remove "isNew" flag after animation
+      setTimeout(() => {
+        setBlocks(prev => prev.map(b => ({ ...b, isNew: false })));
+      }, 1000);
+    }, 2500);
+
+    return () => clearInterval(newBlockInterval);
+  }, [blocks.length, isLoading]);
+
+  if (isLoading || blocks.length === 0) {
+    return (
+      <div className="relative w-32 h-32 flex items-center justify-center">
+        <motion.div
+          className={`w-8 h-8 rounded-full border-2 ${
+            isDark ? 'border-purple-500/30 border-t-purple-500' : 'border-purple-400/30 border-t-purple-400'
+          }`}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+    );
+  }
 
   const maxBlocks = 8;
 
@@ -68,159 +88,177 @@ export default function BlockchainAnimation({ isDark }) {
     <div className="relative w-32 h-32">
       <svg viewBox="0 0 120 120" className="w-full h-full" fill="none">
         <defs>
-          <filter id="glow">
+          <filter id="blockGlow">
             <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
+          <linearGradient id="blockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} />
+            <stop offset="100%" stopColor={isDark ? '#06b6d4' : '#0891b2'} />
+          </linearGradient>
           <radialGradient id="centerGlow">
-            <stop offset="0%" stopColor={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.1)'} />
+            <stop offset="0%" stopColor={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)'} />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
         </defs>
 
         {/* Center glow */}
-        <circle cx="60" cy="60" r="45" fill="url(#centerGlow)" />
+        <circle cx="60" cy="60" r="50" fill="url(#centerGlow)" />
 
-        {/* Center circle */}
+        {/* Rotating rings */}
         <motion.circle
-          cx="60" cy="60" r="30"
+          cx="60" cy="60" r="32"
           fill="none"
-          stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}
+          stroke={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)'}
           strokeWidth="0.5"
-          strokeDasharray="2 2"
+          strokeDasharray="3 3"
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: '60px 60px' }}
         />
 
+        <motion.circle
+          cx="60" cy="60" r="48"
+          fill="none"
+          stroke={isDark ? 'rgba(6, 182, 212, 0.1)' : 'rgba(8, 145, 178, 0.08)'}
+          strokeWidth="0.5"
+          strokeDasharray="2 2"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: '60px 60px' }}
+        />
+
         {/* Blocks */}
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {blocks.map((block, index) => {
             const angle = (index * (360 / maxBlocks)) * (Math.PI / 180);
-            const x = 60 + Math.cos(angle) * 35;
-            const y = 60 + Math.sin(angle) * 35;
-            const color = getColor(block.status);
+            const radius = 38;
+            const x = 60 + Math.cos(angle) * radius;
+            const y = 60 + Math.sin(angle) * radius;
             
             return (
               <motion.g
                 key={block.id}
-                initial={{ opacity: 0, scale: 0, x: 60, y: 60 }}
-                animate={{ opacity: 1, scale: 1, x, y }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                initial={{ 
+                  opacity: 0, 
+                  scale: 0,
+                  x: 60,
+                  y: 60
+                }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: block.isNew ? [0, 1.3, 1] : 1,
+                  x, 
+                  y 
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  scale: 0,
+                  transition: { duration: 0.3 }
+                }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 20,
+                  scale: { duration: 0.6 }
+                }}
               >
                 {/* Connection line to center */}
                 <motion.line
                   x1="60" y1="60"
                   x2={x} y2={y}
-                  stroke={color}
-                  strokeWidth="1"
-                  opacity="0.3"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.5 }}
+                  stroke="url(#blockGradient)"
+                  strokeWidth="0.8"
+                  opacity="0.2"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 0.2 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 />
 
-                {/* Connection to next block */}
+                {/* Connection to next block (circular chain) */}
                 {index < blocks.length - 1 && (
-                  <motion.line
-                    x1={x} y1={y}
-                    x2={60 + Math.cos((index + 1) * (360 / maxBlocks) * (Math.PI / 180)) * 35}
-                    y2={60 + Math.sin((index + 1) * (360 / maxBlocks) * (Math.PI / 180)) * 35}
-                    stroke={color}
-                    strokeWidth="0.5"
+                  <motion.path
+                    d={`M ${x} ${y} A ${radius} ${radius} 0 0 1 ${
+                      60 + Math.cos(((index + 1) * (360 / maxBlocks)) * (Math.PI / 180)) * radius
+                    } ${
+                      60 + Math.sin(((index + 1) * (360 / maxBlocks)) * (Math.PI / 180)) * radius
+                    }`}
+                    stroke="url(#blockGradient)"
+                    strokeWidth="1"
                     opacity="0.15"
+                    fill="none"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
                   />
                 )}
 
-                {/* Outer glow ring */}
+                {/* Pulse effect for new blocks */}
+                {block.isNew && (
+                  <motion.circle
+                    cx={x} cy={y} r="8"
+                    fill="none"
+                    stroke="url(#blockGradient)"
+                    strokeWidth="1"
+                    initial={{ opacity: 0.8, scale: 1 }}
+                    animate={{ 
+                      opacity: 0,
+                      scale: 2
+                    }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    style={{ transformOrigin: `${x}px ${y}px` }}
+                  />
+                )}
+
+                {/* Block outer circle */}
+                <circle
+                  cx={x} cy={y} r="7"
+                  fill="url(#blockGradient)"
+                  opacity="0.3"
+                />
+
+                {/* Block main circle */}
                 <motion.circle
-                  cx={x} cy={y} r="10"
-                  fill="none"
-                  stroke={color}
-                  strokeWidth="0.5"
-                  opacity="0.2"
-                  animate={block.status === 'mining' ? {
-                    scale: [1, 1.5, 1],
-                    opacity: [0.2, 0, 0.2]
+                  cx={x} cy={y} r="5"
+                  fill="url(#blockGradient)"
+                  filter="url(#blockGlow)"
+                  animate={block.isNew ? {
+                    scale: [1, 1.2, 1]
                   } : {}}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  transition={{ duration: 0.6 }}
                   style={{ transformOrigin: `${x}px ${y}px` }}
                 />
 
-                {/* Block circle */}
-                <motion.circle
-                  cx={x} cy={y} r="6"
-                  fill={color}
-                  filter="url(#glow)"
-                  animate={block.status === 'mining' ? {
-                    opacity: [0.7, 1, 0.7],
-                  } : {}}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                />
-
-                {/* Inner detail */}
+                {/* Inner highlight */}
                 <circle
-                  cx={x} cy={y} r="4"
-                  fill={isDark ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)'}
+                  cx={x - 1.5} cy={y - 1.5} r="1.5"
+                  fill={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.6)'}
                 />
 
-                {/* Progress ring for mining/verifying */}
-                {(block.status === 'mining' || block.status === 'verifying') && (
-                  <motion.circle
-                    cx={x} cy={y} r="5"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1"
-                    strokeDasharray="31.4"
-                    strokeDashoffset={31.4 - (31.4 * block.progress / 100)}
-                    strokeLinecap="round"
-                    style={{ transform: 'rotate(-90deg)', transformOrigin: `${x}px ${y}px` }}
-                  />
-                )}
-
-                {/* Status icon */}
-                {block.status === 'verified' && (
-                  <motion.path
-                    d={`M ${x - 2.5} ${y} L ${x - 0.5} ${y + 2} L ${x + 2.5} ${y - 2}`}
-                    stroke="white"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-
-                {/* Data particles */}
-                {block.status === 'mining' && (
+                {/* Data stream particles */}
+                {block.isNew && (
                   <>
-                    {[0, 120, 240].map((particleAngle, i) => {
-                      const px = x + Math.cos(particleAngle * Math.PI / 180) * 8;
-                      const py = y + Math.sin(particleAngle * Math.PI / 180) * 8;
+                    {[0, 90, 180, 270].map((particleAngle, i) => {
+                      const px = x + Math.cos((particleAngle + angle * 180 / Math.PI) * Math.PI / 180) * 10;
+                      const py = y + Math.sin((particleAngle + angle * 180 / Math.PI) * Math.PI / 180) * 10;
                       return (
                         <motion.circle
                           key={i}
-                          r="0.5"
-                          fill={color}
+                          r="1"
+                          fill={isDark ? '#8b5cf6' : '#7c3aed'}
                           initial={{ cx: x, cy: y, opacity: 0 }}
                           animate={{
                             cx: px,
                             cy: py,
-                            opacity: [0, 1, 0]
+                            opacity: [0, 0.8, 0]
                           }}
                           transition={{
-                            duration: 1,
-                            repeat: Infinity,
-                            delay: i * 0.3
+                            duration: 0.8,
+                            delay: i * 0.1,
+                            ease: "easeOut"
                           }}
                         />
                       );
@@ -232,50 +270,48 @@ export default function BlockchainAnimation({ isDark }) {
           })}
         </AnimatePresence>
 
-        {/* Center text */}
+        {/* Center logo/text */}
+        <circle cx="60" cy="60" r="18" fill={isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)'} />
         <text
           x="60" y="58"
           textAnchor="middle"
-          fill={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-          fontSize="7"
+          fill={isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'}
+          fontSize="6"
           fontWeight="bold"
         >
-          BLOCK
+          KASPA
         </text>
         <text
           x="60" y="66"
           textAnchor="middle"
-          fill={isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'}
-          fontSize="9"
+          fill={isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'}
+          fontSize="8"
           fontWeight="bold"
         >
-          #{blockCounter}
+          #{blocks[blocks.length - 1]?.height.toString().slice(-4) || '0000'}
         </text>
-
-        {/* Rotating outer ring */}
-        <motion.circle
-          cx="60" cy="60" r="50"
-          fill="none"
-          stroke={isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.08)'}
-          strokeWidth="0.5"
-          strokeDasharray="4 4"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: '60px 60px' }}
-        />
       </svg>
 
-      {/* Outer rotating gradient */}
+      {/* Outer rotating gradient effect */}
       <motion.div
-        className="absolute inset-0 rounded-full"
+        className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          background: `conic-gradient(from 0deg, transparent, ${
-            blocks.length > 0 ? getColor(blocks[blocks.length - 1].status) + '20' : 'transparent'
-          }, transparent)`,
+          background: `conic-gradient(from 0deg, transparent 0deg, ${
+            isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(139, 92, 246, 0.1)'
+          } 90deg, transparent 180deg)`,
         }}
         animate={{ rotate: 360 }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />
+
+      {/* Live indicator */}
+      <div className="absolute -top-1 -right-1 flex items-center gap-1">
+        <motion.div
+          className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-green-500' : 'bg-green-600'}`}
+          animate={{ opacity: [1, 0.3, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+      </div>
     </div>
   );
 }
