@@ -13,7 +13,7 @@ const currencies = [
   { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
 ];
 
-const compoundFrequencies = {
+const rateTypes = {
   daily: { label: 'Daily', periods: 365 },
   weekly: { label: 'Weekly', periods: 52 },
   monthly: { label: 'Monthly', periods: 12 },
@@ -40,11 +40,11 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
   const [years, setYears] = useState(10);
   const [currency, setCurrency] = useState(currencies[0]);
   const [capitalGainsTax, setCapitalGainsTax] = useState(25);
-  const [compoundFrequency, setCompoundFrequency] = useState('annually');
+  const [rateType, setRateType] = useState('annually'); // daily, weekly, monthly, quarterly, annually
   const [targetAmount, setTargetAmount] = useState(100000);
 
   const results = useMemo(() => {
-    const n = compoundFrequencies[compoundFrequency].periods;
+    const n = rateTypes[rateType].periods;
     const t = years;
 
     if (calculatorMode === 'target') {
@@ -121,6 +121,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         netFutureValue: Math.round(netFutureValue),
         yearlyData,
         requiredRate: requiredRate.toFixed(2),
+        rateType,
       };
     } else {
       // Standard mode: Calculate future value
@@ -172,9 +173,10 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         netFutureValue: Math.round(netFutureValue),
         yearlyData,
         requiredRate: null,
+        rateType,
       };
     }
-  }, [calculatorMode, principal, monthlyContribution, annualRate, years, capitalGainsTax, compoundFrequency, targetAmount]);
+  }, [calculatorMode, principal, monthlyContribution, annualRate, years, capitalGainsTax, rateType, targetAmount]);
 
   React.useEffect(() => {
     onCalculate({ ...results, currency });
@@ -290,33 +292,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           </select>
         </div>
 
-        {/* Compound Frequency */}
-        <div>
-          <label className={labelClass}>
-            <Calendar className="w-4 h-4" />
-            <span>Compounding Frequency</span>
-            <div className="relative group">
-              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
-              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
-                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
-              }`}>
-                {tooltips.compound}
-              </div>
-            </div>
-          </label>
-          <select
-            value={compoundFrequency}
-            onChange={(e) => setCompoundFrequency(e.target.value)}
-            className={inputClass}
-          >
-            {Object.entries(compoundFrequencies).map(([key, { label }]) => (
-              <option key={key} value={key} className="bg-gray-900">
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Initial Investment */}
         <div>
           <label className={labelClass}>
@@ -361,12 +336,12 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           />
         </div>
 
-        {/* Annual Rate or Target */}
+        {/* Rate or Target */}
         {calculatorMode === 'standard' ? (
           <div>
             <label className={labelClass}>
               <Percent className="w-4 h-4" />
-              <span>Annual Interest Rate (%)</span>
+              <span>Interest Rate (%)</span>
               <div className="relative group">
                 <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
                 <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
@@ -376,15 +351,32 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
                 </div>
               </div>
             </label>
-            <input
-              type="number"
-              value={annualRate}
-              onChange={(e) => setAnnualRate(Number(e.target.value))}
-              className={inputClass}
-              min="0"
-              max="100"
-              step="0.1"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                value={annualRate}
+                onChange={(e) => setAnnualRate(Number(e.target.value))}
+                className={`${inputClass} pr-28`}
+                min="0"
+                max="100"
+                step="0.1"
+              />
+              <select
+                value={rateType}
+                onChange={(e) => setRateType(e.target.value)}
+                className={`absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-sm font-medium ${
+                  isDark 
+                    ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300 hover:bg-purple-500/30' 
+                    : 'bg-[#244270]/10 border border-[#244270]/20 text-[#244270] hover:bg-[#244270]/20'
+                }`}
+              >
+                {Object.entries(rateTypes).map(([key, { label }]) => (
+                  <option key={key} value={key} className="bg-gray-900">
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         ) : (
           <div>
@@ -476,7 +468,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
               {results.requiredRate}%
             </p>
             <p className={`text-xs mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
-              Compounded {compoundFrequencies[compoundFrequency].label.toLowerCase()}
+              {rateTypes[rateType].label} compounding
             </p>
           </div>
         )}

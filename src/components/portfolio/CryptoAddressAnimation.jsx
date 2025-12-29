@@ -79,7 +79,7 @@ export default function CryptoAddressAnimation({ isDark }) {
     };
 
     fetchBTC();
-    const interval = setInterval(fetchBTC, 10000);
+    const interval = setInterval(fetchBTC, 60000); // Update every minute
     return () => clearInterval(interval);
   }, [btcPrice]);
 
@@ -91,7 +91,7 @@ export default function CryptoAddressAnimation({ isDark }) {
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full space-y-1.5">
         <AnimatePresence mode="popLayout">
-          {transactions.slice(0, 5).map((tx) => (
+          {transactions.slice(0, 4).map((tx) => (
             <motion.a
               key={tx.id}
               href={tx.explorerUrl}
