@@ -20,7 +20,7 @@ export default function InvestmentSummary({ isDark, data, currency }) {
       }`}
     >
       <h4 className={`text-lg font-bold mb-6 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-        Investment Summary
+        Investment Growth Over Time
       </h4>
       
 

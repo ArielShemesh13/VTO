@@ -6,6 +6,7 @@ export default function CryptoAddressAnimation({ isDark }) {
   const [transactions, setTransactions] = useState([]);
   const [btcPrice, setBtcPrice] = useState(0);
   const [animatingTx, setAnimatingTx] = useState(null);
+  const [lastUpdateTime, setLastUpdateTime] = useState(Date.now());
 
   // Fetch Bitcoin price
   useEffect(() => {
@@ -56,7 +57,14 @@ export default function CryptoAddressAnimation({ isDark }) {
         }
         
         if (newTransactions.length > 0) {
-          setTransactions(newTransactions.slice(0, 4));
+          const newTxList = newTransactions.slice(0, 4);
+          setTransactions(newTxList);
+          setLastUpdateTime(Date.now());
+          // Trigger animation on first new transaction
+          if (newTxList.length > 0) {
+            setAnimatingTx(newTxList[0].id);
+            setTimeout(() => setAnimatingTx(null), 2000);
+          }
         }
       } catch (error) {
         console.error('Error fetching BTC:', error);
@@ -68,18 +76,18 @@ export default function CryptoAddressAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, [btcPrice]);
 
-  // Trigger animation every 5 seconds
+  // Trigger animation every 5 seconds on existing transactions
   useEffect(() => {
     if (transactions.length === 0) return;
 
-    let currentIndex = 0;
+    let currentIndex = 1; // Start from second transaction (first was already animated on load)
     const animateNext = () => {
+      if (transactions.length === 0) return;
       setAnimatingTx(transactions[currentIndex].id);
-      setTimeout(() => setAnimatingTx(null), 2000); // Animation lasts 2 seconds
+      setTimeout(() => setAnimatingTx(null), 2000);
       currentIndex = (currentIndex + 1) % transactions.length;
     };
 
-    animateNext(); // Start immediately
     const interval = setInterval(animateNext, 5000);
     return () => clearInterval(interval);
   }, [transactions]);
