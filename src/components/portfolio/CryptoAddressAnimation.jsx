@@ -63,7 +63,7 @@ export default function CryptoAddressAnimation({ isDark }) {
               timestamp: Date.now(),
             });
             
-            if (newTransactions.length >= 10) break;
+            if (newTransactions.length >= 4) break;
           }
         }
         
