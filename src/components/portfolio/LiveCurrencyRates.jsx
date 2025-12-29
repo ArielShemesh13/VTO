@@ -10,6 +10,7 @@ const currencies = [
   { code: 'JPY', name: 'Japanese Yen', symbol: '¥', base: 'USD' },
   { code: 'BTC', name: 'Bitcoin', symbol: '₿', base: 'USD', isCrypto: true },
   { code: 'ETH', name: 'Ethereum', symbol: 'Ξ', base: 'USD', isCrypto: true },
+  { code: 'USDT', name: 'Tether', symbol: '₮', base: 'USD', isCrypto: true },
 ];
 
 export default function LiveCurrencyRates({ isDark }) {
@@ -25,7 +26,7 @@ export default function LiveCurrencyRates({ isDark }) {
       const fiatData = await fiatResponse.json();
       
       // Fetch Crypto prices
-      const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+      const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true');
       const cryptoData = await cryptoResponse.json();
       
       const newRates = {
@@ -42,6 +43,10 @@ export default function LiveCurrencyRates({ isDark }) {
           rate: cryptoData.ethereum.usd, 
           change: cryptoData.ethereum.usd_24h_change 
         },
+        USDT: { 
+          rate: cryptoData.tether.usd, 
+          change: cryptoData.tether.usd_24h_change 
+        },
       };
       
       setRates(newRates);
@@ -57,6 +62,7 @@ export default function LiveCurrencyRates({ isDark }) {
         JPY: { rate: 149.82, change: 0.45 },
         BTC: { rate: 43250, change: 2.34 },
         ETH: { rate: 2280, change: 1.87 },
+        USDT: { rate: 1.00, change: 0.01 },
       });
       setLastUpdate(new Date());
     } finally {
@@ -135,7 +141,7 @@ export default function LiveCurrencyRates({ isDark }) {
         </motion.button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
         {currencies.map((currency, index) => {
           const rateData = rates[currency.code];
           const isPositive = rateData?.change > 0;
