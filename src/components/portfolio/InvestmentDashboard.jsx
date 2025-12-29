@@ -159,7 +159,6 @@ export default function InvestmentDashboard({ isDark, data }) {
             </div>
           </div>
         </div>
-      </div>
 
         {/* Annual Interest Growth */}
         <div>
