@@ -27,7 +27,6 @@ const tooltips = {
   rate: 'The expected return rate',
   years: 'How long you plan to keep your money invested',
   tax: 'Capital gains tax rate. For provident funds (קרן השתלמות), enter 0',
-  target: 'Leave empty to calculate it, or enter a value to calculate required rate',
 };
 
 export default function CompoundInterestCalculator({ isDark, onCalculate }) {
@@ -35,7 +34,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
   const [monthlyContribution, setMonthlyContribution] = useState(500);
   const [annualRate, setAnnualRate] = useState(7);
   const [years, setYears] = useState(10);
-  const [targetAmount, setTargetAmount] = useState('');
   const [currency, setCurrency] = useState(currencies[0]);
   const [capitalGainsTax, setCapitalGainsTax] = useState(25);
   const [rateType, setRateType] = useState('annually');
@@ -44,84 +42,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
     const n = rateTypes[rateType].periods;
     const t = years || 10;
 
-    // If target amount is filled and rate is empty, calculate required rate
-    if (targetAmount && !annualRate) {
-      const target = parseFloat(targetAmount);
-      const totalMonthlyContributions = monthlyContribution * 12 * t;
-      const totalContributions = principal + totalMonthlyContributions;
-
-      // Binary search for required rate
-      let low = 0, high = 50;
-      let requiredRate = 0;
-      
-      for (let i = 0; i < 100; i++) {
-        const mid = (low + high) / 2;
-        const r = mid / 100;
-        const periodRate = r / n;
-        const totalPeriods = n * t;
-        const contributionsPerYear = 12;
-        const contributionPerPeriod = (monthlyContribution * contributionsPerYear) / n;
-        
-        const fvPrincipal = principal * Math.pow(1 + periodRate, totalPeriods);
-        const fvContributions = contributionPerPeriod * ((Math.pow(1 + periodRate, totalPeriods) - 1) / periodRate);
-        const fv = fvPrincipal + fvContributions;
-        
-        if (Math.abs(fv - target) < 1) {
-          requiredRate = mid;
-          break;
-        }
-        
-        if (fv < target) {
-          low = mid;
-        } else {
-          high = mid;
-        }
-        
-        requiredRate = mid;
-      }
-
-      const r = requiredRate / 100;
-      const periodRate = r / n;
-      const totalPeriods = n * t;
-      const contributionsPerYear = 12;
-      const contributionPerPeriod = (monthlyContribution * contributionsPerYear) / n;
-      const totalInterest = target - totalContributions;
-      const taxAmount = (totalInterest * capitalGainsTax) / 100;
-      const netFutureValue = target - taxAmount;
-
-      const yearlyData = [];
-      for (let year = 0; year <= t; year++) {
-        const fvP = principal * Math.pow(1 + periodRate, n * year);
-        const periods = n * year;
-        const fvC = periods > 0 ? contributionPerPeriod * ((Math.pow(1 + periodRate, periods) - 1) / periodRate) : 0;
-        const total = fvP + fvC;
-        const contributions = principal + monthlyContribution * 12 * year;
-        const interest = total - contributions;
-        const yearTax = (interest * capitalGainsTax) / 100;
-        const netValue = total - yearTax;
-        
-        yearlyData.push({
-          year,
-          totalValue: Math.round(total),
-          contributions: Math.round(contributions),
-          interest: Math.round(interest),
-          tax: Math.round(yearTax),
-          netValue: Math.round(netValue),
-        });
-      }
-
-      return {
-        futureValue: Math.round(target),
-        totalContributions: Math.round(totalContributions),
-        totalInterest: Math.round(totalInterest),
-        taxAmount: Math.round(taxAmount),
-        netFutureValue: Math.round(netFutureValue),
-        yearlyData,
-        calculatedField: 'rate',
-        calculatedValue: requiredRate.toFixed(2),
-      };
-    }
-    
     // Standard calculation
     if (principal >= 0 && monthlyContribution >= 0 && annualRate >= 0 && years > 0) {
       const r = annualRate / 100;
@@ -183,7 +103,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       calculatedField: null,
       calculatedValue: null,
     };
-  }, [principal, monthlyContribution, annualRate, years, targetAmount, capitalGainsTax, rateType]);
+  }, [principal, monthlyContribution, annualRate, years, capitalGainsTax, rateType]);
 
   React.useEffect(() => {
     onCalculate({ ...results, currency });
@@ -217,7 +137,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
             Investment Calculator
           </h3>
           <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>
-            Fill all fields or leave Target Amount empty
+            Calculate your investment growth over time
           </p>
         </div>
       </div>
@@ -298,7 +218,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         <div>
           <label className={labelClass}>
             <Percent className="w-4 h-4" />
-            <span>Interest Rate (%) {results.calculatedField === 'rate' && '✓ Calculated'}</span>
+            <span>Interest Rate (%)</span>
             <div className="relative group">
               <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
               <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
@@ -311,13 +231,12 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           <div className="relative">
             <input
               type="number"
-              value={results.calculatedField === 'rate' ? results.calculatedValue : annualRate}
+              value={annualRate}
               onChange={(e) => setAnnualRate(Number(e.target.value))}
-              className={`${inputClass} pr-28 ${results.calculatedField === 'rate' ? 'bg-green-500/10 border-green-500/30' : ''}`}
+              className={`${inputClass} pr-28`}
               min="0"
               max="100"
               step="0.1"
-              disabled={results.calculatedField === 'rate'}
             />
             <select
               value={rateType}
@@ -385,31 +304,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
             step="0.1"
           />
         </div>
-      </div>
-
-      {/* Target Amount - Full Width */}
-      <div className="mt-6">
-        <label className={labelClass}>
-          <DollarSign className="w-4 h-4" />
-          <span>Target Amount (Goal) - Optional</span>
-          <div className="relative group">
-            <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
-            <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
-              isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
-            }`}>
-              {tooltips.target}
-            </div>
-          </div>
-        </label>
-        <input
-          type="number"
-          value={targetAmount}
-          onChange={(e) => setTargetAmount(e.target.value)}
-          className={inputClass}
-          min="0"
-          step="1000"
-          placeholder="Leave empty to calculate future value"
-        />
       </div>
     </motion.div>
   );

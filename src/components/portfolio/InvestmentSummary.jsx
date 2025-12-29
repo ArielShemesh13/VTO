@@ -23,20 +23,7 @@ export default function InvestmentSummary({ isDark, data, currency }) {
         Investment Summary
       </h4>
       
-      {data.calculatedField === 'rate' && (
-        <div className="mb-6 text-center p-4 rounded-xl bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/30">
-          <p className={`text-xs mb-2 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-            Required Return Rate to Reach Goal
-          </p>
-          <p className={`text-4xl font-bold ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-            {data.calculatedValue}%
-          </p>
-          <p className={`text-xs mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
-            With current investment plan
-          </p>
-        </div>
-      )}
-      
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
         <div>
           <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Future Value</p>

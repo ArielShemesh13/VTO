@@ -3,21 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 export default function CryptoAddressAnimation({ isDark }) {
-  // יצירת hash אקראי לאתחול
-  const generateRandomHash = (crypto) => {
-    const chars = '0123456789abcdef';
-    const length = 64;
-    let hash = '';
-    for (let i = 0; i < length; i++) {
-      hash += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return hash;
-  };
-
   const [transactions, setTransactions] = useState([]);
   const [btcPrice, setBtcPrice] = useState(0);
-
-
+  const [animatingTx, setAnimatingTx] = useState(null);
 
   // Fetch Bitcoin price
   useEffect(() => {
@@ -76,64 +64,120 @@ export default function CryptoAddressAnimation({ isDark }) {
     };
 
     fetchBTC();
-    const interval = setInterval(fetchBTC, 60000); // Update every minute
+    const interval = setInterval(fetchBTC, 60000);
     return () => clearInterval(interval);
   }, [btcPrice]);
 
+  // Trigger animation every 5 seconds
+  useEffect(() => {
+    if (transactions.length === 0) return;
 
+    let currentIndex = 0;
+    const animateNext = () => {
+      setAnimatingTx(transactions[currentIndex].id);
+      setTimeout(() => setAnimatingTx(null), 2000); // Animation lasts 2 seconds
+      currentIndex = (currentIndex + 1) % transactions.length;
+    };
 
-
+    animateNext(); // Start immediately
+    const interval = setInterval(animateNext, 5000);
+    return () => clearInterval(interval);
+  }, [transactions]);
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full space-y-1.5">
         <AnimatePresence mode="popLayout">
-          {transactions.slice(0, 4).map((tx) => (
-            <motion.a
-              key={tx.id}
-              href={tx.explorerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, x: -20, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
-                isDark 
-                  ? 'bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/30 hover:border-orange-500/50' 
-                  : 'bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-300/50 hover:border-orange-400'
-              }`}
-            >
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <span className={`font-mono text-[9px] truncate ${
-                  isDark ? 'text-orange-300' : 'text-orange-700'
-                }`}>
-                  {tx.from}
-                </span>
+          {transactions.map((tx) => {
+            const isAnimating = animatingTx === tx.id;
+            
+            return (
+              <motion.a
+                key={tx.id}
+                href={tx.explorerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 20, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className={`relative flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
+                  isDark 
+                    ? 'bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/30 hover:border-orange-500/50' 
+                    : 'bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-300/50 hover:border-orange-400'
+                }`}
+              >
+                {/* Transfer Animation */}
+                {isAnimating && (
+                  <motion.div
+                    className={`absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-lg`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <motion.div
+                      className={`absolute w-12 h-12 rounded-full ${
+                        isDark ? 'bg-orange-400/30' : 'bg-orange-500/30'
+                      } blur-xl`}
+                      initial={{ x: '-100%', scale: 0.5 }}
+                      animate={{ x: '200%', scale: 1.5 }}
+                      transition={{ duration: 2, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                      className={`text-xs font-bold ${isDark ? 'text-orange-300' : 'text-orange-600'}`}
+                      initial={{ x: '-100%', opacity: 0 }}
+                      animate={{ x: '200%', opacity: [0, 1, 1, 0] }}
+                      transition={{ duration: 2, ease: "easeInOut" }}
+                    >
+                      {tx.amount} BTC
+                    </motion.div>
+                  </motion.div>
+                )}
+
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <motion.span 
+                    className={`font-mono text-[9px] truncate ${
+                      isDark ? 'text-orange-300' : 'text-orange-700'
+                    }`}
+                    animate={isAnimating ? { scale: [1, 1.1, 1] } : {}}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {tx.from}
+                  </motion.span>
+                  
+                  <motion.div
+                    animate={isAnimating ? { x: [0, 5, 0], rotate: [0, 360] } : {}}
+                    transition={{ duration: 0.5, repeat: isAnimating ? 3 : 0 }}
+                  >
+                    <ArrowRight className={`w-3 h-3 flex-shrink-0 ${
+                      isDark ? 'text-yellow-400' : 'text-orange-500'
+                    }`} />
+                  </motion.div>
+                  
+                  <motion.span 
+                    className={`font-mono text-[9px] truncate ${
+                      isDark ? 'text-yellow-300' : 'text-orange-700'
+                    }`}
+                    animate={isAnimating ? { scale: [1, 1.1, 1] } : {}}
+                    transition={{ duration: 0.3, delay: 0.15 }}
+                  >
+                    {tx.to}
+                  </motion.span>
+                </div>
                 
-                <ArrowRight className={`w-3 h-3 flex-shrink-0 ${
-                  isDark ? 'text-yellow-400' : 'text-orange-500'
-                }`} />
-                
-                <span className={`font-mono text-[9px] truncate ${
-                  isDark ? 'text-yellow-300' : 'text-orange-700'
-                }`}>
-                  {tx.to}
-                </span>
-              </div>
-              
-              <div className="flex flex-col items-end flex-shrink-0">
-                <span className={`font-mono text-[10px] font-bold whitespace-nowrap ${
-                  isDark ? 'text-orange-400' : 'text-orange-600'
-                }`}>
-                  {tx.amount} BTC
-                </span>
-                <span className={`text-[9px] font-semibold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
-                  ${tx.usdValue}
-                </span>
-              </div>
-            </motion.a>
-          ))}
+                <div className="flex flex-col items-end flex-shrink-0">
+                  <span className={`font-mono text-[10px] font-bold whitespace-nowrap ${
+                    isDark ? 'text-orange-400' : 'text-orange-600'
+                  }`}>
+                    {tx.amount} BTC
+                  </span>
+                  <span className={`text-[9px] font-semibold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                    ${tx.usdValue}
+                  </span>
+                </div>
+              </motion.a>
+            );
+          })}
         </AnimatePresence>
         
         {transactions.length === 0 && (
