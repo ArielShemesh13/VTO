@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
-import InvestmentSummary from './InvestmentSummary';
 import InvestmentDashboard from './InvestmentDashboard';
 
 export default function FinanceSection({ isDark }) {
