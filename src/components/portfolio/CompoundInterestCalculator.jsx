@@ -6,19 +6,13 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, Re
 const currencies = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
   { code: 'EUR', symbol: '€', name: 'Euro' },
-  { code: 'ILS', symbol: '₪', name: 'Israeli Shekel' },
   { code: 'GBP', symbol: '£', name: 'British Pound' },
-  { code: 'GOLD', symbol: '🪙', name: 'Gold (oz)' },
-  { code: 'SILVER', symbol: '⚪', name: 'Silver (oz)' },
+  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham' },
+  { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
 ];
 
-const compoundFrequencies = [
-  { value: 1, label: 'Annually' },
-  { value: 2, label: 'Semi-Annually' },
-  { value: 4, label: 'Quarterly' },
-  { value: 12, label: 'Monthly' },
-  { value: 365, label: 'Daily' },
-];
+
 
 const tooltips = {
   currency: 'Select the currency for your investment calculations',
@@ -26,7 +20,6 @@ const tooltips = {
   monthly: 'How much you plan to add each month to your investment',
   rate: 'The expected annual return rate (e.g., stock market average is ~7-10%)',
   years: 'How long you plan to keep your money invested',
-  frequency: 'How often the interest is calculated and added to your balance. More frequent = slightly higher returns',
   tax: 'Enter the capital gains tax rate in your country. Note: If you are referring to a provident fund (קרן השתלמות), there is NO capital gains tax, so enter 0. All other investments are subject to tax - check your country\'s rate',
 };
 
@@ -36,12 +29,11 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
   const [annualRate, setAnnualRate] = useState(7);
   const [years, setYears] = useState(10);
   const [currency, setCurrency] = useState(currencies[0]);
-  const [compoundFrequency, setCompoundFrequency] = useState(12);
   const [capitalGainsTax, setCapitalGainsTax] = useState(25);
 
   const results = useMemo(() => {
     const r = annualRate / 100;
-    const n = compoundFrequency;
+    const n = 12; // Monthly compounding
     const t = years;
     const P = principal;
     const PMT = monthlyContribution;
@@ -92,7 +84,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       netFutureValue: Math.round(netFutureValue),
       yearlyData,
     };
-  }, [principal, monthlyContribution, annualRate, years, compoundFrequency, capitalGainsTax]);
+  }, [principal, monthlyContribution, annualRate, years, capitalGainsTax]);
 
   React.useEffect(() => {
     onCalculate({ ...results, currency });
@@ -267,33 +259,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
             min="1"
             max="50"
           />
-        </div>
-
-        {/* Compound Frequency */}
-        <div>
-          <label className={labelClass}>
-            <TrendingUp className="w-4 h-4" />
-            <span>Compound Frequency</span>
-            <div className="relative group">
-              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
-              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
-                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
-              }`}>
-                {tooltips.frequency}
-              </div>
-            </div>
-          </label>
-          <select
-            value={compoundFrequency}
-            onChange={(e) => setCompoundFrequency(Number(e.target.value))}
-            className={inputClass}
-          >
-            {compoundFrequencies.map((freq) => (
-              <option key={freq.value} value={freq.value} className="bg-gray-900">
-                {freq.label}
-              </option>
-            ))}
-          </select>
         </div>
 
         {/* Capital Gains Tax */}
