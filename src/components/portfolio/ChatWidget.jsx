@@ -174,50 +174,95 @@ export default function ChatWidget({ isDark }) {
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
                 >
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-md ${
                     message.role === 'user'
-                      ? isDark ? 'bg-cyan-500/20' : 'bg-[#4dbdce]/20'
-                      : isDark ? 'bg-purple-500/20' : 'bg-[#244270]/20'
+                      ? isDark ? 'bg-gradient-to-br from-cyan-500 to-blue-500' : 'bg-gradient-to-br from-[#4dbdce] to-[#244270]'
+                      : isDark ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 'bg-gradient-to-br from-[#244270] to-[#4dbdce]'
                   }`}>
                     {message.role === 'user' ? (
-                      <User className={`w-4 h-4 ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`} />
+                      <User className="w-4 h-4 text-white" />
                     ) : (
-                      <Bot className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                      <Bot className="w-4 h-4 text-white" />
                     )}
                   </div>
-                  <div className={`max-w-[75%] p-3 rounded-2xl ${
+                  <div className={`max-w-[75%] ${
+                    message.role === 'user'
+                      ? 'rounded-[20px] rounded-tr-sm'
+                      : 'rounded-[20px] rounded-tl-sm'
+                  } ${
                     message.role === 'user'
                       ? isDark 
-                        ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-white' 
-                        : 'bg-[#4dbdce]/20 text-[#141225]'
+                        ? 'bg-gradient-to-br from-[#0B84FE] to-[#0B7EFE] text-white shadow-lg' 
+                        : 'bg-gradient-to-br from-[#0B84FE] to-[#0A76EF] text-white shadow-md'
                       : isDark 
-                        ? 'bg-white/5 text-white/80' 
-                        : 'bg-[#244270]/5 text-[#141225]/80'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{message.content}</p>
+                        ? 'bg-[#2C2C2E] text-white shadow-lg backdrop-blur-xl' 
+                        : 'bg-white text-[#141225] shadow-md border border-gray-200'
+                  } px-4 py-3 relative`}>
+                    <p className="text-sm leading-relaxed" style={{ 
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif',
+                      fontWeight: 400,
+                      letterSpacing: '-0.01em'
+                    }}>
+                      {message.content}
+                    </p>
+                    {/* iOS-style message tail */}
+                    <div className={`absolute ${
+                      message.role === 'user' ? 'right-0 top-0' : 'left-0 top-0'
+                    }`} style={{
+                      width: 0,
+                      height: 0,
+                      borderStyle: 'solid',
+                      ...(message.role === 'user' ? {
+                        borderWidth: '0 12px 12px 0',
+                        borderColor: `transparent ${isDark ? '#0B84FE' : '#0B84FE'} transparent transparent`,
+                        transform: 'translateX(100%) translateY(0)',
+                      } : {
+                        borderWidth: '0 0 12px 12px',
+                        borderColor: `transparent transparent ${isDark ? '#2C2C2E' : '#ffffff'} transparent`,
+                        transform: 'translateX(-100%) translateY(0)',
+                      })
+                    }} />
                   </div>
                 </motion.div>
               ))}
               
               {isTyping && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   className="flex gap-3"
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    isDark ? 'bg-purple-500/20' : 'bg-[#244270]/20'
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center shadow-md ${
+                    isDark ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 'bg-gradient-to-br from-[#244270] to-[#4dbdce]'
                   }`}>
-                    <Bot className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                    <Bot className="w-4 h-4 text-white" />
                   </div>
-                  <div className={`p-3 rounded-2xl ${
-                    isDark ? 'bg-white/5' : 'bg-[#244270]/5'
+                  <div className={`rounded-[20px] rounded-tl-sm px-4 py-3 ${
+                    isDark ? 'bg-[#2C2C2E] shadow-lg' : 'bg-white shadow-md border border-gray-200'
                   }`}>
-                    <Loader2 className={`w-4 h-4 animate-spin ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                    <div className="flex gap-1.5">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div
+                          key={i}
+                          className={`w-2 h-2 rounded-full ${isDark ? 'bg-gray-500' : 'bg-gray-400'}`}
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.5, 1, 0.5],
+                          }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            delay: i * 0.15,
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               )}

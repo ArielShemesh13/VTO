@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
+import LiveCurrencyRates from './LiveCurrencyRates';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -51,48 +52,10 @@ export default function FinanceSection({ isDark }) {
           <InvestmentDashboard isDark={isDark} data={calculatorData} />
         </div>
 
-        {/* Educational Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className={`mt-12 p-6 rounded-2xl ${
-            isDark 
-              ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' 
-              : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'
-          } backdrop-blur-xl`}
-        >
-          <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            💡 The Power of Compound Interest
-          </h4>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <h5 className={`font-semibold mb-2 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
-                Start Early
-              </h5>
-              <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-                Time is your greatest asset. Starting early allows your money more time to grow exponentially.
-              </p>
-            </div>
-            <div>
-              <h5 className={`font-semibold mb-2 ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
-                Consistent Contributions
-              </h5>
-              <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-                Regular monthly contributions, even small ones, can significantly boost your final returns.
-              </p>
-            </div>
-            <div>
-              <h5 className={`font-semibold mb-2 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-                Reinvest Returns
-              </h5>
-              <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-                Reinvesting your earnings creates a snowball effect that accelerates wealth accumulation.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Live Currency Rates */}
+        <div className="mt-8">
+          <LiveCurrencyRates isDark={isDark} />
+        </div>
       </div>
     </section>
   );
