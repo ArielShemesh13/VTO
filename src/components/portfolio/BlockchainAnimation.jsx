@@ -1,355 +1,415 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function BlockchainAnimation({ isDark }) {
-  // Define 4 blocks in the chain
-  const blocks = [
-    { id: 0, hash: '0x00...', status: 'verified', delay: 0 },
-    { id: 1, hash: '0xA1...', status: 'verified', delay: 0.5 },
-    { id: 2, hash: '0xB2...', status: 'verifying', delay: 1 },
-    { id: 3, hash: '0xC3...', status: 'pending', delay: 1.5 },
-  ];
+// Helper function to generate random hash-like strings
+const generateHash = () => {
+  const chars = '0123456789ABCDEF';
+  return Array.from({ length: 64 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+};
+
+// Helper to generate random number for calculations
+const randomNum = () => Math.floor(Math.random() * 999999);
+
+const BlockchainAnimation = ({ isDark }) => {
+  const [blocks, setBlocks] = useState([
+    { id: 0, hash: generateHash(), status: 'verified', nonce: randomNum(), timestamp: Date.now() - 30000 },
+    { id: 1, hash: generateHash(), status: 'verified', nonce: randomNum(), timestamp: Date.now() - 20000 },
+    { id: 2, hash: generateHash(), status: 'verified', nonce: randomNum(), timestamp: Date.now() - 10000 },
+  ]);
+  
+  const [calculations, setCalculations] = useState({});
+  const [particles, setParticles] = useState([]);
+
+  // Add new block periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlocks((prev) => {
+        if (prev.length >= 6) {
+          return [
+            ...prev.slice(1),
+            { 
+              id: prev[prev.length - 1].id + 1, 
+              hash: '', 
+              status: 'mining', 
+              nonce: 0,
+              timestamp: Date.now()
+            }
+          ];
+        }
+        return [
+          ...prev,
+          { 
+            id: prev[prev.length - 1].id + 1, 
+            hash: '', 
+            status: 'mining', 
+            nonce: 0,
+            timestamp: Date.now()
+          }
+        ];
+      });
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Mining animation - calculate hash
+  useEffect(() => {
+    const miningBlocks = blocks.filter(b => b.status === 'mining');
+    
+    miningBlocks.forEach((block) => {
+      if (!calculations[block.id]) {
+        setCalculations(prev => ({ ...prev, [block.id]: 0 }));
+      }
+
+      const calcInterval = setInterval(() => {
+        setCalculations(prev => {
+          const current = prev[block.id] || 0;
+          if (current >= 100) {
+            // Mining complete
+            setTimeout(() => {
+              setBlocks(prevBlocks => 
+                prevBlocks.map(b => 
+                  b.id === block.id 
+                    ? { ...b, status: 'verifying', hash: generateHash(), nonce: randomNum() }
+                    : b
+                )
+              );
+            }, 100);
+            return prev;
+          }
+          return { ...prev, [block.id]: current + 2 };
+        });
+      }, 50);
+
+      return () => clearInterval(calcInterval);
+    });
+  }, [blocks]);
+
+  // Verifying to verified transition
+  useEffect(() => {
+    const verifyingBlocks = blocks.filter(b => b.status === 'verifying');
+    
+    verifyingBlocks.forEach((block) => {
+      setTimeout(() => {
+        setBlocks(prevBlocks => 
+          prevBlocks.map(b => 
+            b.id === block.id ? { ...b, status: 'verified' } : b
+          )
+        );
+      }, 2000);
+    });
+  }, [blocks]);
+
+  // Particle system
+  useEffect(() => {
+    const particleInterval = setInterval(() => {
+      setParticles(prev => {
+        const newParticles = prev.filter(p => Date.now() - p.createdAt < 3000);
+        
+        // Add new particles
+        if (Math.random() > 0.7) {
+          newParticles.push({
+            id: Date.now(),
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 4 + 2,
+            createdAt: Date.now(),
+            color: Math.random() > 0.5 ? '#8b5cf6' : '#06b6d4'
+          });
+        }
+        
+        return newParticles;
+      });
+    }, 300);
+
+    return () => clearInterval(particleInterval);
+  }, []);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center p-8">
-      <svg
-        viewBox="0 0 500 200"
-        className="w-full h-full"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          {/* Gradients */}
-          <linearGradient id="verifiedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#10b981' : '#059669'} />
-            <stop offset="100%" stopColor={isDark ? '#059669' : '#047857'} />
-          </linearGradient>
-          <linearGradient id="verifyingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#3b82f6' : '#2563eb'} />
-            <stop offset="100%" stopColor={isDark ? '#2563eb' : '#1d4ed8'} />
-          </linearGradient>
-          <linearGradient id="pendingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} />
-            <stop offset="100%" stopColor={isDark ? '#7c3aed' : '#6d28d9'} />
-          </linearGradient>
-          
-          {/* Glow filters */}
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Chain connections */}
-        {blocks.slice(0, -1).map((block, idx) => (
-          <g key={`connection-${idx}`}>
-            {/* Connection line */}
-            <motion.line
-              x1={60 + idx * 120}
-              y1="100"
-              x2={60 + (idx + 1) * 120}
-              y2="100"
-              stroke={isDark ? 'url(#verifiedGradient)' : '#059669'}
-              strokeWidth="2"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.6 }}
-              transition={{
-                delay: block.delay + 0.5,
-                duration: 0.8,
-                ease: "easeInOut"
+    <div className="relative w-full h-full overflow-hidden">
+      {/* Animated particles background */}
+      <div className="absolute inset-0">
+        <AnimatePresence>
+          {particles.map((particle) => (
+            <motion.div
+              key={particle.id}
+              className="absolute rounded-full opacity-60"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                background: particle.color,
+                filter: 'blur(1px)',
               }}
-            />
-            
-            {/* Data packets moving along the chain */}
-            <motion.circle
-              r="3"
-              fill={isDark ? '#10b981' : '#059669'}
-              filter="url(#glow)"
-              initial={{ 
-                cx: 60 + idx * 120,
-                cy: 100,
-                opacity: 0 
-              }}
+              initial={{ opacity: 0, scale: 0 }}
               animate={{ 
-                cx: 60 + (idx + 1) * 120,
-                cy: 100,
-                opacity: [0, 1, 1, 0]
+                opacity: [0, 0.6, 0],
+                scale: [0, 1, 0],
+                y: [0, -100],
               }}
-              transition={{
-                delay: block.delay + 0.5,
-                duration: 1.5,
-                repeat: Infinity,
-                repeatDelay: 2,
-                ease: "easeInOut"
-              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 3, ease: "easeOut" }}
             />
-          </g>
-        ))}
+          ))}
+        </AnimatePresence>
+      </div>
 
-        {/* Blocks */}
-        {blocks.map((block, idx) => {
-          const x = 30 + idx * 120;
-          const y = 70;
-          
-          const getGradient = () => {
-            if (block.status === 'verified') return 'url(#verifiedGradient)';
-            if (block.status === 'verifying') return 'url(#verifyingGradient)';
-            return 'url(#pendingGradient)';
-          };
+      {/* Grid background */}
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `linear-gradient(${isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(99, 102, 241, 0.1)'} 1px, transparent 1px),
+                           linear-gradient(90deg, ${isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(99, 102, 241, 0.1)'} 1px, transparent 1px)`,
+          backgroundSize: '30px 30px',
+        }}
+      />
 
-          const getStrokeColor = () => {
-            if (block.status === 'verified') return isDark ? '#10b981' : '#059669';
-            if (block.status === 'verifying') return isDark ? '#3b82f6' : '#2563eb';
-            return isDark ? '#8b5cf6' : '#7c3aed';
-          };
-
-          return (
-            <motion.g
-              key={block.id}
-              initial={{ opacity: 0, scale: 0, y: y + 30 }}
-              animate={{ opacity: 1, scale: 1, y }}
-              transition={{
-                delay: block.delay,
-                duration: 0.6,
-                type: "spring",
-                stiffness: 200,
-                damping: 15
-              }}
-            >
-              {/* Block body */}
-              <motion.rect
-                x={x}
-                width="60"
-                height="60"
-                rx="8"
-                fill={getGradient()}
-                stroke={getStrokeColor()}
-                strokeWidth="2"
-                opacity={0.9}
-                filter="url(#glow)"
-                animate={block.status === 'verifying' ? {
-                  opacity: [0.7, 1, 0.7],
-                } : {}}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-
-              {/* Block hash text */}
-              <text
-                x={x + 30}
-                y={y + 25}
-                textAnchor="middle"
-                fill="white"
-                fontSize="10"
-                fontWeight="bold"
-                fontFamily="monospace"
-              >
-                #{block.id}
-              </text>
-              <text
-                x={x + 30}
-                y={y + 40}
-                textAnchor="middle"
-                fill="white"
-                fontSize="7"
-                fontFamily="monospace"
-                opacity="0.8"
-              >
-                {block.hash}
-              </text>
-
-              {/* Status indicator */}
-              {block.status === 'verified' && (
-                <motion.g
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: block.delay + 0.3 }}
-                >
-                  <circle
-                    cx={x + 52}
-                    cy={y + 8}
-                    r="6"
-                    fill={isDark ? '#10b981' : '#059669'}
-                  />
-                  <path
-                    d={`M ${x + 49} ${y + 8} L ${x + 51} ${y + 10} L ${x + 55} ${y + 6}`}
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                  />
-                </motion.g>
-              )}
-
-              {block.status === 'verifying' && (
-                <motion.circle
-                  cx={x + 52}
-                  cy={y + 8}
-                  r="5"
-                  stroke={isDark ? '#3b82f6' : '#2563eb'}
-                  strokeWidth="2"
-                  fill="none"
-                  initial={{ pathLength: 0, rotate: 0 }}
-                  animate={{ 
-                    pathLength: [0, 1],
-                    rotate: 360
+      {/* Blockchain visualization */}
+      <div className="relative h-full flex items-center justify-center p-8">
+        <div className="flex items-center gap-6 flex-wrap justify-center max-w-5xl">
+          <AnimatePresence mode="popLayout">
+            {blocks.map((block, index) => (
+              <React.Fragment key={block.id}>
+                {/* Block */}
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.5, rotateY: -90 }}
+                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, x: -100 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20
                   }}
-                  transition={{
-                    pathLength: { duration: 1.5, repeat: Infinity, ease: "linear" },
-                    rotate: { duration: 2, repeat: Infinity, ease: "linear" }
-                  }}
-                  style={{ transformOrigin: `${x + 52}px ${y + 8}px` }}
-                />
-              )}
-
-              {block.status === 'pending' && (
-                <motion.g
-                  animate={{
-                    opacity: [0.3, 1, 0.3]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
+                  className={`relative ${
+                    block.status === 'mining' 
+                      ? isDark ? 'bg-gradient-to-br from-purple-900/40 to-pink-900/40' : 'bg-gradient-to-br from-purple-100 to-pink-100'
+                      : block.status === 'verifying'
+                        ? isDark ? 'bg-gradient-to-br from-blue-900/40 to-cyan-900/40' : 'bg-gradient-to-br from-blue-100 to-cyan-100'
+                        : isDark ? 'bg-gradient-to-br from-green-900/40 to-emerald-900/40' : 'bg-gradient-to-br from-green-100 to-emerald-100'
+                  } backdrop-blur-xl rounded-2xl p-4 border-2 ${
+                    block.status === 'mining'
+                      ? isDark ? 'border-purple-500/50' : 'border-purple-400'
+                      : block.status === 'verifying'
+                        ? isDark ? 'border-blue-500/50' : 'border-blue-400'
+                        : isDark ? 'border-green-500/50' : 'border-green-400'
+                  } w-44 h-44 shadow-2xl`}
+                  style={{
+                    boxShadow: block.status === 'mining' 
+                      ? `0 0 30px ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)'}`
+                      : block.status === 'verifying'
+                        ? `0 0 30px ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+                        : `0 0 30px ${isDark ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.2)'}`
                   }}
                 >
-                  <circle
-                    cx={x + 52}
-                    cy={y + 8}
-                    r="3"
-                    fill={isDark ? '#8b5cf6' : '#7c3aed'}
-                  />
-                </motion.g>
-              )}
+                  {/* Block header */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                      Block #{block.id}
+                    </span>
+                    <div className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                      block.status === 'mining'
+                        ? 'bg-purple-500 text-white'
+                        : block.status === 'verifying'
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-green-500 text-white'
+                    }`}>
+                      {block.status.toUpperCase()}
+                    </div>
+                  </div>
 
-              {/* Verification rays for verified blocks */}
-              {block.status === 'verified' && (
-                <>
-                  {[0, 60, 120, 180, 240, 300].map((angle) => (
-                    <motion.line
-                      key={angle}
-                      x1={x + 30}
-                      y1={y + 30}
-                      x2={x + 30 + Math.cos(angle * Math.PI / 180) * 40}
-                      y2={y + 30 + Math.sin(angle * Math.PI / 180) * 40}
-                      stroke={getStrokeColor()}
-                      strokeWidth="1"
-                      opacity="0"
+                  {/* Hash calculation visualization */}
+                  {block.status === 'mining' && (
+                    <div className="space-y-1 mb-2">
+                      <div className={`text-[8px] font-mono ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
+                        <motion.div
+                          key={calculations[block.id]}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="overflow-hidden"
+                        >
+                          NONCE: {Math.floor((calculations[block.id] || 0) * 99999)}
+                        </motion.div>
+                        <motion.div
+                          animate={{ opacity: [0.3, 1, 0.3] }}
+                          transition={{ duration: 0.5, repeat: Infinity }}
+                          className="mt-1"
+                        >
+                          HASH: {generateHash().substring(0, 20)}...
+                        </motion.div>
+                      </div>
+                      
+                      {/* Progress bar */}
+                      <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-purple-900/50' : 'bg-purple-200'}`}>
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${calculations[block.id] || 0}%` }}
+                          transition={{ duration: 0.1 }}
+                        />
+                      </div>
+                      <div className={`text-[8px] text-center font-bold ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+                        {Math.floor(calculations[block.id] || 0)}% POW
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Verification animation */}
+                  {block.status === 'verifying' && (
+                    <div className="space-y-2 mb-2">
+                      <motion.div
+                        className={`text-[8px] font-mono ${isDark ? 'text-blue-300' : 'text-blue-700'}`}
+                        animate={{ opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                      >
+                        <div>HASH: {block.hash.substring(0, 16)}...</div>
+                        <div className="mt-1">VERIFYING SIGNATURES...</div>
+                      </motion.div>
+                      
+                      {/* Rotating verification circle */}
+                      <div className="flex justify-center">
+                        <motion.div
+                          className={`w-12 h-12 rounded-full border-4 ${isDark ? 'border-blue-500/30' : 'border-blue-400/30'}`}
+                          style={{
+                            borderTopColor: isDark ? '#3b82f6' : '#2563eb',
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Verified state */}
+                  {block.status === 'verified' && (
+                    <div className="space-y-1">
+                      <div className={`text-[8px] font-mono ${isDark ? 'text-green-300' : 'text-green-700'} break-all`}>
+                        <div className="font-bold">HASH:</div>
+                        <div className="opacity-70">{block.hash.substring(0, 32)}...</div>
+                      </div>
+                      
+                      {/* Checkmark */}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                        className="flex justify-center mt-2"
+                      >
+                        <div className={`w-12 h-12 rounded-full ${isDark ? 'bg-green-500' : 'bg-green-400'} flex items-center justify-center shadow-lg`}>
+                          <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      </motion.div>
+                    </div>
+                  )}
+
+                  {/* Timestamp */}
+                  <div className={`text-[7px] mt-2 text-center ${isDark ? 'text-white/40' : 'text-gray-500'} font-mono`}>
+                    {new Date(block.timestamp).toLocaleTimeString()}
+                  </div>
+
+                  {/* Glowing border animation */}
+                  {block.status === 'mining' && (
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl"
+                      style={{
+                        border: '2px solid',
+                        borderColor: isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(168, 85, 247, 0.3)',
+                      }}
                       animate={{
-                        opacity: [0, 0.5, 0],
-                        x2: x + 30 + Math.cos(angle * Math.PI / 180) * 50,
-                        y2: y + 30 + Math.sin(angle * Math.PI / 180) * 50,
+                        boxShadow: [
+                          `0 0 20px ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)'}`,
+                          `0 0 40px ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 0.4)'}`,
+                          `0 0 20px ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)'}`,
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+
+                  {/* Data stream particles */}
+                  {block.status === 'mining' && (
+                    <>
+                      {[...Array(5)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-1 h-1 rounded-full bg-purple-400"
+                          style={{
+                            left: `${20 + i * 15}%`,
+                            bottom: '10%',
+                          }}
+                          animate={{
+                            y: [-20, -60],
+                            opacity: [0, 1, 0],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            delay: i * 0.2,
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
+                </motion.div>
+
+                {/* Chain connector */}
+                {index < blocks.length - 1 && (
+                  <motion.div
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    className="relative"
+                  >
+                    <div className={`w-8 h-0.5 ${
+                      blocks[index + 1].status === 'verified'
+                        ? isDark ? 'bg-green-500' : 'bg-green-400'
+                        : isDark ? 'bg-purple-500/50' : 'bg-purple-400/50'
+                    }`} />
+                    
+                    {/* Data flow animation */}
+                    <motion.div
+                      className={`absolute top-1/2 w-2 h-2 rounded-full ${
+                        blocks[index + 1].status === 'verified'
+                          ? 'bg-green-500'
+                          : 'bg-purple-500'
+                      }`}
+                      animate={{
+                        x: [-10, 40],
+                        opacity: [0, 1, 0],
                       }}
                       transition={{
-                        delay: block.delay + 0.5,
-                        duration: 1,
-                        ease: "easeOut"
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "linear",
                       }}
                     />
-                  ))}
-                </>
-              )}
-
-              {/* Mining/validation effect for verifying block */}
-              {block.status === 'verifying' && (
-                <motion.rect
-                  x={x - 5}
-                  y={y - 5}
-                  width="70"
-                  height="70"
-                  rx="10"
-                  stroke={isDark ? '#3b82f6' : '#2563eb'}
-                  strokeWidth="2"
-                  fill="none"
-                  opacity="0"
-                  animate={{
-                    opacity: [0, 0.6, 0],
-                    scale: [1, 1.1, 1.2],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeOut"
-                  }}
-                  style={{ transformOrigin: `${x + 30}px ${y + 30}px` }}
-                />
-              )}
-            </motion.g>
-          );
-        })}
-
-        {/* New block creation animation */}
-        <motion.g
-          initial={{ opacity: 0, x: 30 + blocks.length * 120, y: 40 }}
-          animate={{ 
-            opacity: [0, 0.5, 0],
-            y: [40, 70, 70],
-            scale: [0.5, 1, 1]
-          }}
-          transition={{
-            delay: 4,
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: 2
-          }}
-        >
-          <rect
-            width="60"
-            height="60"
-            rx="8"
-            fill="url(#pendingGradient)"
-            opacity="0.5"
-            strokeDasharray="4 4"
-            stroke={isDark ? '#8b5cf6' : '#7c3aed'}
-            strokeWidth="2"
-          />
-          <text
-            x="30"
-            y="35"
-            textAnchor="middle"
-            fill="white"
-            fontSize="9"
-            opacity="0.7"
-          >
-            New
-          </text>
-        </motion.g>
-
-        {/* Labels */}
-        <text
-          x="250"
-          y="170"
-          textAnchor="middle"
-          fill={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'}
-          fontSize="12"
-          fontWeight="500"
-        >
-          Live Blockchain Verification
-        </text>
-      </svg>
-
-      {/* Legend */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-4 text-xs">
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-green-500' : 'bg-green-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Verified</span>
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+          </AnimatePresence>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Verifying</span>
+      </div>
+
+      {/* Status legend */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-6 text-xs backdrop-blur-sm bg-black/20 px-4 py-2 rounded-full">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-purple-500 animate-pulse" />
+          <span className={isDark ? 'text-white' : 'text-gray-800'}>Mining (POW)</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-purple-500' : 'bg-purple-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Pending</span>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-blue-500" />
+          <span className={isDark ? 'text-white' : 'text-gray-800'}>Verifying</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-green-500" />
+          <span className={isDark ? 'text-white' : 'text-gray-800'}>Verified</span>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default BlockchainAnimation;
