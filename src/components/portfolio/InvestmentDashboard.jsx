@@ -54,84 +54,82 @@ export default function InvestmentDashboard({ isDark, data }) {
           ? 'bg-black/40 border border-purple-500/20' 
           : 'bg-white/60 border border-[#244270]/10'
       } backdrop-blur-xl`}
-    >
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Growth Chart */}
-        <div className="h-full">
-          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-            Investment Growth Over Time
-          </h4>
-          <div className="h-[450px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={yearlyData}>
-                <defs>
-                  <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0}/>
-                  </linearGradient>
-                  <linearGradient id="colorContributions" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={isDark ? '#06b6d4' : '#4dbdce'} stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor={isDark ? '#06b6d4' : '#4dbdce'} stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis 
-                  dataKey="year" 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-                />
-                <YAxis 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                  tickFormatter={(value) => {
-                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                    return `${currency?.symbol || '$'}${value}`;
-                  }}
-                  width={70}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="totalValue" 
-                  stroke={isDark ? '#a855f7' : '#244270'} 
-                  fillOpacity={1} 
-                  fill="url(#colorTotal)" 
-                  name="Gross Value"
-                  strokeWidth={3}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="netValue" 
-                  stroke={isDark ? '#10b981' : '#059669'} 
-                  fillOpacity={1} 
-                  fill="url(#colorContributions)" 
-                  name="Net Value (After Tax)"
-                  strokeWidth={3}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+      >
+      {/* Growth Chart - Full Width */}
+      <div className="mb-8">
+        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+          Investment Growth Over Time
+        </h4>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={yearlyData}>
+              <defs>
+                <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0}/>
+                </linearGradient>
+                <linearGradient id="colorNet" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis 
+                dataKey="year" 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
+              />
+              <YAxis 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                tickFormatter={(value) => {
+                  if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                  if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                  return `${currency?.symbol || '$'}${value}`;
+                }}
+                width={70}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area 
+                type="monotone" 
+                dataKey="totalValue" 
+                stroke={isDark ? '#a855f7' : '#244270'} 
+                fillOpacity={1} 
+                fill="url(#colorTotal)" 
+                name="Gross Value"
+                strokeWidth={3}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="netValue" 
+                stroke={isDark ? '#10b981' : '#059669'} 
+                fillOpacity={1} 
+                fill="url(#colorNet)" 
+                name="Net Value (After Tax)"
+                strokeWidth={3}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
+      </div>
 
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Pie Chart */}
         <div className="h-full">
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Portfolio Breakdown
           </h4>
-          <div className="h-[450px]">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
-                  cy="45%"
+                  cy="50%"
                   innerRadius="40%"
                   outerRadius="70%"
                   paddingAngle={5}
                   dataKey="value"
-                  label={(entry) => entry.name}
-                  labelLine={false}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -147,43 +145,56 @@ export default function InvestmentDashboard({ isDark, data }) {
                 />
               </PieChart>
             </ResponsiveContainer>
+            
+            {/* Legend */}
+            <div className="flex flex-wrap justify-center gap-4 mt-4">
+              {pieData.map((item) => (
+                <div key={item.name} className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }} />
+                  <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                    {item.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Annual Interest Growth */}
-      <div className="mt-8">
-        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-          Annual Interest Earned
-        </h4>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={yearlyData.slice(1)}>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-              <XAxis 
-                dataKey="year" 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-              />
-              <YAxis 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                tickFormatter={(value) => {
-                  if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                  if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                  return `${currency?.symbol || '$'}${value}`;
-                }}
-                width={70}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar 
-                dataKey="interest" 
-                fill={isDark ? '#a855f7' : '#244270'} 
-                name="Interest Earned"
-                radius={[6, 6, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Annual Interest Growth */}
+        <div>
+          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+            Annual Interest Earned
+          </h4>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={yearlyData.slice(1)}>
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+                <XAxis 
+                  dataKey="year" 
+                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
+                />
+                <YAxis 
+                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                  tickFormatter={(value) => {
+                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                    return `${currency?.symbol || '$'}${value}`;
+                  }}
+                  width={70}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar 
+                  dataKey="interest" 
+                  fill={isDark ? '#a855f7' : '#244270'} 
+                  name="Interest Earned"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 

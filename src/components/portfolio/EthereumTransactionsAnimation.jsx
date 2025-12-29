@@ -5,6 +5,16 @@ import { ArrowRight } from 'lucide-react';
 export default function EthereumTransactionsAnimation({ isDark }) {
   const [transactions, setTransactions] = useState([]);
 
+  const cryptos = ['BTC', 'ETH', 'XRP', 'SOL', 'LINK'];
+  
+  const cryptoColors = {
+    BTC: isDark ? 'text-orange-400' : 'text-orange-600',
+    ETH: isDark ? 'text-purple-400' : 'text-purple-600',
+    XRP: isDark ? 'text-blue-400' : 'text-blue-600',
+    SOL: isDark ? 'text-cyan-400' : 'text-cyan-600',
+    LINK: isDark ? 'text-indigo-400' : 'text-indigo-600'
+  };
+
   const generateAddress = () => {
     const chars = '0123456789abcdef';
     let address = '0x';
@@ -14,13 +24,27 @@ export default function EthereumTransactionsAnimation({ isDark }) {
     return address + '...';
   };
 
-  const generateTransaction = () => ({
-    id: Date.now() + Math.random(),
-    from: generateAddress(),
-    to: generateAddress(),
-    amount: (Math.random() * 5 + 0.01).toFixed(3),
-    timestamp: Date.now()
-  });
+  const generateTransaction = () => {
+    const crypto = cryptos[Math.floor(Math.random() * cryptos.length)];
+    const amount = crypto === 'BTC' 
+      ? (Math.random() * 0.5 + 0.01).toFixed(4)
+      : crypto === 'ETH'
+      ? (Math.random() * 5 + 0.1).toFixed(3)
+      : crypto === 'XRP'
+      ? (Math.random() * 1000 + 10).toFixed(0)
+      : crypto === 'SOL'
+      ? (Math.random() * 20 + 1).toFixed(2)
+      : (Math.random() * 50 + 1).toFixed(1);
+    
+    return {
+      id: Date.now() + Math.random(),
+      from: generateAddress(),
+      to: generateAddress(),
+      amount: amount,
+      crypto: crypto,
+      timestamp: Date.now()
+    };
+  };
 
   useEffect(() => {
     // הוספת עסקה חדשה כל 2.5 שניות
@@ -52,7 +76,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
           animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
-        ETHEREUM LIVE TRANSACTIONS
+        CRYPTO LIVE TRANSACTIONS
       </div>
       
       <div className="w-full space-y-1.5 px-2">
@@ -98,11 +122,9 @@ export default function EthereumTransactionsAnimation({ isDark }) {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className={`font-mono text-[8px] font-bold whitespace-nowrap ${
-                  isDark ? 'text-green-400' : 'text-green-600'
-                }`}
+                className={`font-mono text-[8px] font-bold whitespace-nowrap ${cryptoColors[tx.crypto]}`}
               >
-                {tx.amount} ETH
+                {tx.amount} {tx.crypto}
               </motion.span>
             </motion.div>
           ))}
@@ -110,7 +132,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
       </div>
 
       <div className={`text-[7px] mt-2 ${isDark ? 'text-white/30' : 'text-[#141225]/30'}`}>
-        Real-time Ethereum Network
+        Real-time Blockchain Network
       </div>
     </div>
   );

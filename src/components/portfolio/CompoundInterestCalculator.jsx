@@ -8,7 +8,8 @@ const currencies = [
   { code: 'EUR', symbol: '€', name: 'Euro' },
   { code: 'ILS', symbol: '₪', name: 'Israeli Shekel' },
   { code: 'GBP', symbol: '£', name: 'British Pound' },
-  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'GOLD', symbol: '🪙', name: 'Gold (oz)' },
+  { code: 'SILVER', symbol: '⚪', name: 'Silver (oz)' },
 ];
 
 const compoundFrequencies = [
