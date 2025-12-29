@@ -344,28 +344,54 @@ export default function BlockchainAnimation({ isDark }) {
           </AnimatePresence>
         </div>
 
-        {/* Block counter */}
-        <div className={`text-center text-[10px] font-mono mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-          <span className="font-bold text-purple-500">{totalBlocks}</span> BLOCKS IN CHAIN
-          {totalBlocks > 3 && (
-            <span className="text-[8px] block mt-0.5">(Showing last 3)</span>
-          )}
-        </div>
-
-        {/* Legend */}
-        <div className={`flex gap-3 justify-center text-[8px] ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <span>Verified</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-            <span>Verifying</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-gray-600' : 'bg-gray-500'}`}></div>
-            <span>Pending</span>
-          </div>
+        {/* Background animations */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          {/* Grid pattern */}
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: `linear-gradient(${isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(124, 58, 237, 0.08)'} 1px, transparent 1px),
+                               linear-gradient(90deg, ${isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(124, 58, 237, 0.08)'} 1px, transparent 1px)`,
+              backgroundSize: '30px 30px',
+            }}
+          />
+          
+          {/* Floating orbs */}
+          <motion.div
+            className="absolute w-40 h-40 rounded-full blur-3xl opacity-40"
+            style={{
+              background: isDark 
+                ? 'radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 70%)',
+              left: '10%',
+              top: '20%',
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+              x: [0, 20, 0],
+              y: [0, -10, 0],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          
+          <motion.div
+            className="absolute w-32 h-32 rounded-full blur-3xl opacity-40"
+            style={{
+              background: isDark
+                ? 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%)',
+              right: '10%',
+              bottom: '20%',
+            }}
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.4, 0.2, 0.4],
+              x: [0, -15, 0],
+              y: [0, 10, 0],
+            }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
       </div>
     </div>
