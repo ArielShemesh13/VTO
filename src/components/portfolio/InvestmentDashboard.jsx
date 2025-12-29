@@ -95,19 +95,47 @@ export default function InvestmentDashboard({ isDark, data }) {
   // Calculate investment recommendations
   const years = yearlyData.length - 1;
   const currentROI = roi;
+  const monthlyContribution = yearlyData.length > 1 ? (totalContributions - yearlyData[0]?.contributions) / (12 * years) : 0;
   const recommendations = [];
   
-  if (currentROI < 50) {
-    recommendations.push({ text: '💡 Consider extending investment period for better returns', color: 'yellow' });
-  }
-  if (years < 10) {
-    recommendations.push({ text: '⏰ Long-term investing (10+ years) typically yields higher returns', color: 'blue' });
-  }
   if (years >= 10 && currentROI > 100) {
-    recommendations.push({ text: '✅ Excellent long-term investment strategy!', color: 'green' });
+    recommendations.push({ 
+      text: '🎯 Excellent! Long-term strategy with great returns', 
+      color: 'green',
+      tip: `Consider increasing monthly contribution by ${currency?.symbol || '$'}${Math.round(monthlyContribution * 0.2)} to maximize growth potential`
+    });
   }
-  if (years >= 5 && years < 10) {
-    recommendations.push({ text: '📈 Good medium-term plan, consider extending for compound effect', color: 'cyan' });
+  
+  if (years >= 10 && currentROI >= 50 && currentROI <= 100) {
+    recommendations.push({ 
+      text: '✅ Solid long-term investment plan', 
+      color: 'green',
+      tip: `A small monthly increase of ${currency?.symbol || '$'}${Math.round(monthlyContribution * 0.15)} could significantly boost your final return`
+    });
+  }
+  
+  if (years >= 5 && years < 10 && currentROI > 50) {
+    recommendations.push({ 
+      text: '📈 Good medium-term plan with positive trajectory', 
+      color: 'cyan',
+      tip: 'Extending to 10+ years could double your returns through compound effect'
+    });
+  }
+  
+  if (currentROI < 50) {
+    recommendations.push({ 
+      text: '💡 Consider extending investment period', 
+      color: 'yellow',
+      tip: 'Compound interest works best over longer periods - aim for 10+ years for optimal returns'
+    });
+  }
+  
+  if (years < 10) {
+    recommendations.push({ 
+      text: '⏰ Time is your greatest asset in investing', 
+      color: 'blue',
+      tip: 'Historical data shows 10+ year investments significantly outperform shorter periods'
+    });
   }
 
   return (
@@ -329,11 +357,6 @@ export default function InvestmentDashboard({ isDark, data }) {
                   outerRadius="65%"
                   paddingAngle={5}
                   dataKey="value"
-                  onClick={(data, index) => {
-                    const relatedYear = yearlyData[Math.floor(yearlyData.length / 2)];
-                    setDrillDownYear(relatedYear);
-                  }}
-                  cursor="pointer"
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -402,8 +425,6 @@ export default function InvestmentDashboard({ isDark, data }) {
                   fill={isDark ? '#a855f7' : '#244270'} 
                   name="Interest Earned"
                   radius={[6, 6, 0, 0]}
-                  onClick={(data) => setDrillDownYear(data)}
-                  cursor="pointer"
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -448,17 +469,32 @@ export default function InvestmentDashboard({ isDark, data }) {
             {recommendations.map((rec, idx) => (
               <div 
                 key={idx}
-                className={`p-3 rounded-lg text-xs ${
+                className={`p-4 rounded-lg space-y-2 ${
                   rec.color === 'green' 
-                    ? isDark ? 'bg-green-500/10 border border-green-500/30 text-green-400' : 'bg-green-50 border border-green-300 text-green-700'
+                    ? isDark ? 'bg-green-500/10 border border-green-500/30' : 'bg-green-50 border border-green-300'
                   : rec.color === 'yellow'
-                    ? isDark ? 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-400' : 'bg-yellow-50 border border-yellow-300 text-yellow-700'
+                    ? isDark ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-yellow-50 border border-yellow-300'
                   : rec.color === 'blue'
-                    ? isDark ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400' : 'bg-blue-50 border border-blue-300 text-blue-700'
-                    : isDark ? 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400' : 'bg-cyan-50 border border-cyan-300 text-cyan-700'
+                    ? isDark ? 'bg-blue-500/10 border border-blue-500/30' : 'bg-blue-50 border border-blue-300'
+                    : isDark ? 'bg-cyan-500/10 border border-cyan-500/30' : 'bg-cyan-50 border border-cyan-300'
                 }`}
               >
-                {rec.text}
+                <p className={`text-sm font-semibold ${
+                  rec.color === 'green' 
+                    ? isDark ? 'text-green-400' : 'text-green-700'
+                  : rec.color === 'yellow'
+                    ? isDark ? 'text-yellow-400' : 'text-yellow-700'
+                  : rec.color === 'blue'
+                    ? isDark ? 'text-blue-400' : 'text-blue-700'
+                    : isDark ? 'text-cyan-400' : 'text-cyan-700'
+                }`}>
+                  {rec.text}
+                </p>
+                {rec.tip && (
+                  <p className={`text-xs ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+                    💡 {rec.tip}
+                  </p>
+                )}
               </div>
             ))}
           </div>
