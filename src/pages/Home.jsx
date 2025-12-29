@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import AnimatedBackground from '../components/portfolio/AnimatedBackground';
 import IntroAnimation from '../components/portfolio/IntroAnimation';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
@@ -69,6 +70,7 @@ export default function Home() {
     <div className={`min-h-screen relative overflow-x-hidden ${
       isDark ? 'bg-[#0a0118]' : 'bg-gradient-to-br from-[#f5f7ff] to-[#e8ebff]'
     } transition-colors duration-500`}>
+      <AnimatedBackground isDark={isDark} />
       
       <AnimatePresence>
         {showIntro && (
