@@ -68,17 +68,6 @@ export default function EthereumTransactionsAnimation({ isDark }) {
 
   return (
     <div className="relative w-full h-32 flex flex-col items-center justify-center">
-      <div className={`text-[9px] font-bold mb-3 tracking-wider flex items-center gap-1 ${
-        isDark ? 'text-purple-400' : 'text-[#244270]'
-      }`}>
-        <motion.div
-          className={`w-2 h-2 rounded-full ${isDark ? 'bg-green-400' : 'bg-green-600'}`}
-          animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        CRYPTO LIVE TRANSACTIONS
-      </div>
-      
       <div className="w-full space-y-1.5 px-2">
         <AnimatePresence mode="popLayout">
           {transactions.map((tx) => (
@@ -129,10 +118,6 @@ export default function EthereumTransactionsAnimation({ isDark }) {
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-
-      <div className={`text-[7px] mt-2 ${isDark ? 'text-white/30' : 'text-[#141225]/30'}`}>
-        Real-time Blockchain Network
       </div>
     </div>
   );

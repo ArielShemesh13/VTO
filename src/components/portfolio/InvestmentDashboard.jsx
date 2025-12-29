@@ -119,15 +119,15 @@ export default function InvestmentDashboard({ isDark, data }) {
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Portfolio Breakdown
           </h4>
-          <div className="h-80">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius="40%"
-                  outerRadius="70%"
+                  innerRadius="35%"
+                  outerRadius="65%"
                   paddingAngle={5}
                   dataKey="value"
                 >
@@ -145,18 +145,18 @@ export default function InvestmentDashboard({ isDark, data }) {
                 />
               </PieChart>
             </ResponsiveContainer>
-            
-            {/* Legend */}
-            <div className="flex flex-wrap justify-center gap-4 mt-4">
-              {pieData.map((item) => (
-                <div key={item.name} className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }} />
-                  <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-                    {item.name}
-                  </span>
-                </div>
-              ))}
-            </div>
+          </div>
+          
+          {/* Legend */}
+          <div className="flex flex-wrap justify-center gap-4 mt-4">
+            {pieData.map((item) => (
+              <div key={item.name} className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }} />
+                <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                  {item.name}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
