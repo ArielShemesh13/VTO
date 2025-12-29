@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 
 const initialMessages = [
   {
     id: 1,
     role: 'assistant',
-    content: "Hi! 👋 I'm Ariel's AI assistant. Feel free to ask me about his skills, experience, or projects. How can I help you today?",
+    content: "👋 Hi! I'm Ariel's Data Bot (Beta). This is an experimental assistant. For real-time chat, connect via Telegram! Ask me about Ariel's skills, experience, or projects.",
   },
 ];
 
@@ -44,11 +44,8 @@ export default function ChatWidget({ isDark }) {
     if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('email')) {
       return "You can reach Ariel at arielshemesh1999@gmail.com or connect with him on LinkedIn. Feel free to scroll down to the Contact section for more options!";
     }
-    if (lowerMessage.includes('web3') || lowerMessage.includes('blockchain') || lowerMessage.includes('crypto')) {
-      return "Ariel's portfolio showcases his expertise in modern web technologies including Web3 and blockchain. The live cryptocurrency transactions you see are real-time data from various blockchains!";
-    }
-    if (lowerMessage.includes('education') || lowerMessage.includes('study') || lowerMessage.includes('degree')) {
-      return "Ariel has a B.A. in Business Administration with a specialization in Information Systems from Ono Academic College. His studies covered data analysis, financial modeling, and database design.";
+    if (lowerMessage.includes('telegram')) {
+      return "🚀 Telegram integration coming soon! This will enable real-time AI chat powered by advanced language models. Stay tuned!";
     }
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
       return "Hello! 👋 Great to meet you! I'm here to answer any questions about Ariel's portfolio. What would you like to know?";
@@ -57,7 +54,7 @@ export default function ChatWidget({ isDark }) {
       return "Ariel has hands-on experience in data analysis, working with SQL, Python (Pandas), Power BI, and advanced Excel. He's also developed web applications using React and JavaScript. Check out the Projects section for detailed examples!";
     }
     
-    return "Thanks for your question! I'm a demo chatbot for Ariel's portfolio. In the future, this will be connected to a more advanced AI. For now, try asking about his skills, projects, education, or contact info!";
+    return "Thanks for your question! I'm an experimental chatbot. For full AI capabilities, connect via Telegram (coming soon). Try asking about Ariel's skills, projects, or contact info!";
   };
 
   const handleSend = async (message = inputValue) => {
@@ -73,8 +70,7 @@ export default function ChatWidget({ isDark }) {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate typing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 1000));
+    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 600));
 
     const response = generateResponse(message);
     
@@ -97,19 +93,20 @@ export default function ChatWidget({ isDark }) {
 
   return (
     <>
-      {/* Chat Toggle Button - Monday Style */}
+      {/* Chat Toggle Button - Web3 Style */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-xl ${
-          isDark 
-            ? 'bg-[#0073ea] hover:bg-[#0060c9]' 
-            : 'bg-[#0073ea] hover:bg-[#0060c9]'
-        } transition-all duration-200 flex items-center justify-center`}
-        whileHover={{ scale: 1.05 }}
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center overflow-hidden"
+        style={{
+          background: isDark 
+            ? 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)'
+            : 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        }}
+        whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 1, type: 'spring' }}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -119,18 +116,18 @@ export default function ChatWidget({ isDark }) {
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: 90, opacity: 0 }}
             >
-              <X size={26} className="text-white" />
+              <X size={28} className="text-white" />
             </motion.div>
-            ) : (
+          ) : (
             <motion.div
               key="open"
               initial={{ rotate: 90, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: -90, opacity: 0 }}
             >
-              <MessageCircle size={26} className="text-white" />
+              <MessageCircle size={28} className="text-white" />
             </motion.div>
-            )}
+          )}
         </AnimatePresence>
       </motion.button>
 
@@ -138,49 +135,63 @@ export default function ChatWidget({ isDark }) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] rounded-2xl shadow-2xl overflow-hidden ${
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className={`fixed bottom-28 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] max-h-[600px] rounded-3xl shadow-2xl overflow-hidden ${
               isDark 
-                ? 'bg-[#1c1c1e] border border-[#2c2c2e]' 
-                : 'bg-white border border-gray-200'
+                ? 'bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460]' 
+                : 'bg-gradient-to-br from-white via-blue-50 to-purple-50'
             }`}
             style={{
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
+              border: isDark 
+                ? '2px solid rgba(102, 126, 234, 0.3)'
+                : '2px solid rgba(79, 172, 254, 0.3)',
+              boxShadow: isDark
+                ? '0 20px 60px rgba(102, 126, 234, 0.4)'
+                : '0 20px 60px rgba(79, 172, 254, 0.3)',
             }}
           >
-            {/* Header - Monday Style */}
-            <div className={`p-4 border-b ${
-              isDark 
-                ? 'bg-[#1c1c1e] border-[#2c2c2e]' 
-                : 'bg-white border-gray-200'
-            }`}>
+            {/* Header - Web3 Style */}
+            <div className={`p-4 backdrop-blur-xl ${
+              isDark ? 'bg-black/20' : 'bg-white/40'
+            }`} style={{
+              borderBottom: isDark 
+                ? '1px solid rgba(102, 126, 234, 0.2)'
+                : '1px solid rgba(79, 172, 254, 0.2)',
+            }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="relative w-10 h-10 rounded-full bg-[#0073ea] flex items-center justify-center">
-                    <MessageCircle className="w-5 h-5 text-white" />
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00ca72] border-2 border-white" />
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden" style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  }}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" opacity="0.9"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.9"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.9"/>
+                      </svg>
+                    </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-white" />
                   </div>
                   <div>
-                    <h3 className={`font-semibold text-base ${isDark ? 'text-white' : 'text-[#323338]'}`}>
-                      AI Assistant
+                    <h3 className={`font-bold text-base ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                      Data Bot
                     </h3>
-                    <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      Online
+                    <p className={`text-xs ${isDark ? 'text-purple-300' : 'text-blue-600'}`}>
+                      🤖 Beta • Telegram Soon
                     </p>
                   </div>
                 </div>
                 <motion.button
                   onClick={() => setIsOpen(false)}
-                  className={`p-1.5 rounded-lg transition-colors ${
+                  className={`p-2 rounded-xl transition-all ${
                     isDark 
-                      ? 'hover:bg-[#2c2c2e] text-gray-400 hover:text-white' 
-                      : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
+                      ? 'hover:bg-white/10 text-purple-300 hover:text-white' 
+                      : 'hover:bg-blue-100 text-blue-600 hover:text-blue-800'
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   <X size={20} />
                 </motion.button>
@@ -188,78 +199,63 @@ export default function ChatWidget({ isDark }) {
             </div>
 
             {/* Messages */}
-            <div className={`h-80 overflow-y-auto p-4 space-y-3 ${
-              isDark 
-                ? 'bg-[#1c1c1e]' 
-                : 'bg-gray-50'
-            }`}>
+            <div className={`h-80 overflow-y-auto p-4 space-y-3`}>
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex gap-2 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
                 >
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.role === 'user'
-                      ? 'bg-gray-300'
-                      : 'bg-[#0073ea]'
-                  }`}>
-                    {message.role === 'user' ? (
-                      <User className="w-4 h-4 text-gray-600" />
-                    ) : (
-                      <MessageCircle className="w-4 h-4 text-white" />
-                    )}
-                  </div>
-                  <div className={`max-w-[75%] rounded-lg ${
-                    message.role === 'user'
-                      ? isDark 
-                        ? 'bg-[#0073ea] text-white' 
-                        : 'bg-[#0073ea] text-white'
-                      : isDark 
-                        ? 'bg-[#2c2c2e] text-white' 
-                        : 'bg-white text-[#323338] border border-gray-200'
-                  } px-4 py-2.5`}>
-                    <p className="text-sm leading-relaxed" style={{ 
-                      fontFamily: '-apple-system, BlinkMacSystemFont, "Figtree", "Segoe UI", sans-serif',
-                      fontWeight: 400
+                  {message.role === 'assistant' && (
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden" style={{
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     }}>
-                      {message.content}
-                    </p>
+                      <div className="w-full h-full flex items-center justify-center">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" opacity="0.9"/>
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
+                    message.role === 'user'
+                      ? isDark
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                        : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                      : isDark 
+                        ? 'bg-white/10 backdrop-blur-xl text-white border border-white/20' 
+                        : 'bg-white/80 backdrop-blur-xl text-gray-800 border border-blue-200'
+                  }`}>
+                    <p className="text-sm leading-relaxed">{message.content}</p>
                   </div>
                 </motion.div>
               ))}
               
               {isTyping && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="flex gap-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex gap-2"
                 >
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#0073ea] flex items-center justify-center">
-                    <MessageCircle className="w-4 h-4 text-white" />
-                  </div>
-                  <div className={`rounded-lg px-4 py-3 ${
-                    isDark 
-                      ? 'bg-[#2c2c2e]' 
-                      : 'bg-white border border-gray-200'
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full" style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  }} />
+                  <div className={`rounded-2xl px-4 py-3 ${
+                    isDark ? 'bg-white/10 backdrop-blur-xl' : 'bg-white/80 backdrop-blur-xl'
                   }`}>
                     <div className="flex gap-1">
                       {[0, 1, 2].map((i) => (
                         <motion.div
                           key={i}
-                          className="w-2 h-2 rounded-full bg-[#0073ea]"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.4, 1, 0.4],
+                          className="w-2 h-2 rounded-full"
+                          style={{
+                            background: isDark 
+                              ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                              : 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                           }}
-                          transition={{
-                            duration: 0.8,
-                            repeat: Infinity,
-                            delay: i * 0.15,
-                          }}
+                          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                         />
                       ))}
                     </div>
@@ -272,16 +268,16 @@ export default function ChatWidget({ isDark }) {
 
             {/* Quick Replies */}
             {messages.length <= 2 && (
-              <div className={`px-4 pb-3 border-t ${isDark ? 'border-[#2c2c2e]' : 'border-gray-200'}`}>
+              <div className={`px-4 pb-3 ${isDark ? 'bg-black/10' : 'bg-white/40'}`}>
                 <div className="flex flex-wrap gap-2 pt-3">
                   {quickReplies.map((reply) => (
                     <button
                       key={reply}
                       onClick={() => handleSend(reply)}
-                      className={`px-3 py-2 rounded-lg text-xs transition-all ${
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                         isDark 
-                          ? 'bg-[#2c2c2e] text-gray-300 hover:bg-[#3c3c3e]' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-purple-600/30 text-purple-200 hover:bg-purple-600/50 border border-purple-500/30' 
+                          : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300'
                       }`}
                     >
                       {reply}
@@ -292,11 +288,13 @@ export default function ChatWidget({ isDark }) {
             )}
 
             {/* Input */}
-            <div className={`p-4 border-t ${
-              isDark 
-                ? 'bg-[#1c1c1e] border-[#2c2c2e]' 
-                : 'bg-white border-gray-200'
-            }`}>
+            <div className={`p-4 backdrop-blur-xl ${
+              isDark ? 'bg-black/20' : 'bg-white/40'
+            }`} style={{
+              borderTop: isDark 
+                ? '1px solid rgba(102, 126, 234, 0.2)'
+                : '1px solid rgba(79, 172, 254, 0.2)',
+            }}>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -304,16 +302,21 @@ export default function ChatWidget({ isDark }) {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className={`flex-1 px-4 py-2.5 rounded-lg outline-none text-sm transition-all ${
+                  className={`flex-1 px-4 py-2.5 rounded-xl outline-none text-sm transition-all ${
                     isDark 
-                      ? 'bg-[#2c2c2e] border border-[#3c3c3e] text-white placeholder-gray-500 focus:border-[#0073ea]' 
-                      : 'bg-gray-50 border border-gray-200 text-[#323338] placeholder-gray-400 focus:border-[#0073ea]'
+                      ? 'bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-purple-500' 
+                      : 'bg-white border border-blue-200 text-gray-800 placeholder-gray-500 focus:border-blue-500'
                   }`}
                 />
                 <motion.button
                   onClick={() => handleSend()}
                   disabled={!inputValue.trim() || isTyping}
-                  className="p-2.5 rounded-lg bg-[#0073ea] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="p-2.5 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    background: isDark
+                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                      : 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

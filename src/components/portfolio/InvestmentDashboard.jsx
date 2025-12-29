@@ -235,7 +235,12 @@ export default function InvestmentDashboard({ isDark, data }) {
             </h4>
             <div className="h-[500px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={yearlyData.slice(1)}>
+                <BarChart data={yearlyData.slice(1)} onClick={(data) => {
+                  if (data && data.activePayload && data.activePayload[0]) {
+                    const yearData = yearlyData.find(d => d.year === data.activePayload[0].payload.year);
+                    if (yearData) setDrillDownYear(yearData);
+                  }
+                }}>
                   <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
                   <XAxis 
                     dataKey="year" 
@@ -258,6 +263,7 @@ export default function InvestmentDashboard({ isDark, data }) {
                     fill={isDark ? '#a855f7' : '#244270'} 
                     name="Interest Earned"
                     radius={[6, 6, 0, 0]}
+                    cursor="pointer"
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -308,8 +314,8 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      {/* Bottom Section: Investment Growth + Pie Chart + Recommendations */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      {/* Bottom Section: 3 Columns - Investment Growth + Pie Chart + Recommendations */}
+      <div className="grid lg:grid-cols-3 gap-6">
         {/* Investment Growth Over Time */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -324,7 +330,7 @@ export default function InvestmentDashboard({ isDark, data }) {
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Investment Growth Over Time
           </h4>
-          <div className="h-64">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={yearlyData}>
                 <defs>
@@ -390,7 +396,7 @@ export default function InvestmentDashboard({ isDark, data }) {
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Portfolio Breakdown
           </h4>
-          <div className="h-64">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
