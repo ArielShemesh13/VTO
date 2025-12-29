@@ -14,12 +14,52 @@ export default function CryptoAddressAnimation({ isDark }) {
     return hash;
   };
 
+  const generateDummyTx = (crypto, addresses) => ({
+    hash: generateRandomHash(crypto),
+    from: addresses.from,
+    to: addresses.to,
+    amount: addresses.amount,
+    usdValue: addresses.usdValue,
+    explorerUrl: addresses.explorerUrl,
+    crypto: crypto,
+  });
+
   const [transactions, setTransactions] = useState({
-    BTC: null,
-    ETH: null,
-    LINK: null,
-    BNB: null,
-    XRP: null,
+    BTC: generateDummyTx('BTC', {
+      from: '1A1zP1eP5Q...',
+      to: '3J98t1WpEZ...',
+      amount: '0.5420',
+      usdValue: '25,000',
+      explorerUrl: 'https://blockchain.info/',
+    }),
+    ETH: generateDummyTx('ETH', {
+      from: '0x742d35C...',
+      to: '0xdAC17F9...',
+      amount: '8.3500',
+      usdValue: '19,500',
+      explorerUrl: 'https://etherscan.io/',
+    }),
+    LINK: generateDummyTx('LINK', {
+      from: '0x514910C...',
+      to: '0x9f8f72a...',
+      amount: '1250.00',
+      usdValue: '18,750',
+      explorerUrl: 'https://etherscan.io/',
+    }),
+    BNB: generateDummyTx('BNB', {
+      from: '0xB8c77c8...',
+      to: '0x1f9840a...',
+      amount: '35.2500',
+      usdValue: '10,500',
+      explorerUrl: 'https://bscscan.com/',
+    }),
+    XRP: generateDummyTx('XRP', {
+      from: 'rN7n7otQ...',
+      to: 'rLHzPsX6o...',
+      amount: '15000.00',
+      usdValue: '9,000',
+      explorerUrl: 'https://xrpscan.com/',
+    }),
   });
   const [prices, setPrices] = useState({ BTC: 0, ETH: 0, XRP: 0, BNB: 0, LINK: 0 });
 
