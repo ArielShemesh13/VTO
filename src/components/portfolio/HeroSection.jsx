@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
-import CryptoAddressAnimation from './CryptoAddressAnimation';
+import EthereumTransactionsAnimation from './EthereumTransactionsAnimation';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
@@ -113,49 +113,12 @@ export default function HeroSection({ isDark, onNavigate }) {
 
           <motion.div
             className="relative hidden lg:flex justify-center items-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="relative w-96 h-96 flex items-center justify-center">
-              <motion.div
-                className={`absolute inset-0 rounded-full ${isDark ? 'border-2 border-purple-500/20' : 'border-2 border-[#244270]/20'}`}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              />
-              
-              <motion.div
-                className={`absolute inset-8 rounded-full ${isDark ? 'border border-cyan-500/20' : 'border border-[#4dbdce]/20'}`}
-                animate={{ rotate: -360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              />
-              
-              <motion.div
-                className={`absolute inset-20 rounded-full blur-3xl ${isDark ? 'bg-gradient-to-br from-purple-600/30 via-cyan-500/30 to-blue-600/30' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`}
-                animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              
-              <div className="relative z-10 scale-150">
-                <CryptoAddressAnimation isDark={isDark} />
-              </div>
-
-              {[0, 1, 2, 3, 4, 5].map((index) => {
-                const angle = (index * 60) * (Math.PI / 180);
-                const radius = 140;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                
-                return (
-                  <motion.div
-                    key={index}
-                    className={`absolute w-4 h-4 rounded-full ${isDark ? 'bg-gradient-to-br from-purple-400 to-cyan-400' : 'bg-gradient-to-br from-[#244270] to-[#4dbdce]'}`}
-                    style={{ left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)`, transform: 'translate(-50%, -50%)' }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                  />
-                );
-              })}
+            <div className="w-full max-w-md">
+              <EthereumTransactionsAnimation isDark={isDark} />
             </div>
           </motion.div>
         </div>

@@ -55,10 +55,6 @@ export default function InvestmentDashboard({ isDark, data }) {
           : 'bg-white/60 border border-[#244270]/10'
       } backdrop-blur-xl`}
     >
-      <h3 className={`text-xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-        Investment Dashboard
-      </h3>
-
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Growth Chart */}
         <div className="h-full">

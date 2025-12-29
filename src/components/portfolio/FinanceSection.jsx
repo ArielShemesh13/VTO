@@ -46,10 +46,23 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Calculator and Dashboard Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
-          <InvestmentDashboard isDark={isDark} data={calculatorData} />
+        {/* Calculator and Dashboard - Side by Side */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8 items-start">
+          {/* Calculator Section */}
+          <div>
+            <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+              Investment Calculator
+            </h3>
+            <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
+          </div>
+
+          {/* Dashboard Section */}
+          <div>
+            <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+              Investment Dashboard
+            </h3>
+            <InvestmentDashboard isDark={isDark} data={calculatorData} />
+          </div>
         </div>
 
         {/* Live Currency Rates */}
