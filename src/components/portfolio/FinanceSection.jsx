@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
-import InvestmentScenarios from './InvestmentScenarios';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -64,11 +63,6 @@ export default function FinanceSection({ isDark }) {
             <InvestmentDashboard isDark={isDark} data={calculatorData} />
           </motion.div>
         )}
-
-        {/* Investment Scenarios */}
-        <div className="mt-12">
-          <InvestmentScenarios isDark={isDark} />
-        </div>
       </div>
     </section>
   );
