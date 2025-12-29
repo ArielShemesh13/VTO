@@ -228,6 +228,42 @@ export default function InvestmentDashboard({ isDark, data }) {
           : 'bg-white/60 border border-[#244270]/10'
       } backdrop-blur-xl`}>
         <div className="grid lg:grid-cols-2 gap-6">
+          {/* Annual Interest Earned - Takes 1 column */}
+          <div>
+            <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+              Annual Interest Earned
+            </h4>
+            <div className="h-[500px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={yearlyData.slice(1)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+                  <XAxis 
+                    dataKey="year" 
+                    stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                    tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
+                  />
+                  <YAxis 
+                    stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                    tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                    tickFormatter={(value) => {
+                      if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                      if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                      return `${currency?.symbol || '$'}${value}`;
+                    }}
+                    width={70}
+                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(36, 66, 112, 0.1)' }} />
+                  <Bar 
+                    dataKey="interest" 
+                    fill={isDark ? '#a855f7' : '#244270'} 
+                    name="Interest Earned"
+                    radius={[6, 6, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
           {/* Growth Chart - Takes 1 column (same as summary) */}
           <div>
             <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
@@ -330,8 +366,8 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      {/* Bottom Section: Pie Chart + Bar Chart + Investment Recommendations */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      {/* Bottom Section: Pie Chart + Investment Recommendations */}
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Pie Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -382,52 +418,6 @@ export default function InvestmentDashboard({ isDark, data }) {
                 </span>
               </div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Annual Interest Earned */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className={`p-6 rounded-2xl ${
-            isDark 
-              ? 'bg-black/40 border border-purple-500/20' 
-              : 'bg-white/60 border border-[#244270]/10'
-          } backdrop-blur-xl`}
-        >
-          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-            Annual Interest Earned
-          </h4>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={yearlyData.slice(1)}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis 
-                  dataKey="year" 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-                />
-                <YAxis 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                  tickFormatter={(value) => {
-                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                    return `${currency?.symbol || '$'}${value}`;
-                  }}
-                  width={70}
-                />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(36, 66, 112, 0.1)' }} />
-                <Bar 
-                  dataKey="interest" 
-                  fill={isDark ? '#a855f7' : '#244270'} 
-                  name="Interest Earned"
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </motion.div>
 
