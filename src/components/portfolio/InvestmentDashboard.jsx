@@ -6,24 +6,25 @@ import { TrendingUp, PiggyBank, Percent, Target } from 'lucide-react';
 export default function InvestmentDashboard({ isDark, data }) {
   if (!data || !data.yearlyData) return null;
 
-  const { futureValue, totalContributions, totalInterest, yearlyData, currency } = data;
+  const { futureValue, totalContributions, totalInterest, taxAmount, netFutureValue, yearlyData, currency } = data;
 
   const formatCurrency = (value) => {
     return `${currency?.symbol || '$'}${value?.toLocaleString() || 0}`;
   };
 
   const pieData = [
-    { name: 'Principal + Contributions', value: totalContributions, color: isDark ? '#06b6d4' : '#244270' },
-    { name: 'Interest Earned', value: totalInterest, color: isDark ? '#a855f7' : '#4dbdce' },
+    { name: 'Invested', value: totalContributions, color: isDark ? '#06b6d4' : '#0891b2' },
+    { name: 'Gains', value: totalInterest, color: isDark ? '#10b981' : '#059669' },
+    { name: 'Tax', value: taxAmount, color: isDark ? '#ef4444' : '#dc2626' },
   ];
 
-  const roi = totalContributions > 0 ? ((totalInterest / totalContributions) * 100).toFixed(1) : 0;
+  const roi = totalContributions > 0 ? ((netFutureValue / totalContributions - 1) * 100).toFixed(1) : 0;
 
   const stats = [
-    { icon: Target, label: 'Future Value', value: formatCurrency(futureValue), color: isDark ? 'text-purple-400' : 'text-[#244270]' },
+    { icon: Target, label: 'Net Value', value: formatCurrency(netFutureValue), color: isDark ? 'text-green-400' : 'text-green-600' },
     { icon: PiggyBank, label: 'Total Invested', value: formatCurrency(totalContributions), color: isDark ? 'text-cyan-400' : 'text-[#4dbdce]' },
-    { icon: TrendingUp, label: 'Interest Earned', value: formatCurrency(totalInterest), color: isDark ? 'text-emerald-400' : 'text-emerald-600' },
-    { icon: Percent, label: 'Total ROI', value: `${roi}%`, color: isDark ? 'text-amber-400' : 'text-amber-600' },
+    { icon: TrendingUp, label: 'Gains', value: formatCurrency(totalInterest), color: isDark ? 'text-emerald-400' : 'text-emerald-600' },
+    { icon: Percent, label: 'Tax Paid', value: formatCurrency(taxAmount), color: isDark ? 'text-red-400' : 'text-red-600' },
   ];
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -109,20 +110,20 @@ export default function InvestmentDashboard({ isDark, data }) {
                 <Tooltip content={<CustomTooltip />} />
                 <Area 
                   type="monotone" 
-                  dataKey="total" 
+                  dataKey="totalValue" 
                   stroke={isDark ? '#a855f7' : '#244270'} 
                   fillOpacity={1} 
                   fill="url(#colorTotal)" 
-                  name="Total Value"
+                  name="Gross Value"
                   strokeWidth={2}
                 />
                 <Area 
                   type="monotone" 
-                  dataKey="contributions" 
-                  stroke={isDark ? '#06b6d4' : '#4dbdce'} 
+                  dataKey="netValue" 
+                  stroke={isDark ? '#10b981' : '#059669'} 
                   fillOpacity={1} 
                   fill="url(#colorContributions)" 
-                  name="Contributions"
+                  name="Net Value (After Tax)"
                   strokeWidth={2}
                 />
               </AreaChart>
