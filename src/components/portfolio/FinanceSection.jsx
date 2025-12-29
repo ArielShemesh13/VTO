@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
+import DataAnalysisShowcase from './DataAnalysisShowcase';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -23,30 +24,38 @@ export default function FinanceSection({ isDark }) {
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${
             isDark ? 'text-purple-400' : 'text-[#244270]'
           }`}>
-            Finance Tools
+            Data Analysis & Tools
           </p>
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${
             isDark ? 'text-white' : 'text-[#141225]'
           }`}>
-            Compound Interest{' '}
+            Analytics{' '}
             <span className={`${
               isDark 
                 ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' 
                 : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'
             } bg-clip-text text-transparent`}>
-              Calculator
+              Showcase
             </span>
           </h2>
           <p className={`max-w-2xl mx-auto ${
             isDark ? 'text-white/60' : 'text-[#141225]/60'
           }`}>
-            Plan your financial future with our powerful compound interest calculator. 
-            Visualize your investment growth and see the power of compounding.
+            Interactive data visualization and analysis tools demonstrating my expertise in 
+            turning complex data into actionable insights.
           </p>
         </motion.div>
 
+        {/* Data Analysis Showcase */}
+        <div className="mb-12">
+          <DataAnalysisShowcase isDark={isDark} />
+        </div>
+
         {/* Calculator */}
         <div className="mb-8">
+          <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            Investment Calculator
+          </h3>
           <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
         </div>
 
