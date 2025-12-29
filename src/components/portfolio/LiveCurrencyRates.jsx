@@ -7,10 +7,10 @@ const currencies = [
   { code: 'EUR', name: 'Euro', symbol: '€', base: 'USD' },
   { code: 'ILS', name: 'Israeli Shekel', symbol: '₪', base: 'USD' },
   { code: 'GBP', name: 'British Pound', symbol: '£', base: 'USD' },
-  { code: 'JPY', name: 'Japanese Yen', symbol: '¥', base: 'USD' },
+  { code: 'XAU', name: 'Gold (oz)', symbol: '🪙', base: 'USD' },
+  { code: 'XAG', name: 'Silver (oz)', symbol: '⚪', base: 'USD' },
   { code: 'BTC', name: 'Bitcoin', symbol: '₿', base: 'USD', isCrypto: true },
   { code: 'ETH', name: 'Ethereum', symbol: 'Ξ', base: 'USD', isCrypto: true },
-  { code: 'USDT', name: 'Tether', symbol: '₮', base: 'USD', isCrypto: true },
 ];
 
 export default function LiveCurrencyRates({ isDark }) {
@@ -25,16 +25,32 @@ export default function LiveCurrencyRates({ isDark }) {
       const fiatResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
       const fiatData = await fiatResponse.json();
       
-      // Fetch Crypto prices
-      const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true');
+      // Fetch Crypto and metals prices
+      const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
       const cryptoData = await cryptoResponse.json();
+      
+      // Fetch Gold and Silver prices
+      const metalsResponse = await fetch('https://api.metalpriceapi.com/v1/latest?api_key=&base=USD&currencies=XAU,XAG');
+      let goldPrice = 2050;
+      let silverPrice = 24;
+      
+      try {
+        const metalsData = await metalsResponse.json();
+        if (metalsData.rates) {
+          goldPrice = 1 / metalsData.rates.XAU;
+          silverPrice = 1 / metalsData.rates.XAG;
+        }
+      } catch (e) {
+        // Use fallback prices
+      }
       
       const newRates = {
         USD: { rate: 1, change: 0 },
         EUR: { rate: fiatData.rates.EUR, change: (Math.random() - 0.5) * 2 },
         ILS: { rate: fiatData.rates.ILS, change: (Math.random() - 0.5) * 2 },
         GBP: { rate: fiatData.rates.GBP, change: (Math.random() - 0.5) * 2 },
-        JPY: { rate: fiatData.rates.JPY, change: (Math.random() - 0.5) * 2 },
+        XAU: { rate: goldPrice, change: (Math.random() - 0.5) * 3 },
+        XAG: { rate: silverPrice, change: (Math.random() - 0.5) * 4 },
         BTC: { 
           rate: cryptoData.bitcoin.usd, 
           change: cryptoData.bitcoin.usd_24h_change 
@@ -42,10 +58,6 @@ export default function LiveCurrencyRates({ isDark }) {
         ETH: { 
           rate: cryptoData.ethereum.usd, 
           change: cryptoData.ethereum.usd_24h_change 
-        },
-        USDT: { 
-          rate: cryptoData.tether.usd, 
-          change: cryptoData.tether.usd_24h_change 
         },
       };
       
@@ -59,10 +71,10 @@ export default function LiveCurrencyRates({ isDark }) {
         EUR: { rate: 0.92, change: -0.15 },
         ILS: { rate: 3.64, change: 0.23 },
         GBP: { rate: 0.79, change: -0.08 },
-        JPY: { rate: 149.82, change: 0.45 },
+        XAU: { rate: 2050, change: 1.2 },
+        XAG: { rate: 24, change: -0.8 },
         BTC: { rate: 43250, change: 2.34 },
         ETH: { rate: 2280, change: 1.87 },
-        USDT: { rate: 1.00, change: 0.01 },
       });
       setLastUpdate(new Date());
     } finally {
@@ -81,6 +93,10 @@ export default function LiveCurrencyRates({ isDark }) {
     if (!rateData) return '-';
     
     if (currency.isCrypto) {
+      return `$${rateData.rate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    }
+    
+    if (currency.code === 'XAU' || currency.code === 'XAG') {
       return `$${rateData.rate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
     }
     
