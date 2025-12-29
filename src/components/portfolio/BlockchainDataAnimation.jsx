@@ -3,128 +3,169 @@ import { motion } from 'framer-motion';
 
 export default function BlockchainDataAnimation({ isDark }) {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
       {/* Central Nucleus - Empty */}
-      <div className={`w-20 h-20 rounded-full ${
+      <div className={`absolute w-12 h-12 rounded-full ${
         isDark 
-          ? 'bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border-2 border-purple-400/30' 
-          : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20 border-2 border-[#244270]/30'
-      }`} />
+          ? 'bg-cyan-400' 
+          : 'bg-[#4dbdce]'
+      } shadow-xl`} style={{ boxShadow: isDark ? '0 0 20px rgba(34, 211, 238, 0.6)' : '0 0 20px rgba(77, 189, 206, 0.6)' }} />
 
       {/* Electron Orbit 1 - Horizontal */}
       <motion.div
         className="absolute"
-        style={{ width: 280, height: 100 }}
-        animate={{ rotate: 360 }}
+        style={{ 
+          width: 300, 
+          height: 80,
+        }}
+        animate={{ rotateZ: 360 }}
         transition={{
-          duration: 8,
+          duration: 5,
           repeat: Infinity,
           ease: "linear",
         }}
       >
-        {/* Orbit Path */}
-        <div className={`absolute inset-0 rounded-full border-2 ${
-          isDark ? 'border-cyan-400/20' : 'border-[#4dbdce]/20'
-        }`} style={{ borderStyle: 'dashed' }} />
+        {/* Orbit Ellipse */}
+        <svg className="w-full h-full" viewBox="0 0 300 80">
+          <ellipse
+            cx="150"
+            cy="40"
+            rx="145"
+            ry="35"
+            fill="none"
+            stroke={isDark ? 'rgba(34, 211, 238, 0.3)' : 'rgba(77, 189, 206, 0.3)'}
+            strokeWidth="2"
+          />
+        </svg>
         
-        {/* Electron 1 */}
+        {/* Electron */}
         <motion.div
-          className={`absolute w-4 h-4 rounded-full ${
-            isDark 
-              ? 'bg-cyan-400 shadow-lg shadow-cyan-400/50' 
-              : 'bg-[#4dbdce] shadow-lg shadow-[#4dbdce]/50'
+          className={`absolute w-3 h-3 rounded-full ${
+            isDark ? 'bg-cyan-400' : 'bg-[#4dbdce]'
           }`}
           style={{
-            top: '50%',
-            left: '0%',
-            transform: 'translate(-50%, -50%)',
+            top: '40px',
+            left: '150px',
+            boxShadow: isDark ? '0 0 10px rgba(34, 211, 238, 0.8)' : '0 0 10px rgba(77, 189, 206, 0.8)',
+          }}
+          animate={{ 
+            x: [0, 145, 0, -145, 0],
+            y: [0, -35, 0, -35, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "linear",
           }}
         />
       </motion.div>
 
-      {/* Electron Orbit 2 - 60 degrees tilt */}
+      {/* Electron Orbit 2 - 60 degrees */}
       <motion.div
         className="absolute"
         style={{ 
-          width: 280, 
-          height: 100,
-          transform: 'rotate(60deg)',
+          width: 300, 
+          height: 80,
+          transform: 'rotateZ(60deg)',
         }}
-        animate={{ rotate: '420deg' }}
+        animate={{ rotateZ: '420deg' }}
         transition={{
-          duration: 6,
+          duration: 5,
           repeat: Infinity,
           ease: "linear",
         }}
       >
-        {/* Orbit Path */}
-        <div className={`absolute inset-0 rounded-full border-2 ${
-          isDark ? 'border-purple-400/20' : 'border-[#244270]/20'
-        }`} style={{ borderStyle: 'dashed' }} />
+        {/* Orbit Ellipse */}
+        <svg className="w-full h-full" viewBox="0 0 300 80">
+          <ellipse
+            cx="150"
+            cy="40"
+            rx="145"
+            ry="35"
+            fill="none"
+            stroke={isDark ? 'rgba(34, 211, 238, 0.3)' : 'rgba(77, 189, 206, 0.3)'}
+            strokeWidth="2"
+          />
+        </svg>
         
-        {/* Electron 2 */}
+        {/* Electron */}
         <motion.div
-          className={`absolute w-4 h-4 rounded-full ${
-            isDark 
-              ? 'bg-purple-400 shadow-lg shadow-purple-400/50' 
-              : 'bg-[#244270] shadow-lg shadow-[#244270]/50'
+          className={`absolute w-3 h-3 rounded-full ${
+            isDark ? 'bg-cyan-400' : 'bg-[#4dbdce]'
           }`}
           style={{
-            top: '50%',
-            left: '0%',
-            transform: 'translate(-50%, -50%)',
+            top: '40px',
+            left: '150px',
+            boxShadow: isDark ? '0 0 10px rgba(34, 211, 238, 0.8)' : '0 0 10px rgba(77, 189, 206, 0.8)',
+          }}
+          animate={{ 
+            x: [0, 145, 0, -145, 0],
+            y: [0, -35, 0, -35, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "linear",
           }}
         />
       </motion.div>
 
-      {/* Electron Orbit 3 - 120 degrees tilt */}
+      {/* Electron Orbit 3 - 120 degrees */}
       <motion.div
         className="absolute"
         style={{ 
-          width: 280, 
-          height: 100,
-          transform: 'rotate(120deg)',
+          width: 300, 
+          height: 80,
+          transform: 'rotateZ(120deg)',
         }}
-        animate={{ rotate: '480deg' }}
+        animate={{ rotateZ: '480deg' }}
         transition={{
-          duration: 10,
+          duration: 5,
           repeat: Infinity,
           ease: "linear",
         }}
       >
-        {/* Orbit Path */}
-        <div className={`absolute inset-0 rounded-full border-2 ${
-          isDark ? 'border-blue-400/20' : 'border-blue-400/20'
-        }`} style={{ borderStyle: 'dashed' }} />
+        {/* Orbit Ellipse */}
+        <svg className="w-full h-full" viewBox="0 0 300 80">
+          <ellipse
+            cx="150"
+            cy="40"
+            rx="145"
+            ry="35"
+            fill="none"
+            stroke={isDark ? 'rgba(34, 211, 238, 0.3)' : 'rgba(77, 189, 206, 0.3)'}
+            strokeWidth="2"
+          />
+        </svg>
         
-        {/* Electron 3 */}
+        {/* Electron */}
         <motion.div
-          className={`absolute w-4 h-4 rounded-full ${
-            isDark 
-              ? 'bg-blue-400 shadow-lg shadow-blue-400/50' 
-              : 'bg-blue-500 shadow-lg shadow-blue-500/50'
+          className={`absolute w-3 h-3 rounded-full ${
+            isDark ? 'bg-cyan-400' : 'bg-[#4dbdce]'
           }`}
           style={{
-            top: '50%',
-            left: '0%',
-            transform: 'translate(-50%, -50%)',
+            top: '40px',
+            left: '150px',
+            boxShadow: isDark ? '0 0 10px rgba(34, 211, 238, 0.8)' : '0 0 10px rgba(77, 189, 206, 0.8)',
+          }}
+          animate={{ 
+            x: [0, 145, 0, -145, 0],
+            y: [0, -35, 0, -35, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "linear",
           }}
         />
       </motion.div>
 
-      {/* Background Glow Effect */}
-      <motion.div
-        className={`absolute inset-0 pointer-events-none ${
-          isDark 
-            ? 'bg-gradient-radial from-purple-500/5 via-transparent to-transparent' 
-            : 'bg-gradient-radial from-[#244270]/5 via-transparent to-transparent'
-        }`}
-        animate={{ 
-          opacity: [0.3, 0.6, 0.3],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
+      {/* Subtle Glow */}
+      <div className={`absolute w-64 h-64 rounded-full ${
+        isDark 
+          ? 'bg-gradient-radial from-cyan-500/10 to-transparent' 
+          : 'bg-gradient-radial from-[#4dbdce]/10 to-transparent'
+      }`} />
     </div>
   );
 }

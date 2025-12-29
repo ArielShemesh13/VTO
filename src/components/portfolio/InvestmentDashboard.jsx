@@ -221,7 +221,7 @@ export default function InvestmentDashboard({ isDark, data }) {
           </motion.div>
         </motion.div>
       )}
-      {/* Main Layout: Growth Chart + Summary Side by Side */}
+      {/* Main Layout: Annual Interest Earned + Summary Side by Side */}
       <div className={`p-6 rounded-2xl ${
         isDark 
           ? 'bg-black/40 border border-purple-500/20' 
@@ -264,12 +264,65 @@ export default function InvestmentDashboard({ isDark, data }) {
             </div>
           </div>
 
-          {/* Growth Chart - Takes 1 column (same as summary) */}
-          <div>
+          {/* Investment Summary - Takes 1 column (same size as chart) */}
+          <div className="flex flex-col justify-start">
             <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              Investment Growth Over Time
+              Investment Summary
             </h4>
-            <div className="h-[500px]">
+            <div className="grid grid-cols-1 gap-4">
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-purple-500/10 border border-purple-500/20' : 'bg-[#244270]/5 border border-[#244270]/10'}`}>
+                <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Future Value</p>
+                <p className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+                  {formatCurrency(futureValue)}
+                </p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-cyan-500/10 border border-cyan-500/20' : 'bg-[#4dbdce]/5 border border-[#4dbdce]/10'}`}>
+                <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Total Invested</p>
+                <p className={`text-xl font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
+                  {formatCurrency(totalContributions)}
+                </p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-emerald-50 border border-emerald-200'}`}>
+                <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gains</p>
+                <p className={`text-xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                  {formatCurrency(totalInterest)}
+                </p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-red-500/10 border border-red-500/20' : 'bg-red-50 border border-red-200'}`}>
+                <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Tax</p>
+                <p className={`text-xl font-bold ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+                  -{formatCurrency(taxAmount)}
+                </p>
+              </div>
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-green-500/10 border border-green-500/30' : 'bg-green-50 border border-green-300'}`}>
+                <p className={`text-xs mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>💎 Net Value After Tax</p>
+                <p className={`text-2xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                  {formatCurrency(netFutureValue)}
+                </p>
+                <p className={`text-xs mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
+                  ROI: {roi}%
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Investment Growth Over Time - Full Width */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className={`p-6 rounded-2xl ${
+          isDark 
+            ? 'bg-black/40 border border-purple-500/20' 
+            : 'bg-white/60 border border-[#244270]/10'
+        } backdrop-blur-xl`}
+      >
+        <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+          Investment Growth Over Time
+        </h4>
+        <div className="h-[500px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={yearlyData}>
                   <defs>
