@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 export default function CryptoAddressAnimation({ isDark }) {
   // יצירת hash אקראי לאתחול
@@ -14,11 +15,11 @@ export default function CryptoAddressAnimation({ isDark }) {
   };
 
   const [transactions, setTransactions] = useState({
-    BTC: { hash: generateRandomHash('BTC'), explorerUrl: 'https://blockchain.info/', crypto: 'BTC' },
-    ETH: { hash: generateRandomHash('ETH'), explorerUrl: 'https://etherscan.io/', crypto: 'ETH' },
-    LINK: { hash: generateRandomHash('LINK'), explorerUrl: 'https://etherscan.io/', crypto: 'LINK' },
-    BNB: { hash: generateRandomHash('BNB'), explorerUrl: 'https://bscscan.com/', crypto: 'BNB' },
-    XRP: { hash: generateRandomHash('XRP'), explorerUrl: 'https://xrpscan.com/', crypto: 'XRP' },
+    BTC: null,
+    ETH: null,
+    LINK: null,
+    BNB: null,
+    XRP: null,
   });
   const [prices, setPrices] = useState({ BTC: 0, ETH: 0, XRP: 0, BNB: 0, LINK: 0 });
 
@@ -67,12 +68,16 @@ export default function CryptoAddressAnimation({ isDark }) {
           const valueBtc = valueSat / 1e8;
           const valueUsd = valueBtc * prices.BTC;
           
-          if (valueUsd >= 20000 && valueBtc > 0) {
+          if (valueUsd >= 1000 && valueBtc > 0) {
             setTransactions(prev => ({
               ...prev,
               BTC: {
                 id: tx.hash,
                 hash: tx.hash,
+                from: tx.inputs[0]?.prev_out?.addr?.substring(0, 10) + '...' || 'Unknown',
+                to: tx.out[0]?.addr?.substring(0, 10) + '...' || 'Multiple',
+                amount: valueBtc.toFixed(4),
+                usdValue: Math.floor(valueUsd).toLocaleString(),
                 explorerUrl: `https://blockchain.info/tx/${tx.hash}`,
                 crypto: 'BTC',
               }
@@ -108,12 +113,16 @@ export default function CryptoAddressAnimation({ isDark }) {
           const valueEth = valueWei / 1e18;
           const valueUsd = valueEth * prices.ETH;
           
-          if (valueUsd >= 20000 && valueEth > 0) {
+          if (valueUsd >= 1000 && valueEth > 0) {
             setTransactions(prev => ({
               ...prev,
               ETH: {
                 id: tx.hash,
                 hash: tx.hash,
+                from: tx.from.substring(0, 10) + '...',
+                to: tx.to?.substring(0, 10) + '...' || 'Contract',
+                amount: valueEth.toFixed(4),
+                usdValue: Math.floor(valueUsd).toLocaleString(),
                 explorerUrl: `https://etherscan.io/tx/${tx.hash}`,
                 crypto: 'ETH',
               }
@@ -145,12 +154,16 @@ export default function CryptoAddressAnimation({ isDark }) {
           const amount = parseInt(tx.value) / 1e18;
           const valueUsd = amount * prices.LINK;
           
-          if (valueUsd >= 20000) {
+          if (valueUsd >= 1000) {
             setTransactions(prev => ({
               ...prev,
               LINK: {
                 id: tx.hash,
                 hash: tx.hash,
+                from: tx.from.substring(0, 10) + '...',
+                to: tx.to.substring(0, 10) + '...',
+                amount: amount.toFixed(2),
+                usdValue: Math.floor(valueUsd).toLocaleString(),
                 explorerUrl: `https://etherscan.io/tx/${tx.hash}`,
                 crypto: 'LINK',
               }
@@ -186,12 +199,16 @@ export default function CryptoAddressAnimation({ isDark }) {
           const valueBnb = valueWei / 1e18;
           const valueUsd = valueBnb * prices.BNB;
           
-          if (valueUsd >= 20000 && valueBnb > 0) {
+          if (valueUsd >= 1000 && valueBnb > 0) {
             setTransactions(prev => ({
               ...prev,
               BNB: {
                 id: tx.hash,
                 hash: tx.hash,
+                from: tx.from.substring(0, 10) + '...',
+                to: tx.to?.substring(0, 10) + '...' || 'Contract',
+                amount: valueBnb.toFixed(4),
+                usdValue: Math.floor(valueUsd).toLocaleString(),
                 explorerUrl: `https://bscscan.com/tx/${tx.hash}`,
                 crypto: 'BNB',
               }
@@ -234,12 +251,16 @@ export default function CryptoAddressAnimation({ isDark }) {
             const amount = parseInt(tx.Amount) / 1000000;
             const valueUsd = amount * prices.XRP;
             
-            if (valueUsd >= 20000) {
+            if (valueUsd >= 1000) {
               setTransactions(prev => ({
                 ...prev,
                 XRP: {
                   id: tx.hash,
                   hash: tx.hash,
+                  from: tx.Account?.substring(0, 10) + '...' || 'Unknown',
+                  to: tx.Destination?.substring(0, 10) + '...' || 'Unknown',
+                  amount: amount.toFixed(2),
+                  usdValue: Math.floor(valueUsd).toLocaleString(),
                   explorerUrl: `https://xrpscan.com/tx/${tx.hash}`,
                   crypto: 'XRP',
                 }
@@ -274,38 +295,53 @@ export default function CryptoAddressAnimation({ isDark }) {
                 href={tx.explorerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, x: -20, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 20, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className={`font-mono text-[7px] px-2 py-1.5 rounded flex items-center gap-2 cursor-pointer hover:scale-[1.02] transition-all ${
+                initial={{ opacity: 0, y: -15, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className={`flex items-center justify-between gap-2 px-2 py-1.5 rounded-lg cursor-pointer transition-all duration-200 hover:scale-[1.02] ${
                   isDark 
                     ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20 hover:border-purple-500/40' 
                     : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10 hover:border-[#244270]/30'
-                } overflow-hidden`}
+                }`}
               >
-                <span className={`font-bold ${cryptoColors[crypto]}`}>
-                  {crypto}
-                </span>
-                <motion.div
-                  className="truncate flex-1"
-                  animate={{ 
-                    textShadow: [
-                      '0 0 0px rgba(139, 92, 246, 0)',
-                      `0 0 8px ${cryptoColors[crypto].includes('orange') ? 'rgba(251, 146, 60, 0.6)' : 
-                        cryptoColors[crypto].includes('purple') ? 'rgba(168, 85, 247, 0.6)' :
-                        cryptoColors[crypto].includes('indigo') ? 'rgba(129, 140, 248, 0.6)' :
-                        cryptoColors[crypto].includes('yellow') ? 'rgba(250, 204, 21, 0.6)' :
-                        'rgba(96, 165, 250, 0.6)'}`,
-                      '0 0 0px rgba(139, 92, 246, 0)'
-                    ]
-                  }}
-                  transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 2 }}
-                >
-                  <span className={isDark ? 'text-purple-300' : 'text-[#244270]'}>
-                    {tx.hash}
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                  <span className={`font-mono text-[8px] truncate ${
+                    isDark ? 'text-purple-300' : 'text-[#244270]'
+                  }`}>
+                    {tx.from}
                   </span>
-                </motion.div>
+                  
+                  <motion.div
+                    initial={{ x: -5, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <ArrowRight className={`w-2.5 h-2.5 ${
+                      isDark ? 'text-cyan-400' : 'text-[#4dbdce]'
+                    }`} />
+                  </motion.div>
+                  
+                  <span className={`font-mono text-[8px] truncate ${
+                    isDark ? 'text-cyan-300' : 'text-[#4dbdce]'
+                  }`}>
+                    {tx.to}
+                  </span>
+                </div>
+                
+                <div className="flex flex-col items-end">
+                  <motion.span
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className={`font-mono text-[8px] font-bold whitespace-nowrap ${cryptoColors[crypto]}`}
+                  >
+                    {tx.amount} {crypto}
+                  </motion.span>
+                  <span className={`text-[7px] ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                    ${tx.usdValue}
+                  </span>
+                </div>
               </motion.a>
             );
           })}
