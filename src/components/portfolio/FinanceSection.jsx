@@ -48,21 +48,29 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Calculator and Dashboard Grid */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        {/* Calculator */}
+        <div className="mb-8">
           <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
+        </div>
+
+        {/* Investment Dashboard */}
+        <div className="mb-8">
           <InvestmentDashboard isDark={isDark} data={calculatorData} />
         </div>
 
+        {/* Tax Dashboard - directly below investment dashboard */}
+        <div className="mb-8">
+          <TaxDashboard isDark={isDark} investmentData={calculatorData} />
+        </div>
+
         {/* Live Currency Rates */}
-        <div className="mt-8">
+        <div className="mb-8">
           <LiveCurrencyRates isDark={isDark} />
         </div>
 
-        {/* Task Board and Tax Dashboard */}
-        <div className="grid lg:grid-cols-2 gap-8 mt-8">
+        {/* Task Board */}
+        <div>
           <TaskBoard isDark={isDark} />
-          <TaxDashboard isDark={isDark} investmentData={calculatorData} />
         </div>
       </div>
     </section>

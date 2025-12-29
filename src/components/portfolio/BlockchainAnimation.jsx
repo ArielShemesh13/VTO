@@ -13,6 +13,7 @@ export default function BlockchainAnimation({ isDark }) {
   ]);
   
   const [verificationBeam, setVerificationBeam] = useState(null);
+  const [rotation, setRotation] = useState(0);
 
   // יצירת בלוק חדש - רק אחרי שהקודם אושר
   useEffect(() => {
@@ -21,6 +22,20 @@ export default function BlockchainAnimation({ isDark }) {
         // בדוק אם הבלוק האחרון כבר אושר
         const lastBlock = prev[prev.length - 1];
         if (lastBlock.status !== 'confirmed') return prev;
+        
+        // אם יש 8 בלוקים, התחל מחדש ועדכן סיבוב
+        if (prev.length >= 8) {
+          setRotation(r => r + 90); // סיבוב של 90 מעלות
+          return [
+            { 
+              id: prev.length, 
+              hash: 'GEN', 
+              prevHash: '000',
+              status: 'confirmed',
+              type: 'genesis'
+            }
+          ];
+        }
         
         // צור בלוק חדש במצב pending
         const newBlock = {
@@ -85,7 +100,12 @@ export default function BlockchainAnimation({ isDark }) {
 
   return (
     <div className="relative w-32 h-32">
-      <svg viewBox="0 0 130 130" className="w-full h-full">
+      <motion.svg 
+        viewBox="0 0 130 130" 
+        className="w-full h-full"
+        animate={{ rotate: rotation }}
+        transition={{ duration: 1, ease: "easeInOut" }}
+      >
         <defs>
           <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="0" />
@@ -401,43 +421,7 @@ export default function BlockchainAnimation({ isDark }) {
           })()}
         </AnimatePresence>
 
-        {/* מרכז מסתובב */}
-        <motion.g
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: '65px 65px' }}
-        >
-          <circle
-            cx="65"
-            cy="65"
-            r="9"
-            fill="none"
-            stroke={isDark ? 'rgba(139, 92, 246, 0.35)' : 'rgba(124, 58, 237, 0.45)'}
-            strokeWidth="1.2"
-          />
-          <circle
-            cx="65"
-            cy="65"
-            r="6"
-            fill={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.2)'}
-            stroke={isDark ? 'rgba(139, 92, 246, 0.6)' : 'rgba(124, 58, 237, 0.7)'}
-            strokeWidth="1"
-          />
-          
-          {/* נקודות פינתיות */}
-          {[[0, -4], [4, 0], [0, 4], [-4, 0]].map(([dx, dy], i) => (
-            <motion.circle
-              key={i}
-              cx={65 + dx}
-              cy={65 + dy}
-              r="1"
-              fill={isDark ? '#8b5cf6' : '#7c3aed'}
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
-            />
-          ))}
-        </motion.g>
-      </svg>
+      </motion.svg>
 
       {/* מונה בלוקים */}
       <motion.div
