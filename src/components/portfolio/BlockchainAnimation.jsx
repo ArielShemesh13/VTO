@@ -160,10 +160,12 @@ export default function BlockchainAnimation({ isDark }) {
 
                 {/* אפקט אימות */}
                 {isVerifying && (
-                  <motion.circle
-                    cx={x}
-                    cy={y}
-                    r={size / 2 + 4}
+                  <motion.rect
+                    x={x - size / 2 - 4}
+                    y={y - size / 2 - 4}
+                    width={size + 8}
+                    height={size + 8}
+                    rx="2"
                     fill="none"
                     stroke={isDark ? '#8b5cf6' : '#7c3aed'}
                     strokeWidth="1"
@@ -180,22 +182,26 @@ export default function BlockchainAnimation({ isDark }) {
                   />
                 )}
 
-                {/* הבלוק עצמו */}
+                {/* הבלוק עצמו - ריבוע */}
                 <g filter="url(#glow)">
                   {/* זוהר חיצוני */}
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={size / 2 + 2}
+                  <rect
+                    x={x - size / 2 - 2}
+                    y={y - size / 2 - 2}
+                    width={size + 4}
+                    height={size + 4}
+                    rx="2"
                     fill={glowColor}
                     opacity="0.6"
                   />
                   
                   {/* גוף הבלוק */}
-                  <motion.circle
-                    cx={x}
-                    cy={y}
-                    r={size / 2}
+                  <motion.rect
+                    x={x - size / 2}
+                    y={y - size / 2}
+                    width={size}
+                    height={size}
+                    rx="2"
                     fill={fillColor}
                     stroke={strokeColor}
                     strokeWidth="1.5"
@@ -222,44 +228,6 @@ export default function BlockchainAnimation({ isDark }) {
                   >
                     {block.hash}
                   </text>
-
-                  {/* סימון מאומת */}
-                  {isConfirmed && !isGenesis && (
-                    <motion.g
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <circle
-                        cx={x + size / 2 - 2}
-                        cy={y - size / 2 + 2}
-                        r="3"
-                        fill={isDark ? '#10b981' : '#059669'}
-                      />
-                      <path
-                        d={`M ${x + size / 2 - 3.5} ${y - size / 2 + 2} 
-                            L ${x + size / 2 - 2.5} ${y - size / 2 + 3} 
-                            L ${x + size / 2 - 0.5} ${y - size / 2 + 1}`}
-                        stroke="white"
-                        strokeWidth="0.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        fill="none"
-                      />
-                    </motion.g>
-                  )}
-
-                  {/* סימון לא מאומת */}
-                  {!isConfirmed && !isVerifying && (
-                    <motion.circle
-                      cx={x + size / 2 - 2}
-                      cy={y - size / 2 + 2}
-                      r="2.5"
-                      fill={isDark ? '#ef4444' : '#dc2626'}
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    />
-                  )}
                 </g>
               </motion.g>
             );
