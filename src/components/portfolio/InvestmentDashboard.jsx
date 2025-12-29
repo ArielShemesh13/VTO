@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, PiggyBank, Percent, Target } from 'lucide-react';
 
 export default function InvestmentDashboard({ isDark, data }) {
+  const [drillDownYear, setDrillDownYear] = useState(null);
+  
   if (!data || !data.yearlyData) return null;
 
   const { futureValue, totalContributions, totalInterest, taxAmount, netFutureValue, yearlyData, currency } = data;
@@ -29,6 +31,7 @@ export default function InvestmentDashboard({ isDark, data }) {
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      const yearData = yearlyData.find(d => d.year === label);
       return (
         <div className={`p-4 rounded-xl ${isDark ? 'bg-[#141225] border border-purple-500/30' : 'bg-white border border-[#244270]/20'} shadow-xl`}>
           <p className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-[#141225]'}`}>Year {label}</p>
@@ -37,6 +40,18 @@ export default function InvestmentDashboard({ isDark, data }) {
               {entry.name}: {formatCurrency(entry.value)}
             </p>
           ))}
+          {yearData && (
+            <button
+              onClick={() => setDrillDownYear(yearData)}
+              className={`mt-2 text-xs px-3 py-1 rounded-lg ${
+                isDark 
+                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
+            >
+              View Details
+            </button>
+          )}
         </div>
       );
     }
@@ -97,6 +112,87 @@ export default function InvestmentDashboard({ isDark, data }) {
 
   return (
     <div className="space-y-6">
+      {/* Drill Down Modal */}
+      {drillDownYear && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setDrillDownYear(null)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className={`max-w-2xl w-full p-6 rounded-2xl ${
+              isDark 
+                ? 'bg-[#141225] border border-purple-500/30' 
+                : 'bg-white border border-[#244270]/20'
+            } shadow-2xl`}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                Year {drillDownYear.year} Breakdown
+              </h3>
+              <button
+                onClick={() => setDrillDownYear(null)}
+                className={`text-2xl ${isDark ? 'text-white/70 hover:text-white' : 'text-[#141225]/70 hover:text-[#141225]'}`}
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-purple-500/10 border border-purple-500/20' : 'bg-[#244270]/5 border border-[#244270]/10'}`}>
+                <p className={`text-sm mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Total Value</p>
+                <p className={`text-3xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+                  {formatCurrency(drillDownYear.totalValue)}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className={`p-4 rounded-xl ${isDark ? 'bg-cyan-500/10 border border-cyan-500/20' : 'bg-cyan-50 border border-cyan-200'}`}>
+                  <p className={`text-xs mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Contributions</p>
+                  <p className={`text-xl font-bold ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
+                    {formatCurrency(drillDownYear.contributions)}
+                  </p>
+                </div>
+                
+                <div className={`p-4 rounded-xl ${isDark ? 'bg-green-500/10 border border-green-500/20' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-xs mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Interest Earned</p>
+                  <p className={`text-xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                    {formatCurrency(drillDownYear.interest)}
+                  </p>
+                </div>
+                
+                <div className={`p-4 rounded-xl ${isDark ? 'bg-red-500/10 border border-red-500/20' : 'bg-red-50 border border-red-200'}`}>
+                  <p className={`text-xs mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Tax Amount</p>
+                  <p className={`text-xl font-bold ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+                    -{formatCurrency(drillDownYear.tax)}
+                  </p>
+                </div>
+                
+                <div className={`p-4 rounded-xl ${isDark ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-emerald-50 border border-emerald-300'}`}>
+                  <p className={`text-xs mb-1 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Net Value</p>
+                  <p className={`text-xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                    {formatCurrency(drillDownYear.netValue)}
+                  </p>
+                </div>
+              </div>
+              
+              <div className={`p-4 rounded-xl ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
+                <p className={`text-sm ${isDark ? 'text-white/80' : 'text-[#141225]/80'}`}>
+                  💡 By year {drillDownYear.year}, your investment has grown by{' '}
+                  <span className={`font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+                    {drillDownYear.contributions > 0 ? Math.round((drillDownYear.netValue / drillDownYear.contributions - 1) * 100) : 0}%
+                  </span>
+                  {' '}after taxes.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
       {/* Main Layout: Growth Chart + Summary Side by Side */}
       <div className={`p-6 rounded-2xl ${
         isDark 
@@ -233,6 +329,11 @@ export default function InvestmentDashboard({ isDark, data }) {
                   outerRadius="65%"
                   paddingAngle={5}
                   dataKey="value"
+                  onClick={(data, index) => {
+                    const relatedYear = yearlyData[Math.floor(yearlyData.length / 2)];
+                    setDrillDownYear(relatedYear);
+                  }}
+                  cursor="pointer"
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -295,12 +396,14 @@ export default function InvestmentDashboard({ isDark, data }) {
                   }}
                   width={70}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(36, 66, 112, 0.1)' }} />
                 <Bar 
                   dataKey="interest" 
                   fill={isDark ? '#a855f7' : '#244270'} 
                   name="Interest Earned"
                   radius={[6, 6, 0, 0]}
+                  onClick={(data) => setDrillDownYear(data)}
+                  cursor="pointer"
                 />
               </BarChart>
             </ResponsiveContainer>

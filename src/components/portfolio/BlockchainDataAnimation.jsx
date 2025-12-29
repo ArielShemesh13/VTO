@@ -12,7 +12,7 @@ export default function BlockchainDataAnimation({ isDark }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const generateBinaryData = () => {
-    return Array.from({ length: 16 }, () => Math.random() > 0.5 ? '1' : '0').join('');
+    return Array.from({ length: 8 }, () => Math.random() > 0.5 ? '1' : '0').join('');
   };
 
   useEffect(() => {
@@ -38,14 +38,68 @@ export default function BlockchainDataAnimation({ isDark }) {
         setTransferring({ from: null, to: null, data: '' });
         setCurrentIndex(prev => prev + 1);
       }, 2000);
-    }, 4000);
+    }, 3500);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
 
+  // Calculate connection lines between blocks
+  const getConnectionPath = (from, to) => {
+    const positions = [
+      { x: 64, y: 64 },   // Block 0 (top-left)
+      { x: 224, y: 64 },  // Block 1 (top-right)
+      { x: 64, y: 224 },  // Block 2 (bottom-left)
+      { x: 224, y: 224 }, // Block 3 (bottom-right)
+    ];
+    
+    const fromPos = positions[from];
+    const toPos = positions[to];
+    
+    return { x1: fromPos.x, y1: fromPos.y, x2: toPos.x, y2: toPos.y };
+  };
+
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      <div className="grid grid-cols-2 gap-8">
+      <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" width="288" height="288" style={{ zIndex: 0 }}>
+        {/* Connection Lines */}
+        {[
+          [0, 1], [1, 3], [3, 2], [2, 0], // Outer square
+          [0, 3], [1, 2] // Diagonals
+        ].map(([from, to], idx) => {
+          const { x1, y1, x2, y2 } = getConnectionPath(from, to);
+          const isActive = transferring.from === from && transferring.to === to;
+          
+          return (
+            <g key={idx}>
+              <line
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(36, 66, 112, 0.2)'}
+                strokeWidth="2"
+              />
+              {isActive && (
+                <motion.line
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke={isDark ? '#06b6d4' : '#0891b2'}
+                  strokeWidth="3"
+                  strokeDasharray="10 5"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 2, ease: 'linear' }}
+                />
+              )}
+            </g>
+          );
+        })}
+      </svg>
+
+      <div className="grid grid-cols-2 gap-8 relative" style={{ zIndex: 1 }}>
         {blocks.map((block, index) => {
           const isTransferringFrom = transferring.from === index;
           const isTransferringTo = transferring.to === index;
@@ -71,22 +125,13 @@ export default function BlockchainDataAnimation({ isDark }) {
                 }
                 transition={{ duration: 2 }}
               >
-                {/* Block Number */}
-                <div className={`text-xs font-bold mb-2 ${
+                {/* Binary Data Display - No "Block X" text */}
+                <div className={`text-sm font-mono leading-tight text-center px-2 ${
                   block.active 
-                    ? 'text-white' 
-                    : isDark ? 'text-white/40' : 'text-[#141225]/40'
-                }`}>
-                  Block {block.id}
-                </div>
-
-                {/* Binary Data Display */}
-                <div className={`text-[10px] font-mono leading-tight text-center px-2 ${
-                  block.active 
-                    ? 'text-cyan-200' 
+                    ? 'text-cyan-200 font-bold' 
                     : isDark ? 'text-white/20' : 'text-[#141225]/20'
                 }`}>
-                  {block.data || '0000000000000000'}
+                  {block.data || '00000000'}
                 </div>
 
                 {/* Pulse Effect for Active Block */}
@@ -103,39 +148,44 @@ export default function BlockchainDataAnimation({ isDark }) {
                 )}
               </motion.div>
 
-              {/* Data Transfer Animation */}
+              {/* Data Transfer Animation Along Line */}
               {isTransferringFrom && transferring.to !== null && (
                 <AnimatePresence>
-                  <motion.div
-                    className="absolute z-10"
-                    initial={{
-                      x: index % 2 === 0 ? 0 : 0,
-                      y: index < 2 ? 0 : 0,
-                    }}
-                    animate={{
-                      x: transferring.to % 2 === 0 
-                        ? (index % 2 === 0 ? 0 : -160) 
-                        : (index % 2 === 0 ? 160 : 0),
-                      y: transferring.to < 2 
-                        ? (index < 2 ? 0 : -160) 
-                        : (index < 2 ? 160 : 0),
-                    }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 2, ease: 'easeInOut' }}
-                    style={{
-                      left: '50%',
-                      top: '50%',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                  >
-                    <div className={`px-3 py-2 rounded-lg text-xs font-mono ${
-                      isDark 
-                        ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' 
-                        : 'bg-cyan-400 text-white shadow-lg shadow-cyan-400/50'
-                    }`}>
-                      {transferring.data}
-                    </div>
-                  </motion.div>
+                  {(() => {
+                    const { x1, y1, x2, y2 } = getConnectionPath(index, transferring.to);
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+                    const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    
+                    return (
+                      <motion.div
+                        className="absolute"
+                        style={{
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          zIndex: 10,
+                        }}
+                        initial={{ 
+                          x: (x1 - 144) - 64,
+                          y: (y1 - 144) - 64,
+                        }}
+                        animate={{ 
+                          x: (x2 - 144) - 64,
+                          y: (y2 - 144) - 64,
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 2, ease: 'linear' }}
+                      >
+                        <div className={`px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap ${
+                          isDark 
+                            ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' 
+                            : 'bg-cyan-400 text-white shadow-lg shadow-cyan-400/50'
+                        }`}>
+                          {transferring.data}
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
                 </AnimatePresence>
               )}
             </div>
