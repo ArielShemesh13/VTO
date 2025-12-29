@@ -26,7 +26,7 @@ const tooltips = {
   monthly: 'How much you plan to add each month to your investment',
   rate: 'The expected return rate',
   years: 'How long you plan to keep your money invested',
-  tax: 'Capital gains tax rate. For provident funds (קרן השתלמות), enter 0',
+  tax: 'אחוז מס רווחי הון. לקרנות השתלמות הזן 0. מס רווחי הון הוא מס המוטל על הרווח מהשקעה',
 };
 
 export default function CompoundInterestCalculator({ isDark, onCalculate }) {

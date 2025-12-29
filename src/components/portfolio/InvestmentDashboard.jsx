@@ -77,6 +77,24 @@ export default function InvestmentDashboard({ isDark, data }) {
     { name: '+5%', value: scenarioHigher, fill: isDark ? '#10b981' : '#059669' },
   ];
 
+  // Calculate investment recommendations
+  const years = yearlyData.length - 1;
+  const currentROI = roi;
+  const recommendations = [];
+  
+  if (currentROI < 50) {
+    recommendations.push({ text: '💡 Consider extending investment period for better returns', color: 'yellow' });
+  }
+  if (years < 10) {
+    recommendations.push({ text: '⏰ Long-term investing (10+ years) typically yields higher returns', color: 'blue' });
+  }
+  if (years >= 10 && currentROI > 100) {
+    recommendations.push({ text: '✅ Excellent long-term investment strategy!', color: 'green' });
+  }
+  if (years >= 5 && years < 10) {
+    recommendations.push({ text: '📈 Good medium-term plan, consider extending for compound effect', color: 'cyan' });
+  }
+
   return (
     <div className="space-y-6">
       {/* Main Layout: Growth Chart + Summary Side by Side */}
@@ -85,13 +103,13 @@ export default function InvestmentDashboard({ isDark, data }) {
           ? 'bg-black/40 border border-purple-500/20' 
           : 'bg-white/60 border border-[#244270]/10'
       } backdrop-blur-xl`}>
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Growth Chart - Takes 2 columns */}
-          <div className="lg:col-span-2">
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Growth Chart - Takes 1 column (same as summary) */}
+          <div>
             <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               Investment Growth Over Time
             </h4>
-            <div className="h-80">
+            <div className="h-[500px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={yearlyData}>
                   <defs>
@@ -144,8 +162,8 @@ export default function InvestmentDashboard({ isDark, data }) {
             </div>
           </div>
 
-          {/* Investment Summary - Takes 1 column */}
-          <div className="flex flex-col justify-center">
+          {/* Investment Summary - Takes 1 column (same size as chart) */}
+          <div className="flex flex-col justify-start">
             <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               Investment Summary
             </h4>
@@ -188,7 +206,7 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      {/* Bottom Section: Pie Chart + Bar Chart + Scenarios */}
+      {/* Bottom Section: Pie Chart + Bar Chart + Investment Recommendations */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Pie Chart */}
         <motion.div
@@ -289,7 +307,7 @@ export default function InvestmentDashboard({ isDark, data }) {
           </div>
         </motion.div>
 
-        {/* Rate Scenarios: -5% / Current / +5% */}
+        {/* Investment Recommendations / Decision Tree */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -302,53 +320,54 @@ export default function InvestmentDashboard({ isDark, data }) {
           } backdrop-blur-xl`}
         >
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-            Rate Impact Scenarios
+            Investment Insights
           </h4>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={scenarioData}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis 
-                  dataKey="name" 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-                />
-                <YAxis 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                  tickFormatter={(value) => {
-                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                    return `${currency?.symbol || '$'}${value}`;
-                  }}
-                  width={70}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar 
-                  dataKey="value" 
-                  name="Future Value"
-                  radius={[6, 6, 0, 0]}
-                >
-                  {scenarioData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          
+          {/* Key Metrics Summary */}
+          <div className="space-y-4 mb-6">
+            <div className={`p-4 rounded-xl ${isDark ? 'bg-purple-500/10 border border-purple-500/20' : 'bg-[#244270]/5 border border-[#244270]/10'}`}>
+              <div className="flex justify-between items-center mb-2">
+                <span className={`text-xs ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Investment Period</span>
+                <span className={`text-lg font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{years} Years</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className={`text-xs ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Return on Investment</span>
+                <span className={`text-lg font-bold ${isDark ? 'text-green-400' : 'text-green-600'}`}>{roi}%</span>
+              </div>
+            </div>
           </div>
-          <div className="mt-4 space-y-2 text-xs">
-            <div className="flex justify-between">
-              <span className={isDark ? 'text-red-400' : 'text-red-600'}>-5% Rate:</span>
-              <span className={`font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>{formatCurrency(scenarioLower)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Current:</span>
-              <span className={`font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>{formatCurrency(scenarioCurrent)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className={isDark ? 'text-green-400' : 'text-green-600'}>+5% Rate:</span>
-              <span className={`font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>{formatCurrency(scenarioHigher)}</span>
-            </div>
+
+          {/* Recommendations */}
+          <div className="space-y-3">
+            <p className={`text-xs font-semibold mb-3 ${isDark ? 'text-white/80' : 'text-[#141225]/80'}`}>
+              💡 Recommendations:
+            </p>
+            {recommendations.map((rec, idx) => (
+              <div 
+                key={idx}
+                className={`p-3 rounded-lg text-xs ${
+                  rec.color === 'green' 
+                    ? isDark ? 'bg-green-500/10 border border-green-500/30 text-green-400' : 'bg-green-50 border border-green-300 text-green-700'
+                  : rec.color === 'yellow'
+                    ? isDark ? 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-400' : 'bg-yellow-50 border border-yellow-300 text-yellow-700'
+                  : rec.color === 'blue'
+                    ? isDark ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400' : 'bg-blue-50 border border-blue-300 text-blue-700'
+                    : isDark ? 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400' : 'bg-cyan-50 border border-cyan-300 text-cyan-700'
+                }`}
+              >
+                {rec.text}
+              </div>
+            ))}
+          </div>
+
+          {/* Time Extension Impact */}
+          <div className={`mt-6 p-4 rounded-xl ${isDark ? 'bg-gradient-to-br from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-br from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
+            <p className={`text-xs font-semibold mb-2 ${isDark ? 'text-white/80' : 'text-[#141225]/80'}`}>
+              ⏰ Time is Your Friend
+            </p>
+            <p className={`text-xs ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+              Every additional year of investment amplifies compound growth exponentially.
+            </p>
           </div>
         </motion.div>
       </div>
