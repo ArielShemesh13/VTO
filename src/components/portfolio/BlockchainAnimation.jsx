@@ -14,24 +14,24 @@ export default function BlockchainAnimation({ isDark }) {
   
   const [verificationBeam, setVerificationBeam] = useState(null);
 
-  // יצירת בלוק חדש - רק אחרי שהקודם אושר
+  // יצירת בלוק חדש - מחזורי
   useEffect(() => {
     const interval = setInterval(() => {
       setBlocks(prev => {
         const lastBlock = prev[prev.length - 1];
         if (lastBlock.status !== 'confirmed') return prev;
         
-        // אם הגענו ל-4 בלוקים, התחל מחדש
+        // כשיש 4 בלוקים, הבלוק הרביעי יוצר את הראשון והשני נעלם
         if (prev.length >= 4) {
-          return [
-            { 
-              id: 0, 
-              hash: 'GEN', 
-              prevHash: '000',
-              status: 'confirmed',
-              type: 'genesis'
-            }
-          ];
+          const newBlock = {
+            id: prev[0].id + 4,
+            hash: Math.random().toString(36).substr(2, 3).toUpperCase(),
+            prevHash: lastBlock.hash,
+            status: 'pending',
+            type: 'block'
+          };
+          // הסר את הבלוק השני (index 1) והוסף את החדש
+          return [...prev.slice(0, 1), ...prev.slice(2), newBlock];
         }
         
         const newBlock = {
@@ -60,9 +60,10 @@ export default function BlockchainAnimation({ isDark }) {
         updated[pendingIndex] = { ...updated[pendingIndex], status: 'verifying' };
         
         if (pendingIndex > 0) {
+          const fromIndex = pendingIndex - 1;
           setVerificationBeam({
             id: Date.now(),
-            from: pendingIndex - 1,
+            from: fromIndex,
             to: pendingIndex
           });
           
@@ -87,8 +88,7 @@ export default function BlockchainAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, []);
 
-  const visibleBlocks = blocks.slice(-4);
-  const totalBlocks = blocks.filter(b => b.status === 'confirmed').length;
+  const visibleBlocks = blocks;
 
   return (
     <div className="relative w-32 h-32">
@@ -153,30 +153,32 @@ export default function BlockchainAnimation({ isDark }) {
                   damping: 20
                 }}
               >
-                {idx < visibleBlocks.length - 1 && (
-                  <>
-                    {(() => {
-                      const nextAngle = ((idx + 1) / 4) * Math.PI * 2 - Math.PI / 2;
-                      const nextX = 65 + Math.cos(nextAngle) * radius;
-                      const nextY = 65 + Math.sin(nextAngle) * radius;
-                      
-                      return (
-                        <motion.line
-                          x1={x}
-                          y1={y}
-                          x2={nextX}
-                          y2={nextY}
-                          stroke={isDark ? 'rgba(139, 92, 246, 0.25)' : 'rgba(124, 58, 237, 0.3)'}
-                          strokeWidth="1.8"
-                          strokeDasharray="3 2"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                          animate={{ pathLength: 1, opacity: 0.6 }}
-                          transition={{ duration: 0.6, delay: idx * 0.1 }}
-                        />
-                      );
-                    })()}
-                  </>
-                )}
+                {/* קו חיבור לבלוק הבא או חזרה לראשון */}
+                {(() => {
+                  let nextIdx = idx + 1;
+                  if (nextIdx >= visibleBlocks.length) {
+                    nextIdx = 0; // חיבור חזרה לבלוק הראשון
+                  }
+                  
+                  const nextAngle = (nextIdx / 4) * Math.PI * 2 - Math.PI / 2;
+                  const nextX = 65 + Math.cos(nextAngle) * radius;
+                  const nextY = 65 + Math.sin(nextAngle) * radius;
+                  
+                  return (
+                    <motion.line
+                      x1={x}
+                      y1={y}
+                      x2={nextX}
+                      y2={nextY}
+                      stroke={isDark ? 'rgba(139, 92, 246, 0.25)' : 'rgba(124, 58, 237, 0.3)'}
+                      strokeWidth="1.8"
+                      strokeDasharray="3 2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.6 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    />
+                  );
+                })()}
 
                 {block.status === 'verifying' && (
                   <>
@@ -350,10 +352,10 @@ export default function BlockchainAnimation({ isDark }) {
 
         <AnimatePresence>
           {verificationBeam && (() => {
-            const fromIdx = visibleBlocks.findIndex(b => b.id === blocks[verificationBeam.from]?.id);
-            const toIdx = visibleBlocks.findIndex(b => b.id === blocks[verificationBeam.to]?.id);
+            const fromIdx = verificationBeam.from;
+            const toIdx = verificationBeam.to;
             
-            if (fromIdx === -1 || toIdx === -1) return null;
+            if (fromIdx === -1 || toIdx === -1 || !visibleBlocks[fromIdx] || !visibleBlocks[toIdx]) return null;
             
             const fromAngle = (fromIdx / 4) * Math.PI * 2 - Math.PI / 2;
             const toAngle = (toIdx / 4) * Math.PI * 2 - Math.PI / 2;
@@ -406,14 +408,14 @@ export default function BlockchainAnimation({ isDark }) {
       </svg>
 
       <motion.div
-        key={totalBlocks}
+        key={blocks.filter(b => b.status === 'confirmed').length}
         initial={{ scale: 1.3, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold whitespace-nowrap ${
           isDark ? 'text-purple-400/80' : 'text-purple-600/90'
         }`}
       >
-        {totalBlocks} BLOCKS
+        {blocks.filter(b => b.status === 'confirmed').length} BLOCKS
       </motion.div>
     </div>
   );

@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
 import LiveCurrencyRates from './LiveCurrencyRates';
-import TaskBoardDnD from './TaskBoardDnD';
-import TaxDashboard from './TaxDashboard';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -48,29 +46,15 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Calculator */}
-        <div className="mb-8">
+        {/* Calculator and Dashboard Grid */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
-        </div>
-
-        {/* Investment Dashboard */}
-        <div className="mb-8">
           <InvestmentDashboard isDark={isDark} data={calculatorData} />
         </div>
 
-        {/* Tax Dashboard - directly below investment dashboard */}
-        <div className="mb-8">
-          <TaxDashboard isDark={isDark} investmentData={calculatorData} />
-        </div>
-
         {/* Live Currency Rates */}
-        <div className="mb-8">
-          <LiveCurrencyRates isDark={isDark} />
-        </div>
-
-        {/* Task Board with Drag and Drop */}
         <div>
-          <TaskBoardDnD isDark={isDark} />
+          <LiveCurrencyRates isDark={isDark} />
         </div>
       </div>
     </section>

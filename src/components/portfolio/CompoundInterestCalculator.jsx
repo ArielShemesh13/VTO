@@ -114,7 +114,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           <Calculator className={`w-6 h-6 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
         </div>
         <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-          Compound Interest Calculator
+          Investment Calculator
         </h3>
       </div>
 
@@ -221,7 +221,8 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Capital Gains Tax */}
         <div>
           <label className={labelClass}>
-            💰 מס רווחי הון (%)
+            <Percent className="inline w-4 h-4 mr-1" />
+            Capital Gains Tax (%)
           </label>
           <input
             type="number"
@@ -239,25 +240,25 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       <div className={`mt-8 p-6 rounded-xl ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>שווי ברוטו</p>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gross Value</p>
             <p className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
               {formatCurrency(results.futureValue)}
             </p>
           </div>
           <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>סה"כ הושקע</p>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Total Invested</p>
             <p className={`text-xl font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
               {formatCurrency(results.totalContributions)}
             </p>
           </div>
           <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>רווחים</p>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gains</p>
             <p className={`text-xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
               {formatCurrency(results.totalInterest)}
             </p>
           </div>
           <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>מס ({capitalGainsTax}%)</p>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Tax ({capitalGainsTax}%)</p>
             <p className={`text-xl font-bold ${isDark ? 'text-red-400' : 'text-red-600'}`}>
               -{formatCurrency(results.taxAmount)}
             </p>
@@ -266,7 +267,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         
         <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
           <p className={`text-sm text-center ${isDark ? 'text-white/60' : 'text-[#141225]/60'} mb-2`}>
-            💎 שווי נטו אחרי מס
+            💎 Net Value After Tax
           </p>
           <p className={`text-3xl font-bold text-center ${isDark ? 'text-green-400' : 'text-green-600'}`}>
             {formatCurrency(results.netFutureValue)}
