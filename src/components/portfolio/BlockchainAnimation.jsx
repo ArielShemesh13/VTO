@@ -160,33 +160,27 @@ export default function BlockchainAnimation({ isDark }) {
           style={{ transformOrigin: '60px 60px' }}
         />
 
-        {/* Central logo */}
-        <circle 
-          cx="60" cy="60" r="12" 
-          fill={isDark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)'}
-          filter="url(#glow)"
-        />
 
-        {/* Web3 Symbol */}
-        <path
-          d="M 55 57 L 60 54 L 65 57 M 60 54 L 60 60 M 57 60 L 63 60 M 58 63 L 62 63"
-          stroke={isDark ? '#8b5cf6' : '#7c3aed'}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-          filter="url(#glow)"
-        />
 
-        <text
-          x="60" y="69"
-          textAnchor="middle"
-          fill={isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'}
-          fontSize="5"
-          fontWeight="bold"
-        >
-          WEB3
-        </text>
+        {/* Connections between adjacent nodes (circular chain) */}
+        {activeNodes.map((node, index) => {
+          const currentPos = getNodePosition(node);
+          const nextNode = activeNodes[(index + 1) % activeNodes.length];
+          const nextPos = getNodePosition(nextNode);
+          
+          return (
+            <motion.line
+              key={`connection-${node.id}`}
+              x1={currentPos.x} y1={currentPos.y}
+              x2={nextPos.x} y2={nextPos.y}
+              stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(124, 58, 237, 0.2)'}
+              strokeWidth="1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.3 }}
+              transition={{ delay: index * 0.05 }}
+            />
+          );
+        })}
 
         {/* Network Nodes */}
         {activeNodes.map((node) => {
@@ -431,17 +425,7 @@ export default function BlockchainAnimation({ isDark }) {
         </div>
       </div>
 
-      {/* Live indicator */}
-      <div className="absolute -top-1 -right-1 flex items-center gap-1">
-        <motion.div
-          className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-green-400' : 'bg-green-500'}`}
-          animate={{ 
-            opacity: [1, 0.3, 1],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-      </div>
+
 
       {/* Rotating gradient rim */}
       <motion.div
