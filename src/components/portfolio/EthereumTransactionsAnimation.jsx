@@ -277,10 +277,13 @@ export default function EthereumTransactionsAnimation({ isDark }) {
   const transactionArray = Object.values(transactions).filter(tx => tx !== null);
 
   return (
-    <div className="relative w-full h-32 flex flex-col items-center justify-center">
+    <div className="relative w-full h-auto flex flex-col items-center justify-center">
       <div className="w-full space-y-1.5 px-2">
         <AnimatePresence mode="popLayout">
-          {transactionArray.map((tx) => (
+          {['BTC', 'ETH', 'LINK', 'SOL', 'XRP'].map((crypto) => {
+            const tx = transactions[crypto];
+            if (!tx) return null;
+            return (
             <motion.a
               key={tx.crypto}
               href={tx.explorerUrl}
@@ -334,7 +337,8 @@ export default function EthereumTransactionsAnimation({ isDark }) {
                 </span>
               </div>
             </motion.a>
-          ))}
+          );
+        })}
         </AnimatePresence>
       </div>
     </div>
