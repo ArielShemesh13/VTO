@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
-import DataAnalysisShowcase from './DataAnalysisShowcase';
+import InvestmentScenarios from './InvestmentScenarios';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -46,11 +46,6 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Data Analysis Showcase */}
-        <div className="mb-12">
-          <DataAnalysisShowcase isDark={isDark} />
-        </div>
-
         {/* Calculator */}
         <div className="mb-8">
           <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
@@ -69,6 +64,11 @@ export default function FinanceSection({ isDark }) {
             <InvestmentDashboard isDark={isDark} data={calculatorData} />
           </motion.div>
         )}
+
+        {/* Investment Scenarios */}
+        <div className="mt-12">
+          <InvestmentScenarios isDark={isDark} />
+        </div>
       </div>
     </section>
   );

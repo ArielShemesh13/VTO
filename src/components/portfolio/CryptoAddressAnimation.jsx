@@ -90,13 +90,8 @@ export default function CryptoAddressAnimation({ isDark }) {
   return (
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full space-y-1.5">
-        <div className={`text-center mb-3 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-          <p className="text-xs font-bold">Live Bitcoin Transactions Over $100,000</p>
-          <p className="text-[10px] opacity-70">Real-time blockchain data</p>
-        </div>
-        
         <AnimatePresence mode="popLayout">
-          {transactions.map((tx) => (
+          {transactions.slice(0, 5).map((tx) => (
             <motion.a
               key={tx.id}
               href={tx.explorerUrl}
