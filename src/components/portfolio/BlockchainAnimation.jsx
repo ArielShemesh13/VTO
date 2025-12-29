@@ -115,23 +115,10 @@ export default function BlockchainAnimation({ isDark }) {
             
             let fillColor, strokeColor, glowColor;
             
-            if (isGenesis) {
-              fillColor = isDark ? '#8b5cf6' : '#7c3aed';
-              strokeColor = isDark ? '#7c3aed' : '#6d28d9';
-              glowColor = 'rgba(139, 92, 246, 0.4)';
-            } else if (isConfirmed) {
-              fillColor = isDark ? '#10b981' : '#059669';
-              strokeColor = isDark ? '#059669' : '#047857';
-              glowColor = 'rgba(16, 185, 129, 0.4)';
-            } else if (isVerifying) {
-              fillColor = isDark ? '#a855f7' : '#9333ea';
-              strokeColor = isDark ? '#9333ea' : '#7e22ce';
-              glowColor = 'rgba(168, 85, 247, 0.5)';
-            } else {
-              fillColor = isDark ? '#4b5563' : '#9ca3af';
-              strokeColor = isDark ? '#374151' : '#6b7280';
-              glowColor = 'rgba(75, 85, 99, 0.3)';
-            }
+            // כל הבלוקים באותו צבע של העיגולים המרכזיים
+            fillColor = isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.2)';
+            strokeColor = isDark ? 'rgba(139, 92, 246, 0.5)' : 'rgba(124, 58, 237, 0.6)';
+            glowColor = isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(124, 58, 237, 0.4)';
             
             return (
               <motion.g
@@ -332,42 +319,10 @@ export default function BlockchainAnimation({ isDark }) {
           })}
         </AnimatePresence>
 
-        {/* מרכז - לוגו או סמל */}
-        <motion.g
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: '65px 65px' }}
-        >
-          <circle
-            cx="65"
-            cy="65"
-            r="8"
-            fill="none"
-            stroke={isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(124, 58, 237, 0.4)'}
-            strokeWidth="1"
-          />
-          <circle
-            cx="65"
-            cy="65"
-            r="5"
-            fill={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.2)'}
-            stroke={isDark ? 'rgba(139, 92, 246, 0.5)' : 'rgba(124, 58, 237, 0.6)'}
-            strokeWidth="0.8"
-          />
-        </motion.g>
+
       </svg>
 
-      {/* מונה בלוקים */}
-      <motion.div
-        key={totalBlocks}
-        initial={{ scale: 1.2, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className={`absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold ${
-          isDark ? 'text-purple-400/70' : 'text-purple-600/80'
-        }`}
-      >
-        {blocks.filter(b => b.status === 'confirmed').length}/{totalBlocks}
-      </motion.div>
+
     </div>
   );
 }
