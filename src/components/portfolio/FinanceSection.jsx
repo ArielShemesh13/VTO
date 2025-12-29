@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
 import LiveCurrencyRates from './LiveCurrencyRates';
-import TaskBoard from './TaskBoard';
+import TaskBoardDnD from './TaskBoardDnD';
 import TaxDashboard from './TaxDashboard';
 
 export default function FinanceSection({ isDark }) {
@@ -68,9 +68,9 @@ export default function FinanceSection({ isDark }) {
           <LiveCurrencyRates isDark={isDark} />
         </div>
 
-        {/* Task Board */}
+        {/* Task Board with Drag and Drop */}
         <div>
-          <TaskBoard isDark={isDark} />
+          <TaskBoardDnD isDark={isDark} />
         </div>
       </div>
     </section>

@@ -25,6 +25,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
   const [years, setYears] = useState(10);
   const [currency, setCurrency] = useState(currencies[0]);
   const [compoundFrequency, setCompoundFrequency] = useState(12);
+  const [capitalGainsTax, setCapitalGainsTax] = useState(25);
 
   const results = useMemo(() => {
     const r = annualRate / 100;
@@ -45,6 +46,10 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
     const totalContributions = P + PMT * totalMonths;
     const totalInterest = totalFutureValue - totalContributions;
 
+    // חישוב מס רווחי הון
+    const taxAmount = (totalInterest * capitalGainsTax) / 100;
+    const netFutureValue = totalFutureValue - taxAmount;
+
     // Generate yearly data for chart
     const yearlyData = [];
     for (let year = 0; year <= t; year++) {
@@ -53,12 +58,17 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       const fvContributions = months > 0 ? PMT * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) : 0;
       const total = fvPrincipal + fvContributions;
       const contributions = P + PMT * months;
+      const interest = total - contributions;
+      const yearTax = (interest * capitalGainsTax) / 100;
+      const netValue = total - yearTax;
       
       yearlyData.push({
         year,
-        total: Math.round(total),
+        totalValue: Math.round(total),
         contributions: Math.round(contributions),
-        interest: Math.round(total - contributions),
+        interest: Math.round(interest),
+        tax: Math.round(yearTax),
+        netValue: Math.round(netValue),
       });
     }
 
@@ -66,9 +76,11 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       futureValue: Math.round(totalFutureValue),
       totalContributions: Math.round(totalContributions),
       totalInterest: Math.round(totalInterest),
+      taxAmount: Math.round(taxAmount),
+      netFutureValue: Math.round(netFutureValue),
       yearlyData,
     };
-  }, [principal, monthlyContribution, annualRate, years, compoundFrequency]);
+  }, [principal, monthlyContribution, annualRate, years, compoundFrequency, capitalGainsTax]);
 
   React.useEffect(() => {
     onCalculate({ ...results, currency });
@@ -205,29 +217,63 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
             ))}
           </select>
         </div>
+
+        {/* Capital Gains Tax */}
+        <div>
+          <label className={labelClass}>
+            💰 מס רווחי הון (%)
+          </label>
+          <input
+            type="number"
+            value={capitalGainsTax}
+            onChange={(e) => setCapitalGainsTax(Number(e.target.value))}
+            className={inputClass}
+            min="0"
+            max="100"
+            step="0.1"
+          />
+        </div>
       </div>
 
       {/* Results Summary */}
       <div className={`mt-8 p-6 rounded-xl ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
-        <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className={`text-sm ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Future Value</p>
-            <p className={`text-2xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>שווי ברוטו</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
               {formatCurrency(results.futureValue)}
             </p>
           </div>
           <div>
-            <p className={`text-sm ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Total Invested</p>
-            <p className={`text-2xl font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>סה"כ הושקע</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
               {formatCurrency(results.totalContributions)}
             </p>
           </div>
           <div>
-            <p className={`text-sm ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Interest Earned</p>
-            <p className={`text-2xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>רווחים</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
               {formatCurrency(results.totalInterest)}
             </p>
           </div>
+          <div>
+            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>מס ({capitalGainsTax}%)</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+              -{formatCurrency(results.taxAmount)}
+            </p>
+          </div>
+        </div>
+        
+        <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
+          <p className={`text-sm text-center ${isDark ? 'text-white/60' : 'text-[#141225]/60'} mb-2`}>
+            💎 שווי נטו אחרי מס
+          </p>
+          <p className={`text-3xl font-bold text-center ${isDark ? 'text-green-400' : 'text-green-600'}`}>
+            {formatCurrency(results.netFutureValue)}
+          </p>
+          <p className={`text-xs text-center mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
+            ROI: {results.totalContributions > 0 ? ((results.netFutureValue / results.totalContributions - 1) * 100).toFixed(1) : '0'}%
+          </p>
         </div>
       </div>
     </motion.div>
