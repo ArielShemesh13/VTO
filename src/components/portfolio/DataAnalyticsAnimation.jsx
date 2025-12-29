@@ -1,264 +1,334 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart3, TrendingUp, PieChart, Activity } from 'lucide-react';
+import { BarChart3, TrendingUp, Database, Blocks } from 'lucide-react';
 
 export default function DataAnalyticsAnimation({ isDark }) {
-  const [activeChart, setActiveChart] = useState(0);
-  const [dataPoints, setDataPoints] = useState([60, 40, 75, 55]);
+  const [activeView, setActiveView] = useState(0);
+  const [dataBlocks, setDataBlocks] = useState([
+    { id: 1, value: 85, verified: true },
+    { id: 2, value: 72, verified: true },
+    { id: 3, value: 65, verified: false },
+    { id: 4, value: 90, verified: false }
+  ]);
 
-  // שינוי גרף כל 3 שניות
+  // מחזור בין תצוגות
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveChart(prev => (prev + 1) % 3);
+      setActiveView(prev => (prev + 1) % 2);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // עדכון נתונים בצורה חלקה
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDataBlocks(prev => prev.map(block => ({
+        ...block,
+        value: 50 + Math.random() * 45,
+        verified: Math.random() > 0.3
+      })));
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  // עדכון נתונים אקראיים
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDataPoints(prev => prev.map(() => 20 + Math.random() * 70));
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const charts = [
-    {
-      type: 'bar',
-      icon: BarChart3,
-      render: () => (
-        <svg viewBox="0 0 120 80" className="w-full h-full">
-          {dataPoints.map((height, i) => (
-            <motion.rect
-              key={i}
-              x={10 + i * 28}
-              y={80 - height}
-              width="20"
-              height={height}
-              fill={isDark ? `url(#grad${i})` : '#6366f1'}
-              rx="2"
-              initial={{ height: 0, y: 80 }}
-              animate={{ height, y: 80 - height }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            />
-          ))}
-        </svg>
-      )
-    },
-    {
-      type: 'line',
-      icon: TrendingUp,
-      render: () => {
-        const points = dataPoints.map((y, i) => `${10 + i * 35},${80 - y}`).join(' ');
-        return (
-          <svg viewBox="0 0 120 80" className="w-full h-full">
-            <motion.polyline
-              points={points}
-              fill="none"
-              stroke={isDark ? '#8b5cf6' : '#6366f1'}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1 }}
-            />
-            {dataPoints.map((y, i) => (
-              <motion.circle
-                key={i}
-                cx={10 + i * 35}
-                cy={80 - y}
-                r="4"
-                fill={isDark ? '#a855f7' : '#818cf8'}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: i * 0.1 }}
-              />
-            ))}
-          </svg>
-        );
-      }
-    },
-    {
-      type: 'pie',
-      icon: PieChart,
-      render: () => {
-        const total = dataPoints.reduce((sum, val) => sum + val, 0);
-        let currentAngle = -90;
-        const slices = dataPoints.map((val, i) => {
-          const sliceAngle = (val / total) * 360;
-          const startAngle = currentAngle;
-          currentAngle += sliceAngle;
-          return { startAngle, sliceAngle, color: i };
-        });
-
-        return (
-          <svg viewBox="0 0 120 80" className="w-full h-full">
-            <g transform="translate(60, 40)">
-              {slices.map((slice, i) => {
-                const start = (slice.startAngle * Math.PI) / 180;
-                const end = ((slice.startAngle + slice.sliceAngle) * Math.PI) / 180;
-                const x1 = Math.cos(start) * 30;
-                const y1 = Math.sin(start) * 30;
-                const x2 = Math.cos(end) * 30;
-                const y2 = Math.sin(end) * 30;
-                const largeArc = slice.sliceAngle > 180 ? 1 : 0;
-
-                return (
-                  <motion.path
-                    key={i}
-                    d={`M 0 0 L ${x1} ${y1} A 30 30 0 ${largeArc} 1 ${x2} ${y2} Z`}
-                    fill={isDark ? `url(#grad${i})` : ['#6366f1', '#818cf8', '#a855f7', '#c084fc'][i]}
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: i * 0.15 }}
-                  />
-                );
-              })}
-            </g>
-          </svg>
-        );
-      }
-    }
-  ];
-
-  const floatingIcons = [
-    { Icon: BarChart3, delay: 0 },
-    { Icon: TrendingUp, delay: 0.2 },
-    { Icon: PieChart, delay: 0.4 },
-    { Icon: Activity, delay: 0.6 }
-  ];
-
   return (
-    <div className="relative w-32 h-32">
-      <svg viewBox="0 0 130 130" className="w-full h-full">
+    <div className="relative w-40 h-40">
+      {/* רקע מטושטש */}
+      <motion.div
+        className="absolute inset-0 rounded-3xl blur-2xl opacity-30"
+        style={{
+          background: isDark 
+            ? 'linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #3b82f6 100%)'
+            : 'linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%)'
+        }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.2, 0.35, 0.2]
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <svg viewBox="0 0 160 160" className="w-full h-full relative z-10">
         <defs>
-          {[0, 1, 2, 3].map(i => (
-            <linearGradient key={i} id={`grad${i}`} x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor={isDark ? ['#8b5cf6', '#a855f7', '#c084fc', '#e879f9'][i] : '#6366f1'} />
-              <stop offset="100%" stopColor={isDark ? ['#7c3aed', '#9333ea', '#a855f7', '#c084fc'][i] : '#4f46e5'} />
-            </linearGradient>
-          ))}
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#6366f1'} stopOpacity="0.8" />
+            <stop offset="50%" stopColor={isDark ? '#06b6d4' : '#3b82f6'} stopOpacity="0.6" />
+            <stop offset="100%" stopColor={isDark ? '#3b82f6' : '#06b6d4'} stopOpacity="0.8" />
+          </linearGradient>
+          
+          <linearGradient id="blockGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={isDark ? '#a855f7' : '#818cf8'} />
+            <stop offset="100%" stopColor={isDark ? '#7c3aed' : '#6366f1'} />
+          </linearGradient>
+
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
+
+          <filter id="glass">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+            <feComponentTransfer>
+              <feFuncA type="discrete" tableValues="1 1" />
+            </feComponentTransfer>
+          </filter>
         </defs>
 
-        {/* מסגרת חיצונית מעוצבת */}
+        {/* Glass morphism container */}
         <motion.rect
-          x="20"
-          y="25"
-          width="90"
-          height="70"
-          rx="8"
-          fill={isDark ? 'rgba(139, 92, 246, 0.05)' : 'rgba(99, 102, 241, 0.05)'}
-          stroke={isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(99, 102, 241, 0.3)'}
-          strokeWidth="1.5"
-          filter="url(#glow)"
-        />
-
-        {/* רקע לגרף */}
-        <rect
-          x="25"
+          x="30"
           y="30"
-          width="80"
-          height="60"
-          rx="6"
-          fill={isDark ? 'rgba(20, 1, 37, 0.6)' : 'rgba(255, 255, 255, 0.8)'}
+          width="100"
+          height="100"
+          rx="20"
+          fill={isDark ? 'rgba(139, 92, 246, 0.08)' : 'rgba(255, 255, 255, 0.4)'}
+          stroke="url(#mainGrad)"
+          strokeWidth="1.5"
+          filter="url(#glass)"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
 
-        {/* הגרף המוצג */}
-        <g transform="translate(25, 30)">
-          <AnimatePresence mode="wait">
-            <motion.g
-              key={activeChart}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.5 }}
-            >
-              <foreignObject x="0" y="0" width="80" height="60">
-                <div className="w-full h-full flex items-center justify-center">
-                  {charts[activeChart].render()}
-                </div>
-              </foreignObject>
-            </motion.g>
-          </AnimatePresence>
-        </g>
+        {/* Inner glass card */}
+        <rect
+          x="40"
+          y="40"
+          width="80"
+          height="80"
+          rx="16"
+          fill={isDark ? 'rgba(10, 1, 24, 0.5)' : 'rgba(255, 255, 255, 0.6)'}
+          stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(99, 102, 241, 0.25)'}
+          strokeWidth="1"
+        />
 
-        {/* סמלילים מסביב */}
-        {floatingIcons.map(({ Icon }, idx) => {
-          const angle = (idx / 4) * Math.PI * 2 - Math.PI / 2;
-          const radius = 55;
-          const x = 65 + Math.cos(angle) * radius;
-          const y = 65 + Math.sin(angle) * radius;
-          
-          return (
+        <AnimatePresence mode="wait">
+          {activeView === 0 ? (
+            // תצוגת Data Analytics
             <motion.g
-              key={idx}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ 
-                scale: activeChart === (idx % 3) ? 1.2 : 1, 
-                opacity: 1 
-              }}
-              transition={{ delay: idx * 0.1, duration: 0.3 }}
+              key="analytics"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
             >
-              <circle
-                cx={x}
-                cy={y}
-                r="10"
-                fill={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(99, 102, 241, 0.2)'}
-                stroke={isDark ? 'rgba(139, 92, 246, 0.5)' : 'rgba(99, 102, 241, 0.5)'}
-                strokeWidth="1.5"
-                filter="url(#glow)"
-              />
-              <foreignObject
-                x={x - 8}
-                y={y - 8}
-                width="16"
-                height="16"
-              >
-                <div className="w-full h-full flex items-center justify-center">
-                  <Icon 
-                    size={12} 
-                    className={isDark ? 'text-purple-400' : 'text-indigo-600'}
+              {/* גרף עמודות מתקדם */}
+              {dataBlocks.map((block, i) => (
+                <g key={block.id}>
+                  <motion.rect
+                    x={50 + i * 18}
+                    y={120 - block.value * 0.6}
+                    width="14"
+                    height={block.value * 0.6}
+                    rx="4"
+                    fill="url(#blockGrad)"
+                    filter="url(#softGlow)"
+                    initial={{ height: 0, y: 120 }}
+                    animate={{ 
+                      height: block.value * 0.6, 
+                      y: 120 - block.value * 0.6 
+                    }}
+                    transition={{ 
+                      duration: 0.8, 
+                      ease: "easeOut",
+                      delay: i * 0.1 
+                    }}
                   />
-                </div>
-              </foreignObject>
-            </motion.g>
-          );
-        })}
+                  
+                  {/* נקודת אימות */}
+                  {block.verified && (
+                    <motion.circle
+                      cx={57 + i * 18}
+                      cy={115 - block.value * 0.6}
+                      r="3"
+                      fill={isDark ? '#10b981' : '#059669'}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                    />
+                  )}
+                </g>
+              ))}
 
-        {/* נקודות מהבהבות פינתיות */}
+              {/* קו מגמה */}
+              <motion.path
+                d={`M ${50 + 7} ${120 - dataBlocks[0].value * 0.6} 
+                    L ${68 + 7} ${120 - dataBlocks[1].value * 0.6} 
+                    L ${86 + 7} ${120 - dataBlocks[2].value * 0.6} 
+                    L ${104 + 7} ${120 - dataBlocks[3].value * 0.6}`}
+                fill="none"
+                stroke={isDark ? '#06b6d4' : '#3b82f6'}
+                strokeWidth="2"
+                strokeLinecap="round"
+                opacity="0.6"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+              />
+            </motion.g>
+          ) : (
+            // תצוגת Web3 Blockchain
+            <motion.g
+              key="web3"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              {/* בלוקים מחוברים */}
+              {[
+                { x: 55, y: 60 },
+                { x: 85, y: 60 },
+                { x: 55, y: 85 },
+                { x: 85, y: 85 }
+              ].map((pos, i) => (
+                <g key={i}>
+                  {/* קווי חיבור */}
+                  {i < 3 && (
+                    <motion.line
+                      x1={pos.x + (i === 0 || i === 2 ? 10 : 0)}
+                      y1={pos.y + (i < 2 ? 10 : 0)}
+                      x2={i === 0 ? 85 : i === 1 ? 85 : 85}
+                      y2={i === 0 ? 60 : i === 1 ? 85 : 85}
+                      stroke="url(#mainGrad)"
+                      strokeWidth="1.5"
+                      strokeDasharray="3 3"
+                      opacity="0.4"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ delay: i * 0.2, duration: 0.5 }}
+                    />
+                  )}
+                  
+                  {/* בלוק */}
+                  <motion.rect
+                    x={pos.x}
+                    y={pos.y}
+                    width="20"
+                    height="20"
+                    rx="6"
+                    fill="url(#blockGrad)"
+                    filter="url(#softGlow)"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ 
+                      delay: i * 0.15,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 15
+                    }}
+                  />
+                  
+                  {/* Hash symbol */}
+                  <text
+                    x={pos.x + 10}
+                    y={pos.y + 13}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="10"
+                    fontFamily="monospace"
+                    opacity="0.9"
+                  >
+                    #
+                  </text>
+
+                  {/* אנימציית pulses */}
+                  <motion.circle
+                    cx={pos.x + 10}
+                    cy={pos.y + 10}
+                    r="12"
+                    fill="none"
+                    stroke={isDark ? '#8b5cf6' : '#6366f1'}
+                    strokeWidth="1"
+                    opacity="0"
+                    animate={{ 
+                      r: [12, 18],
+                      opacity: [0.5, 0]
+                    }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.5
+                    }}
+                  />
+                </g>
+              ))}
+            </motion.g>
+          )}
+        </AnimatePresence>
+
+        {/* אייקונים צפים בפינות */}
         {[
-          [30, 35], [100, 35], [30, 85], [100, 85]
-        ].map(([cx, cy], i) => (
+          { Icon: BarChart3, pos: { x: 35, y: 35 }, delay: 0 },
+          { Icon: Blocks, pos: { x: 120, y: 35 }, delay: 0.2 },
+          { Icon: Database, pos: { x: 35, y: 120 }, delay: 0.4 },
+          { Icon: TrendingUp, pos: { x: 120, y: 120 }, delay: 0.6 }
+        ].map(({ Icon, pos, delay }, i) => (
+          <motion.g
+            key={i}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ 
+              scale: 1, 
+              opacity: activeView === Math.floor(i / 2) ? 0.8 : 0.4 
+            }}
+            transition={{ delay, duration: 0.5 }}
+          >
+            <circle
+              cx={pos.x}
+              cy={pos.y}
+              r="8"
+              fill={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(99, 102, 241, 0.15)'}
+              stroke="url(#mainGrad)"
+              strokeWidth="1"
+            />
+            <foreignObject
+              x={pos.x - 6}
+              y={pos.y - 6}
+              width="12"
+              height="12"
+            >
+              <Icon 
+                size={12} 
+                className={isDark ? 'text-purple-400' : 'text-indigo-600'}
+              />
+            </foreignObject>
+          </motion.g>
+        ))}
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
           <motion.circle
             key={i}
-            cx={cx}
-            cy={cy}
-            r="2"
+            r="1.5"
             fill={isDark ? '#8b5cf6' : '#6366f1'}
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+            opacity="0.4"
+            animate={{
+              cx: [60 + i * 8, 60 + i * 8 + (Math.random() - 0.5) * 20],
+              cy: [50 + (i % 3) * 20, 50 + (i % 3) * 20 + (Math.random() - 0.5) * 20],
+              opacity: [0.2, 0.6, 0.2]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: i * 0.3,
+              ease: "easeInOut"
+            }}
           />
         ))}
       </svg>
 
-      {/* טקסט מתחת */}
+      {/* Label */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className={`absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] font-mono font-bold uppercase tracking-wider ${
-          isDark ? 'text-purple-400/70' : 'text-indigo-600/80'
+        className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] font-semibold uppercase tracking-widest whitespace-nowrap ${
+          isDark ? 'text-purple-400/80' : 'text-indigo-600/90'
         }`}
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 2, repeat: Infinity }}
       >
-        Data Insights
+        {activeView === 0 ? 'Data Analytics' : 'Web3 Insights'}
       </motion.div>
     </div>
   );
