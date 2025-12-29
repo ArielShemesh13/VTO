@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, PiggyBank, Percent, Target } from 'lucide-react';
 
 export default function InvestmentDashboard({ isDark, data }) {
@@ -77,13 +77,13 @@ export default function InvestmentDashboard({ isDark, data }) {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* Growth Chart */}
-        <div className="md:col-span-2">
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Growth Chart - Larger */}
+        <div>
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Investment Growth Over Time
           </h4>
-          <div className="h-64">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={yearlyData}>
                 <defs>
@@ -136,17 +136,18 @@ export default function InvestmentDashboard({ isDark, data }) {
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Portfolio Breakdown
           </h4>
-          <div className="h-64 flex items-center justify-center">
+          <div className="h-80 flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={50}
-                  outerRadius={80}
+                  innerRadius={70}
+                  outerRadius={120}
                   paddingAngle={5}
                   dataKey="value"
+                  label={(entry) => `${entry.name}`}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -167,36 +168,7 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      {/* Year-by-Year Breakdown */}
-      <div className="mt-8">
-        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-          Annual Interest Earned
-        </h4>
-        <div className="h-48">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={yearlyData.slice(1)}>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-              <XAxis 
-                dataKey="year" 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
-              />
-              <YAxis 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
-                tickFormatter={(value) => `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar 
-                dataKey="interest" 
-                fill={isDark ? '#a855f7' : '#244270'} 
-                name="Interest Earned"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+
     </motion.div>
   );
 }

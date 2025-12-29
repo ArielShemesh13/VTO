@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, TrendingUp, DollarSign, Percent, Calendar } from 'lucide-react';
+import { Calculator, TrendingUp, DollarSign, Percent, Calendar, HelpCircle } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer } from 'recharts';
 
 const currencies = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -17,6 +18,16 @@ const compoundFrequencies = [
   { value: 12, label: 'Monthly' },
   { value: 365, label: 'Daily' },
 ];
+
+const tooltips = {
+  currency: 'Select the currency for your investment calculations',
+  initial: 'The amount of money you start with',
+  monthly: 'How much you plan to add each month to your investment',
+  rate: 'The expected annual return rate (e.g., stock market average is ~7-10%)',
+  years: 'How long you plan to keep your money invested',
+  frequency: 'How often the interest is calculated and added to your balance. More frequent = slightly higher returns',
+  tax: 'Enter the capital gains tax rate in your country. Note: If you are referring to a provident fund (קרן השתלמות), there is NO capital gains tax, so enter 0. All other investments are subject to tax - check your country\'s rate',
+};
 
 export default function CompoundInterestCalculator({ isDark, onCalculate }) {
   const [principal, setPrincipal] = useState(10000);
@@ -96,7 +107,25 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
       : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'
   }`;
 
-  const labelClass = `block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`;
+  const labelClass = `flex items-center gap-2 text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`;
+  
+  const [showTooltip, setShowTooltip] = useState(null);
+
+  const CustomChartTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className={`p-3 rounded-xl ${isDark ? 'bg-[#141225] border border-purple-500/30' : 'bg-white border border-[#244270]/20'} shadow-xl`}>
+          <p className={`font-semibold mb-1 ${isDark ? 'text-white' : 'text-[#141225]'}`}>Year {label}</p>
+          {payload.map((entry, index) => (
+            <p key={index} className="text-sm" style={{ color: entry.color }}>
+              {entry.name}: {formatCurrency(entry.value)}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <motion.div
@@ -122,8 +151,16 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Currency Selection */}
         <div>
           <label className={labelClass}>
-            <DollarSign className="inline w-4 h-4 mr-1" />
-            Currency
+            <DollarSign className="w-4 h-4" />
+            <span>Currency</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.currency}
+              </div>
+            </div>
           </label>
           <select
             value={currency.code}
@@ -141,7 +178,15 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Initial Investment */}
         <div>
           <label className={labelClass}>
-            Initial Investment
+            <span>Initial Investment</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.initial}
+              </div>
+            </div>
           </label>
           <input
             type="number"
@@ -155,7 +200,15 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Monthly Contribution */}
         <div>
           <label className={labelClass}>
-            Monthly Contribution
+            <span>Monthly Contribution</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.monthly}
+              </div>
+            </div>
           </label>
           <input
             type="number"
@@ -169,8 +222,16 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Annual Interest Rate */}
         <div>
           <label className={labelClass}>
-            <Percent className="inline w-4 h-4 mr-1" />
-            Annual Interest Rate (%)
+            <Percent className="w-4 h-4" />
+            <span>Annual Interest Rate (%)</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.rate}
+              </div>
+            </div>
           </label>
           <input
             type="number"
@@ -186,8 +247,16 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Investment Period */}
         <div>
           <label className={labelClass}>
-            <Calendar className="inline w-4 h-4 mr-1" />
-            Investment Period (Years)
+            <Calendar className="w-4 h-4" />
+            <span>Investment Period (Years)</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.years}
+              </div>
+            </div>
           </label>
           <input
             type="number"
@@ -202,8 +271,16 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Compound Frequency */}
         <div>
           <label className={labelClass}>
-            <TrendingUp className="inline w-4 h-4 mr-1" />
-            Compound Frequency
+            <TrendingUp className="w-4 h-4" />
+            <span>Compound Frequency</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.frequency}
+              </div>
+            </div>
           </label>
           <select
             value={compoundFrequency}
@@ -221,8 +298,16 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         {/* Capital Gains Tax */}
         <div>
           <label className={labelClass}>
-            <Percent className="inline w-4 h-4 mr-1" />
-            Capital Gains Tax (%)
+            <Percent className="w-4 h-4" />
+            <span>Capital Gains Tax (%)</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-80 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.tax}
+              </div>
+            </div>
           </label>
           <input
             type="number"
@@ -236,45 +321,34 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         </div>
       </div>
 
-      {/* Results Summary */}
-      <div className={`mt-8 p-6 rounded-xl ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gross Value</p>
-            <p className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
-              {formatCurrency(results.futureValue)}
-            </p>
-          </div>
-          <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Total Invested</p>
-            <p className={`text-xl font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}`}>
-              {formatCurrency(results.totalContributions)}
-            </p>
-          </div>
-          <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gains</p>
-            <p className={`text-xl font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-              {formatCurrency(results.totalInterest)}
-            </p>
-          </div>
-          <div>
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Tax ({capitalGainsTax}%)</p>
-            <p className={`text-xl font-bold ${isDark ? 'text-red-400' : 'text-red-600'}`}>
-              -{formatCurrency(results.taxAmount)}
-            </p>
-          </div>
-        </div>
-        
-        <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
-          <p className={`text-sm text-center ${isDark ? 'text-white/60' : 'text-[#141225]/60'} mb-2`}>
-            💎 Net Value After Tax
-          </p>
-          <p className={`text-3xl font-bold text-center ${isDark ? 'text-green-400' : 'text-green-600'}`}>
-            {formatCurrency(results.netFutureValue)}
-          </p>
-          <p className={`text-xs text-center mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
-            ROI: {results.totalContributions > 0 ? ((results.netFutureValue / results.totalContributions - 1) * 100).toFixed(1) : '0'}%
-          </p>
+      {/* Annual Growth Chart */}
+      <div className={`mt-8`}>
+        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+          Annual Interest Earned
+        </h4>
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={results.yearlyData.slice(1)}>
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis 
+                dataKey="year" 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
+              />
+              <YAxis 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
+                tickFormatter={(value) => `${currency.symbol}${(value / 1000).toFixed(0)}k`}
+              />
+              <ChartTooltip content={<CustomChartTooltip />} />
+              <Bar 
+                dataKey="interest" 
+                fill={isDark ? '#a855f7' : '#244270'} 
+                name="Interest Earned"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </motion.div>

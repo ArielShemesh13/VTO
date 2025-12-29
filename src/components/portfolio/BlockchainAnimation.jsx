@@ -21,17 +21,18 @@ export default function BlockchainAnimation({ isDark }) {
         const lastBlock = prev[prev.length - 1];
         if (lastBlock.status !== 'confirmed') return prev;
         
-        // כשיש 4 בלוקים, הבלוק הרביעי יוצר את הראשון והשני נעלם
+        // כשיש 4 בלוקים, הבלוק הרביעי יוצר חדש במקום הראשון והראשון נמחק
         if (prev.length >= 4) {
+          const nextId = lastBlock.id + 1;
           const newBlock = {
-            id: prev[0].id + 4,
+            id: nextId,
             hash: Math.random().toString(36).substr(2, 3).toUpperCase(),
             prevHash: lastBlock.hash,
             status: 'pending',
             type: 'block'
           };
-          // הסר את הבלוק השני (index 1) והוסף את החדש
-          return [...prev.slice(0, 1), ...prev.slice(2), newBlock];
+          // הסר את הבלוק הראשון (index 0) והוסף את החדש
+          return [...prev.slice(1), newBlock];
         }
         
         const newBlock = {
@@ -406,17 +407,6 @@ export default function BlockchainAnimation({ isDark }) {
           })()}
         </AnimatePresence>
       </svg>
-
-      <motion.div
-        key={blocks.filter(b => b.status === 'confirmed').length}
-        initial={{ scale: 1.3, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold whitespace-nowrap ${
-          isDark ? 'text-purple-400/80' : 'text-purple-600/90'
-        }`}
-      >
-        {blocks.filter(b => b.status === 'confirmed').length} BLOCKS
-      </motion.div>
     </div>
   );
 }
