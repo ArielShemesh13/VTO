@@ -59,31 +59,13 @@ export default function InvestmentDashboard({ isDark, data }) {
         Investment Dashboard
       </h3>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className={`p-4 rounded-xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-[#244270]/5 border border-[#244270]/10'}`}
-          >
-            <stat.icon className={`w-5 h-5 mb-2 ${stat.color}`} />
-            <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>{stat.label}</p>
-            <p className={`text-lg font-bold ${stat.color}`}>{stat.value}</p>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Growth Chart - Larger */}
-        <div>
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Growth Chart */}
+        <div className="h-full">
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Investment Growth Over Time
           </h4>
-          <div className="h-80">
+          <div className="h-[450px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={yearlyData}>
                 <defs>
@@ -100,12 +82,17 @@ export default function InvestmentDashboard({ isDark, data }) {
                 <XAxis 
                   dataKey="year" 
                   stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
                 />
                 <YAxis 
                   stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
-                  tickFormatter={(value) => `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`}
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                  tickFormatter={(value) => {
+                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                    return `${currency?.symbol || '$'}${value}`;
+                  }}
+                  width={70}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Area 
@@ -115,7 +102,7 @@ export default function InvestmentDashboard({ isDark, data }) {
                   fillOpacity={1} 
                   fill="url(#colorTotal)" 
                   name="Gross Value"
-                  strokeWidth={2}
+                  strokeWidth={3}
                 />
                 <Area 
                   type="monotone" 
@@ -124,7 +111,7 @@ export default function InvestmentDashboard({ isDark, data }) {
                   fillOpacity={1} 
                   fill="url(#colorContributions)" 
                   name="Net Value (After Tax)"
-                  strokeWidth={2}
+                  strokeWidth={3}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -132,19 +119,19 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
 
         {/* Pie Chart */}
-        <div>
+        <div className="h-full">
           <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
             Portfolio Breakdown
           </h4>
-          <div className="h-80 flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="h-[450px] flex flex-col items-center justify-center">
+            <ResponsiveContainer width="100%" height="85%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={70}
-                  outerRadius={120}
+                  innerRadius={85}
+                  outerRadius={145}
                   paddingAngle={5}
                   dataKey="value"
                   label={(entry) => `${entry.name}`}
@@ -153,17 +140,24 @@ export default function InvestmentDashboard({ isDark, data }) {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatCurrency(value)} />
+                <Tooltip 
+                  formatter={(value) => formatCurrency(value)}
+                  contentStyle={{
+                    fontSize: '14px',
+                    padding: '10px 14px',
+                    borderRadius: '10px'
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-          <div className="flex flex-col gap-2 mt-2">
-            {pieData.map((item) => (
-              <div key={item.name} className="flex items-center gap-2 text-xs">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className={isDark ? 'text-white/70' : 'text-[#141225]/70'}>{item.name}</span>
-              </div>
-            ))}
+            <div className="flex justify-center gap-4 mt-2">
+              {pieData.map((item) => (
+                <div key={item.name} className="flex items-center gap-2 text-xs">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className={isDark ? 'text-white/70' : 'text-[#141225]/70'}>{item.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
