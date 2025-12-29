@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
-import StockTickerAnimation from './StockTickerAnimation';
+import CryptoAddressAnimation from './CryptoAddressAnimation';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
@@ -137,7 +137,7 @@ export default function HeroSection({ isDark, onNavigate }) {
               />
               
               <div className="relative z-10 scale-150">
-                <StockTickerAnimation isDark={isDark} />
+                <CryptoAddressAnimation isDark={isDark} />
               </div>
 
               {[0, 1, 2, 3, 4, 5].map((index) => {
