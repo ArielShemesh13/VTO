@@ -321,34 +321,49 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         </div>
       </div>
 
-      {/* Annual Growth Chart */}
-      <div className={`mt-8`}>
-        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-          Annual Interest Earned
+      {/* Results Summary */}
+      <div className={`mt-8 p-6 rounded-xl ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20' : 'bg-gradient-to-r from-[#244270]/5 to-[#4dbdce]/5 border border-[#244270]/10'}`}>
+        <h4 className={`text-sm font-medium mb-4 text-center ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+          Investment Summary
         </h4>
-        <div className="h-56">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={results.yearlyData.slice(1)}>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-              <XAxis 
-                dataKey="year" 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
-              />
-              <YAxis 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
-                tickFormatter={(value) => `${currency.symbol}${(value / 1000).toFixed(0)}k`}
-              />
-              <ChartTooltip content={<CustomChartTooltip />} />
-              <Bar 
-                dataKey="interest" 
-                fill={isDark ? '#a855f7' : '#244270'} 
-                name="Interest Earned"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gross Value</p>
+            <p className={`text-base md:text-lg font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'} break-words`}>
+              {formatCurrency(results.futureValue)}
+            </p>
+          </div>
+          <div>
+            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Total Invested</p>
+            <p className={`text-base md:text-lg font-bold ${isDark ? 'text-cyan-400' : 'text-[#4dbdce]'} break-words`}>
+              {formatCurrency(results.totalContributions)}
+            </p>
+          </div>
+          <div>
+            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Gains</p>
+            <p className={`text-base md:text-lg font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'} break-words`}>
+              {formatCurrency(results.totalInterest)}
+            </p>
+          </div>
+          <div>
+            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Tax ({capitalGainsTax}%)</p>
+            <p className={`text-base md:text-lg font-bold ${isDark ? 'text-red-400' : 'text-red-600'} break-words`}>
+              -{formatCurrency(results.taxAmount)}
+            </p>
+          </div>
+        </div>
+        
+        <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
+          <p className={`text-sm text-center ${isDark ? 'text-white/60' : 'text-[#141225]/60'} mb-2`}>
+            💎 Net Value After Tax
+          </p>
+          <p className={`text-2xl md:text-3xl font-bold text-center ${isDark ? 'text-green-400' : 'text-green-600'} break-words`}>
+            {formatCurrency(results.netFutureValue)}
+          </p>
+          <p className={`text-xs text-center mt-2 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
+            ROI: {results.totalContributions > 0 ? ((results.netFutureValue / results.totalContributions - 1) * 100).toFixed(1) : '0'}%
+          </p>
         </div>
       </div>
     </motion.div>
