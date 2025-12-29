@@ -13,22 +13,19 @@ export default function BlockchainAnimation({ isDark }) {
   ]);
   
   const [verificationBeam, setVerificationBeam] = useState(null);
-  const [rotation, setRotation] = useState(0);
 
   // יצירת בלוק חדש - רק אחרי שהקודם אושר
   useEffect(() => {
     const interval = setInterval(() => {
       setBlocks(prev => {
-        // בדוק אם הבלוק האחרון כבר אושר
         const lastBlock = prev[prev.length - 1];
         if (lastBlock.status !== 'confirmed') return prev;
         
-        // אם יש 8 בלוקים, התחל מחדש ועדכן סיבוב
-        if (prev.length >= 8) {
-          setRotation(r => r + 90); // סיבוב של 90 מעלות
+        // אם הגענו ל-4 בלוקים, התחל מחדש
+        if (prev.length >= 4) {
           return [
             { 
-              id: prev.length, 
+              id: 0, 
               hash: 'GEN', 
               prevHash: '000',
               status: 'confirmed',
@@ -37,7 +34,6 @@ export default function BlockchainAnimation({ isDark }) {
           ];
         }
         
-        // צור בלוק חדש במצב pending
         const newBlock = {
           id: prev.length,
           hash: Math.random().toString(36).substr(2, 3).toUpperCase(),
@@ -53,18 +49,16 @@ export default function BlockchainAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, []);
 
-  // תהליך אימות - מחפש בלוק pending והופך אותו לverifying ואז לconfirmed
+  // תהליך אימות
   useEffect(() => {
     const interval = setInterval(() => {
       setBlocks(prev => {
         const pendingIndex = prev.findIndex(b => b.status === 'pending');
         if (pendingIndex === -1) return prev;
         
-        // שלב 1: התחל אימות
         const updated = [...prev];
         updated[pendingIndex] = { ...updated[pendingIndex], status: 'verifying' };
         
-        // הצג קרן אימות
         if (pendingIndex > 0) {
           setVerificationBeam({
             id: Date.now(),
@@ -72,7 +66,6 @@ export default function BlockchainAnimation({ isDark }) {
             to: pendingIndex
           });
           
-          // אחרי 1.2 שניות - אשר את הבלוק
           setTimeout(() => {
             setVerificationBeam(null);
             
@@ -94,18 +87,12 @@ export default function BlockchainAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, []);
 
-  // הצג תמיד רק 4 בלוקים אחרונים
   const visibleBlocks = blocks.slice(-4);
-  const totalBlocks = blocks.length;
+  const totalBlocks = blocks.filter(b => b.status === 'confirmed').length;
 
   return (
     <div className="relative w-32 h-32">
-      <motion.svg 
-        viewBox="0 0 130 130" 
-        className="w-full h-full"
-        animate={{ rotate: rotation }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-      >
+      <svg viewBox="0 0 130 130" className="w-full h-full">
         <defs>
           <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="0" />
@@ -122,20 +109,14 @@ export default function BlockchainAnimation({ isDark }) {
           </filter>
         </defs>
 
-        {/* בלוקים בצורת מלבנים בעיגול */}
         <AnimatePresence mode="popLayout">
           {visibleBlocks.map((block, idx) => {
-            // חישוב מיקום בעיגול - בצורת בלוק
             const angle = (idx / 4) * Math.PI * 2 - Math.PI / 2;
             const radius = 45;
             const x = 65 + Math.cos(angle) * radius;
             const y = 65 + Math.sin(angle) * radius;
+            const size = block.type === 'genesis' ? 22 : 18;
             
-            // גודל הבלוק - מלבן
-            const width = block.type === 'genesis' ? 24 : 20;
-            const height = block.type === 'genesis' ? 24 : 20;
-            
-            // צבעים לפי סטטוס
             let fillColor, strokeColor, glowColor, textColor;
             
             if (block.type === 'genesis') {
@@ -172,7 +153,6 @@ export default function BlockchainAnimation({ isDark }) {
                   damping: 20
                 }}
               >
-                {/* קו חיבור לבלוק הבא */}
                 {idx < visibleBlocks.length - 1 && (
                   <>
                     {(() => {
@@ -198,21 +178,18 @@ export default function BlockchainAnimation({ isDark }) {
                   </>
                 )}
 
-                {/* אפקט פולס לבלוק בתהליך אימות */}
                 {block.status === 'verifying' && (
                   <>
-                    <motion.rect
-                      x={x - width / 2 - 5}
-                      y={y - height / 2 - 5}
-                      width={width + 10}
-                      height={height + 10}
-                      rx="3"
+                    <motion.circle
+                      cx={x}
+                      cy={y}
+                      r={size / 2 + 5}
                       fill="none"
                       stroke={isDark ? '#8b5cf6' : '#7c3aed'}
                       strokeWidth="1.5"
                       initial={{ scale: 1, opacity: 0.7 }}
                       animate={{ 
-                        scale: 1.15,
+                        scale: 1.4,
                         opacity: 0
                       }}
                       transition={{ 
@@ -222,33 +199,47 @@ export default function BlockchainAnimation({ isDark }) {
                       }}
                       style={{ transformOrigin: `${x}px ${y}px` }}
                     />
+                    <motion.circle
+                      cx={x}
+                      cy={y}
+                      r={size / 2 + 3}
+                      fill="none"
+                      stroke={isDark ? '#a855f7' : '#9333ea'}
+                      strokeWidth="1"
+                      initial={{ scale: 1, opacity: 0.5 }}
+                      animate={{ 
+                        scale: 1.6,
+                        opacity: 0
+                      }}
+                      transition={{ 
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                        delay: 0.3
+                      }}
+                      style={{ transformOrigin: `${x}px ${y}px` }}
+                    />
                   </>
                 )}
 
                 <g filter="url(#glow)">
-                  {/* זוהר חיצוני */}
-                  <rect
-                    x={x - width / 2 - 2.5}
-                    y={y - height / 2 - 2.5}
-                    width={width + 5}
-                    height={height + 5}
-                    rx="3"
+                  <circle
+                    cx={x}
+                    cy={y}
+                    r={size / 2 + 2.5}
                     fill={glowColor}
                     opacity="0.7"
                   />
                   
-                  {/* גוף הבלוק - מלבן */}
-                  <motion.rect
-                    x={x - width / 2}
-                    y={y - height / 2}
-                    width={width}
-                    height={height}
-                    rx="2"
+                  <motion.circle
+                    cx={x}
+                    cy={y}
+                    r={size / 2}
                     fill={fillColor}
                     stroke={strokeColor}
                     strokeWidth="2"
                     animate={block.status === 'verifying' ? {
-                      scale: [1, 1.05, 1]
+                      scale: [1, 1.08, 1]
                     } : {}}
                     transition={{ 
                       duration: 0.6,
@@ -258,10 +249,9 @@ export default function BlockchainAnimation({ isDark }) {
                     style={{ transformOrigin: `${x}px ${y}px` }}
                   />
 
-                  {/* Hash בתוך הבלוק */}
                   <text
                     x={x}
-                    y={y + 2}
+                    y={y + 1.5}
                     textAnchor="middle"
                     fill={textColor}
                     fontSize={block.type === 'genesis' ? "7" : "6.5"}
@@ -272,7 +262,6 @@ export default function BlockchainAnimation({ isDark }) {
                     {block.hash}
                   </text>
 
-                  {/* V סימון מאומת */}
                   {block.status === 'confirmed' && block.type !== 'genesis' && (
                     <motion.g
                       initial={{ scale: 0, opacity: 0 }}
@@ -280,17 +269,17 @@ export default function BlockchainAnimation({ isDark }) {
                       transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
                     >
                       <circle
-                        cx={x + width / 2 - 3}
-                        cy={y - height / 2 + 3}
+                        cx={x + size / 2 - 3}
+                        cy={y - size / 2 + 3}
                         r="3.5"
                         fill={isDark ? '#10b981' : '#059669'}
                         stroke={isDark ? '#059669' : '#047857'}
                         strokeWidth="0.5"
                       />
                       <path
-                        d={`M ${x + width / 2 - 4.5} ${y - height / 2 + 3} 
-                            L ${x + width / 2 - 3.2} ${y - height / 2 + 4.2} 
-                            L ${x + width / 2 - 1.5} ${y - height / 2 + 2}`}
+                        d={`M ${x + size / 2 - 4.5} ${y - size / 2 + 3} 
+                            L ${x + size / 2 - 3.2} ${y - size / 2 + 4.2} 
+                            L ${x + size / 2 - 1.5} ${y - size / 2 + 2}`}
                         stroke="white"
                         strokeWidth="1"
                         strokeLinecap="round"
@@ -300,22 +289,21 @@ export default function BlockchainAnimation({ isDark }) {
                     </motion.g>
                   )}
 
-                  {/* סימון Genesis מיוחד */}
                   {block.type === 'genesis' && (
                     <motion.g
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
                       <circle
-                        cx={x + width / 2 - 3}
-                        cy={y - height / 2 + 3}
+                        cx={x + size / 2 - 3}
+                        cy={y - size / 2 + 3}
                         r="2.5"
                         fill={isDark ? '#8b5cf6' : '#7c3aed'}
                         opacity="0.9"
                       />
                       <circle
-                        cx={x + width / 2 - 3}
-                        cy={y - height / 2 + 3}
+                        cx={x + size / 2 - 3}
+                        cy={y - size / 2 + 3}
                         r="1.2"
                         fill="white"
                         opacity="0.9"
@@ -323,11 +311,10 @@ export default function BlockchainAnimation({ isDark }) {
                     </motion.g>
                   )}
 
-                  {/* נקודה מהבהבת לבלוק בהמתנה */}
                   {block.status === 'pending' && (
                     <motion.circle
-                      cx={x + width / 2 - 3}
-                      cy={y - height / 2 + 3}
+                      cx={x + size / 2 - 3}
+                      cy={y - size / 2 + 3}
                       r="2.5"
                       fill={isDark ? '#fbbf24' : '#f59e0b'}
                       animate={{ opacity: [0.4, 1, 0.4] }}
@@ -335,22 +322,21 @@ export default function BlockchainAnimation({ isDark }) {
                     />
                   )}
 
-                  {/* סימון אימות */}
                   {block.status === 'verifying' && (
                     <motion.g
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                      style={{ transformOrigin: `${x + width / 2 - 3}px ${y - height / 2 + 3}px` }}
+                      style={{ transformOrigin: `${x + size / 2 - 3}px ${y - size / 2 + 3}px` }}
                     >
                       <circle
-                        cx={x + width / 2 - 3}
-                        cy={y - height / 2 + 3}
+                        cx={x + size / 2 - 3}
+                        cy={y - size / 2 + 3}
                         r="2.5"
                         fill={isDark ? '#a855f7' : '#9333ea'}
                       />
                       <circle
-                        cx={x + width / 2 - 3}
-                        cy={y - height / 2 + 1}
+                        cx={x + size / 2 - 3}
+                        cy={y - size / 2 + 1}
                         r="0.8"
                         fill="white"
                       />
@@ -362,7 +348,6 @@ export default function BlockchainAnimation({ isDark }) {
           })}
         </AnimatePresence>
 
-        {/* קרן אימות */}
         <AnimatePresence>
           {verificationBeam && (() => {
             const fromIdx = visibleBlocks.findIndex(b => b.id === blocks[verificationBeam.from]?.id);
@@ -381,7 +366,6 @@ export default function BlockchainAnimation({ isDark }) {
             
             return (
               <motion.g key={verificationBeam.id}>
-                {/* קרן עיקרית */}
                 <motion.line
                   x1={x1}
                   y1={y1}
@@ -396,7 +380,6 @@ export default function BlockchainAnimation({ isDark }) {
                   transition={{ duration: 0.8, ease: "easeInOut" }}
                 />
                 
-                {/* חלקיקים נעים */}
                 {[0, 0.25, 0.5, 0.75].map((delay, i) => (
                   <motion.circle
                     key={i}
@@ -420,10 +403,8 @@ export default function BlockchainAnimation({ isDark }) {
             );
           })()}
         </AnimatePresence>
+      </svg>
 
-      </motion.svg>
-
-      {/* מונה בלוקים */}
       <motion.div
         key={totalBlocks}
         initial={{ scale: 1.3, opacity: 0 }}
@@ -432,7 +413,7 @@ export default function BlockchainAnimation({ isDark }) {
           isDark ? 'text-purple-400/80' : 'text-purple-600/90'
         }`}
       >
-        {blocks.filter(b => b.status === 'confirmed').length}/{totalBlocks} BLOCKS
+        {totalBlocks} BLOCKS
       </motion.div>
     </div>
   );
