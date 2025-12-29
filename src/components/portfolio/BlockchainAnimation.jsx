@@ -1,41 +1,100 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BlockchainAnimation({ isDark }) {
-  // Define 4 blocks in the chain
-  const blocks = [
-    { id: 0, hash: '0x00...', status: 'verified', delay: 0 },
-    { id: 1, hash: '0xA1...', status: 'verified', delay: 0.5 },
-    { id: 2, hash: '0xB2...', status: 'verifying', delay: 1 },
-    { id: 3, hash: '0xC3...', status: 'pending', delay: 1.5 },
-  ];
+  const [blocks, setBlocks] = useState([
+    { 
+      id: 0, 
+      hash: 'GEN', 
+      prevHash: '000',
+      status: 'confirmed',
+      type: 'genesis'
+    }
+  ]);
+  
+  const [verificationBeam, setVerificationBeam] = useState(null);
+
+  // יצירת בלוק חדש - רק אחרי שהקודם אושר
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlocks(prev => {
+        // בדוק אם הבלוק האחרון כבר אושר
+        const lastBlock = prev[prev.length - 1];
+        if (lastBlock.status !== 'confirmed') return prev;
+        
+        // צור בלוק חדש במצב pending
+        const newBlock = {
+          id: prev.length,
+          hash: Math.random().toString(36).substr(2, 3).toUpperCase(),
+          prevHash: lastBlock.hash,
+          status: 'pending',
+          type: 'block'
+        };
+        
+        return [...prev, newBlock];
+      });
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // תהליך אימות - מחפש בלוק pending והופך אותו לverifying ואז לconfirmed
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlocks(prev => {
+        const pendingIndex = prev.findIndex(b => b.status === 'pending');
+        if (pendingIndex === -1) return prev;
+        
+        // שלב 1: התחל אימות
+        const updated = [...prev];
+        updated[pendingIndex] = { ...updated[pendingIndex], status: 'verifying' };
+        
+        // הצג קרן אימות
+        if (pendingIndex > 0) {
+          setVerificationBeam({
+            id: Date.now(),
+            from: pendingIndex - 1,
+            to: pendingIndex
+          });
+          
+          // אחרי 1.2 שניות - אשר את הבלוק
+          setTimeout(() => {
+            setVerificationBeam(null);
+            
+            setBlocks(prev2 => {
+              const confirmed = [...prev2];
+              const idx = confirmed.findIndex(b => b.status === 'verifying');
+              if (idx !== -1) {
+                confirmed[idx] = { ...confirmed[idx], status: 'confirmed' };
+              }
+              return confirmed;
+            });
+          }, 1200);
+        }
+        
+        return updated;
+      });
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // הצג תמיד רק 4 בלוקים אחרונים
+  const visibleBlocks = blocks.slice(-4);
+  const totalBlocks = blocks.length;
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center p-8">
-      <svg
-        viewBox="0 0 500 200"
-        className="w-full h-full"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+    <div className="relative w-32 h-32">
+      <svg viewBox="0 0 130 130" className="w-full h-full">
         <defs>
-          {/* Gradients */}
-          <linearGradient id="verifiedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#10b981' : '#059669'} />
-            <stop offset="100%" stopColor={isDark ? '#059669' : '#047857'} />
-          </linearGradient>
-          <linearGradient id="verifyingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#3b82f6' : '#2563eb'} />
-            <stop offset="100%" stopColor={isDark ? '#2563eb' : '#1d4ed8'} />
-          </linearGradient>
-          <linearGradient id="pendingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} />
-            <stop offset="100%" stopColor={isDark ? '#7c3aed' : '#6d28d9'} />
+          <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="0" />
+            <stop offset="50%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="1" />
+            <stop offset="100%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="0" />
           </linearGradient>
           
-          {/* Glow filters */}
           <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
@@ -43,313 +102,354 @@ export default function BlockchainAnimation({ isDark }) {
           </filter>
         </defs>
 
-        {/* Chain connections */}
-        {blocks.slice(0, -1).map((block, idx) => (
-          <g key={`connection-${idx}`}>
-            {/* Connection line */}
-            <motion.line
-              x1={60 + idx * 120}
-              y1="100"
-              x2={60 + (idx + 1) * 120}
-              y2="100"
-              stroke={isDark ? 'url(#verifiedGradient)' : '#059669'}
-              strokeWidth="2"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.6 }}
-              transition={{
-                delay: block.delay + 0.5,
-                duration: 0.8,
-                ease: "easeInOut"
-              }}
-            />
+        {/* בלוקים בצורת מלבנים בעיגול */}
+        <AnimatePresence mode="popLayout">
+          {visibleBlocks.map((block, idx) => {
+            // חישוב מיקום בעיגול - בצורת בלוק
+            const angle = (idx / 4) * Math.PI * 2 - Math.PI / 2;
+            const radius = 45;
+            const x = 65 + Math.cos(angle) * radius;
+            const y = 65 + Math.sin(angle) * radius;
             
-            {/* Data packets moving along the chain */}
-            <motion.circle
-              r="3"
-              fill={isDark ? '#10b981' : '#059669'}
-              filter="url(#glow)"
-              initial={{ 
-                cx: 60 + idx * 120,
-                cy: 100,
-                opacity: 0 
-              }}
-              animate={{ 
-                cx: 60 + (idx + 1) * 120,
-                cy: 100,
-                opacity: [0, 1, 1, 0]
-              }}
-              transition={{
-                delay: block.delay + 0.5,
-                duration: 1.5,
-                repeat: Infinity,
-                repeatDelay: 2,
-                ease: "easeInOut"
-              }}
-            />
-          </g>
-        ))}
-
-        {/* Blocks */}
-        {blocks.map((block, idx) => {
-          const x = 30 + idx * 120;
-          const y = 70;
-          
-          const getGradient = () => {
-            if (block.status === 'verified') return 'url(#verifiedGradient)';
-            if (block.status === 'verifying') return 'url(#verifyingGradient)';
-            return 'url(#pendingGradient)';
-          };
-
-          const getStrokeColor = () => {
-            if (block.status === 'verified') return isDark ? '#10b981' : '#059669';
-            if (block.status === 'verifying') return isDark ? '#3b82f6' : '#2563eb';
-            return isDark ? '#8b5cf6' : '#7c3aed';
-          };
-
-          return (
-            <motion.g
-              key={block.id}
-              initial={{ opacity: 0, scale: 0, y: y + 30 }}
-              animate={{ opacity: 1, scale: 1, y }}
-              transition={{
-                delay: block.delay,
-                duration: 0.6,
-                type: "spring",
-                stiffness: 200,
-                damping: 15
-              }}
-            >
-              {/* Block body */}
-              <motion.rect
-                x={x}
-                width="60"
-                height="60"
-                rx="8"
-                fill={getGradient()}
-                stroke={getStrokeColor()}
-                strokeWidth="2"
-                opacity={0.9}
-                filter="url(#glow)"
-                animate={block.status === 'verifying' ? {
-                  opacity: [0.7, 1, 0.7],
-                } : {}}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
+            // גודל הבלוק - מלבן
+            const width = block.type === 'genesis' ? 24 : 20;
+            const height = block.type === 'genesis' ? 24 : 20;
+            
+            // צבעים לפי סטטוס
+            let fillColor, strokeColor, glowColor, textColor;
+            
+            if (block.type === 'genesis') {
+              fillColor = isDark ? '#8b5cf6' : '#7c3aed';
+              strokeColor = isDark ? '#7c3aed' : '#6d28d9';
+              glowColor = 'rgba(139, 92, 246, 0.5)';
+              textColor = '#ffffff';
+            } else if (block.status === 'confirmed') {
+              fillColor = isDark ? '#10b981' : '#059669';
+              strokeColor = isDark ? '#059669' : '#047857';
+              glowColor = 'rgba(16, 185, 129, 0.5)';
+              textColor = '#ffffff';
+            } else if (block.status === 'verifying') {
+              fillColor = isDark ? '#a855f7' : '#9333ea';
+              strokeColor = isDark ? '#9333ea' : '#7e22ce';
+              glowColor = 'rgba(168, 85, 247, 0.6)';
+              textColor = '#ffffff';
+            } else {
+              fillColor = isDark ? '#6b7280' : '#9ca3af';
+              strokeColor = isDark ? '#4b5563' : '#6b7280';
+              glowColor = 'rgba(107, 114, 128, 0.4)';
+              textColor = isDark ? '#d1d5db' : '#ffffff';
+            }
+            
+            return (
+              <motion.g
+                key={block.id}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20
                 }}
-              />
-
-              {/* Block hash text */}
-              <text
-                x={x + 30}
-                y={y + 25}
-                textAnchor="middle"
-                fill="white"
-                fontSize="10"
-                fontWeight="bold"
-                fontFamily="monospace"
               >
-                #{block.id}
-              </text>
-              <text
-                x={x + 30}
-                y={y + 40}
-                textAnchor="middle"
-                fill="white"
-                fontSize="7"
-                fontFamily="monospace"
-                opacity="0.8"
-              >
-                {block.hash}
-              </text>
+                {/* קו חיבור לבלוק הבא */}
+                {idx < visibleBlocks.length - 1 && (
+                  <>
+                    {(() => {
+                      const nextAngle = ((idx + 1) / 4) * Math.PI * 2 - Math.PI / 2;
+                      const nextX = 65 + Math.cos(nextAngle) * radius;
+                      const nextY = 65 + Math.sin(nextAngle) * radius;
+                      
+                      return (
+                        <motion.line
+                          x1={x}
+                          y1={y}
+                          x2={nextX}
+                          y2={nextY}
+                          stroke={isDark ? 'rgba(139, 92, 246, 0.25)' : 'rgba(124, 58, 237, 0.3)'}
+                          strokeWidth="1.8"
+                          strokeDasharray="3 2"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          animate={{ pathLength: 1, opacity: 0.6 }}
+                          transition={{ duration: 0.6, delay: idx * 0.1 }}
+                        />
+                      );
+                    })()}
+                  </>
+                )}
 
-              {/* Status indicator */}
-              {block.status === 'verified' && (
-                <motion.g
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: block.delay + 0.3 }}
-                >
-                  <circle
-                    cx={x + 52}
-                    cy={y + 8}
-                    r="6"
-                    fill={isDark ? '#10b981' : '#059669'}
-                  />
-                  <path
-                    d={`M ${x + 49} ${y + 8} L ${x + 51} ${y + 10} L ${x + 55} ${y + 6}`}
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                  />
-                </motion.g>
-              )}
-
-              {block.status === 'verifying' && (
-                <motion.circle
-                  cx={x + 52}
-                  cy={y + 8}
-                  r="5"
-                  stroke={isDark ? '#3b82f6' : '#2563eb'}
-                  strokeWidth="2"
-                  fill="none"
-                  initial={{ pathLength: 0, rotate: 0 }}
-                  animate={{ 
-                    pathLength: [0, 1],
-                    rotate: 360
-                  }}
-                  transition={{
-                    pathLength: { duration: 1.5, repeat: Infinity, ease: "linear" },
-                    rotate: { duration: 2, repeat: Infinity, ease: "linear" }
-                  }}
-                  style={{ transformOrigin: `${x + 52}px ${y + 8}px` }}
-                />
-              )}
-
-              {block.status === 'pending' && (
-                <motion.g
-                  animate={{
-                    opacity: [0.3, 1, 0.3]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <circle
-                    cx={x + 52}
-                    cy={y + 8}
-                    r="3"
-                    fill={isDark ? '#8b5cf6' : '#7c3aed'}
-                  />
-                </motion.g>
-              )}
-
-              {/* Verification rays for verified blocks */}
-              {block.status === 'verified' && (
-                <>
-                  {[0, 60, 120, 180, 240, 300].map((angle) => (
-                    <motion.line
-                      key={angle}
-                      x1={x + 30}
-                      y1={y + 30}
-                      x2={x + 30 + Math.cos(angle * Math.PI / 180) * 40}
-                      y2={y + 30 + Math.sin(angle * Math.PI / 180) * 40}
-                      stroke={getStrokeColor()}
-                      strokeWidth="1"
-                      opacity="0"
-                      animate={{
-                        opacity: [0, 0.5, 0],
-                        x2: x + 30 + Math.cos(angle * Math.PI / 180) * 50,
-                        y2: y + 30 + Math.sin(angle * Math.PI / 180) * 50,
+                {/* אפקט פולס לבלוק בתהליך אימות */}
+                {block.status === 'verifying' && (
+                  <>
+                    <motion.rect
+                      x={x - width / 2 - 5}
+                      y={y - height / 2 - 5}
+                      width={width + 10}
+                      height={height + 10}
+                      rx="3"
+                      fill="none"
+                      stroke={isDark ? '#8b5cf6' : '#7c3aed'}
+                      strokeWidth="1.5"
+                      initial={{ scale: 1, opacity: 0.7 }}
+                      animate={{ 
+                        scale: 1.15,
+                        opacity: 0
                       }}
-                      transition={{
-                        delay: block.delay + 0.5,
+                      transition={{ 
                         duration: 1,
+                        repeat: Infinity,
                         ease: "easeOut"
                       }}
+                      style={{ transformOrigin: `${x}px ${y}px` }}
                     />
-                  ))}
-                </>
-              )}
+                  </>
+                )}
 
-              {/* Mining/validation effect for verifying block */}
-              {block.status === 'verifying' && (
-                <motion.rect
-                  x={x - 5}
-                  y={y - 5}
-                  width="70"
-                  height="70"
-                  rx="10"
-                  stroke={isDark ? '#3b82f6' : '#2563eb'}
-                  strokeWidth="2"
-                  fill="none"
-                  opacity="0"
-                  animate={{
-                    opacity: [0, 0.6, 0],
-                    scale: [1, 1.1, 1.2],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeOut"
-                  }}
-                  style={{ transformOrigin: `${x + 30}px ${y + 30}px` }}
+                <g filter="url(#glow)">
+                  {/* זוהר חיצוני */}
+                  <rect
+                    x={x - width / 2 - 2.5}
+                    y={y - height / 2 - 2.5}
+                    width={width + 5}
+                    height={height + 5}
+                    rx="3"
+                    fill={glowColor}
+                    opacity="0.7"
+                  />
+                  
+                  {/* גוף הבלוק - מלבן */}
+                  <motion.rect
+                    x={x - width / 2}
+                    y={y - height / 2}
+                    width={width}
+                    height={height}
+                    rx="2"
+                    fill={fillColor}
+                    stroke={strokeColor}
+                    strokeWidth="2"
+                    animate={block.status === 'verifying' ? {
+                      scale: [1, 1.05, 1]
+                    } : {}}
+                    transition={{ 
+                      duration: 0.6,
+                      repeat: block.status === 'verifying' ? Infinity : 0,
+                      ease: "easeInOut"
+                    }}
+                    style={{ transformOrigin: `${x}px ${y}px` }}
+                  />
+
+                  {/* Hash בתוך הבלוק */}
+                  <text
+                    x={x}
+                    y={y + 2}
+                    textAnchor="middle"
+                    fill={textColor}
+                    fontSize={block.type === 'genesis' ? "7" : "6.5"}
+                    fontFamily="monospace"
+                    fontWeight="bold"
+                    opacity="0.95"
+                  >
+                    {block.hash}
+                  </text>
+
+                  {/* V סימון מאומת */}
+                  {block.status === 'confirmed' && block.type !== 'genesis' && (
+                    <motion.g
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+                    >
+                      <circle
+                        cx={x + width / 2 - 3}
+                        cy={y - height / 2 + 3}
+                        r="3.5"
+                        fill={isDark ? '#10b981' : '#059669'}
+                        stroke={isDark ? '#059669' : '#047857'}
+                        strokeWidth="0.5"
+                      />
+                      <path
+                        d={`M ${x + width / 2 - 4.5} ${y - height / 2 + 3} 
+                            L ${x + width / 2 - 3.2} ${y - height / 2 + 4.2} 
+                            L ${x + width / 2 - 1.5} ${y - height / 2 + 2}`}
+                        stroke="white"
+                        strokeWidth="1"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill="none"
+                      />
+                    </motion.g>
+                  )}
+
+                  {/* סימון Genesis מיוחד */}
+                  {block.type === 'genesis' && (
+                    <motion.g
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <circle
+                        cx={x + width / 2 - 3}
+                        cy={y - height / 2 + 3}
+                        r="2.5"
+                        fill={isDark ? '#8b5cf6' : '#7c3aed'}
+                        opacity="0.9"
+                      />
+                      <circle
+                        cx={x + width / 2 - 3}
+                        cy={y - height / 2 + 3}
+                        r="1.2"
+                        fill="white"
+                        opacity="0.9"
+                      />
+                    </motion.g>
+                  )}
+
+                  {/* נקודה מהבהבת לבלוק בהמתנה */}
+                  {block.status === 'pending' && (
+                    <motion.circle
+                      cx={x + width / 2 - 3}
+                      cy={y - height / 2 + 3}
+                      r="2.5"
+                      fill={isDark ? '#fbbf24' : '#f59e0b'}
+                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                  )}
+
+                  {/* סימון אימות */}
+                  {block.status === 'verifying' && (
+                    <motion.g
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                      style={{ transformOrigin: `${x + width / 2 - 3}px ${y - height / 2 + 3}px` }}
+                    >
+                      <circle
+                        cx={x + width / 2 - 3}
+                        cy={y - height / 2 + 3}
+                        r="2.5"
+                        fill={isDark ? '#a855f7' : '#9333ea'}
+                      />
+                      <circle
+                        cx={x + width / 2 - 3}
+                        cy={y - height / 2 + 1}
+                        r="0.8"
+                        fill="white"
+                      />
+                    </motion.g>
+                  )}
+                </g>
+              </motion.g>
+            );
+          })}
+        </AnimatePresence>
+
+        {/* קרן אימות */}
+        <AnimatePresence>
+          {verificationBeam && (() => {
+            const fromIdx = visibleBlocks.findIndex(b => b.id === blocks[verificationBeam.from]?.id);
+            const toIdx = visibleBlocks.findIndex(b => b.id === blocks[verificationBeam.to]?.id);
+            
+            if (fromIdx === -1 || toIdx === -1) return null;
+            
+            const fromAngle = (fromIdx / 4) * Math.PI * 2 - Math.PI / 2;
+            const toAngle = (toIdx / 4) * Math.PI * 2 - Math.PI / 2;
+            const radius = 45;
+            
+            const x1 = 65 + Math.cos(fromAngle) * radius;
+            const y1 = 65 + Math.sin(fromAngle) * radius;
+            const x2 = 65 + Math.cos(toAngle) * radius;
+            const y2 = 65 + Math.sin(toAngle) * radius;
+            
+            return (
+              <motion.g key={verificationBeam.id}>
+                {/* קרן עיקרית */}
+                <motion.line
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="url(#beamGrad)"
+                  strokeWidth="4"
+                  filter="url(#glow)"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
                 />
-              )}
-            </motion.g>
-          );
-        })}
+                
+                {/* חלקיקים נעים */}
+                {[0, 0.25, 0.5, 0.75].map((delay, i) => (
+                  <motion.circle
+                    key={i}
+                    r="2"
+                    fill={isDark ? '#8b5cf6' : '#7c3aed'}
+                    filter="url(#glow)"
+                    initial={{ cx: x1, cy: y1, opacity: 0.8 }}
+                    animate={{ 
+                      cx: x2, 
+                      cy: y2,
+                      opacity: [0.8, 1, 0.3]
+                    }}
+                    transition={{ 
+                      duration: 0.8,
+                      delay,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
+              </motion.g>
+            );
+          })()}
+        </AnimatePresence>
 
-        {/* New block creation animation */}
+        {/* מרכז מסתובב */}
         <motion.g
-          initial={{ opacity: 0, x: 30 + blocks.length * 120, y: 40 }}
-          animate={{ 
-            opacity: [0, 0.5, 0],
-            y: [40, 70, 70],
-            scale: [0.5, 1, 1]
-          }}
-          transition={{
-            delay: 4,
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: 2
-          }}
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: '65px 65px' }}
         >
-          <rect
-            width="60"
-            height="60"
-            rx="8"
-            fill="url(#pendingGradient)"
-            opacity="0.5"
-            strokeDasharray="4 4"
-            stroke={isDark ? '#8b5cf6' : '#7c3aed'}
-            strokeWidth="2"
+          <circle
+            cx="65"
+            cy="65"
+            r="9"
+            fill="none"
+            stroke={isDark ? 'rgba(139, 92, 246, 0.35)' : 'rgba(124, 58, 237, 0.45)'}
+            strokeWidth="1.2"
           />
-          <text
-            x="30"
-            y="35"
-            textAnchor="middle"
-            fill="white"
-            fontSize="9"
-            opacity="0.7"
-          >
-            New
-          </text>
+          <circle
+            cx="65"
+            cy="65"
+            r="6"
+            fill={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.2)'}
+            stroke={isDark ? 'rgba(139, 92, 246, 0.6)' : 'rgba(124, 58, 237, 0.7)'}
+            strokeWidth="1"
+          />
+          
+          {/* נקודות פינתיות */}
+          {[[0, -4], [4, 0], [0, 4], [-4, 0]].map(([dx, dy], i) => (
+            <motion.circle
+              key={i}
+              cx={65 + dx}
+              cy={65 + dy}
+              r="1"
+              fill={isDark ? '#8b5cf6' : '#7c3aed'}
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+            />
+          ))}
         </motion.g>
-
-        {/* Labels */}
-        <text
-          x="250"
-          y="170"
-          textAnchor="middle"
-          fill={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'}
-          fontSize="12"
-          fontWeight="500"
-        >
-          Live Blockchain Verification
-        </text>
       </svg>
 
-      {/* Legend */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-4 text-xs">
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-green-500' : 'bg-green-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Verified</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Verifying</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-3 h-3 rounded ${isDark ? 'bg-purple-500' : 'bg-purple-600'}`} />
-          <span className={isDark ? 'text-white/60' : 'text-gray-600'}>Pending</span>
-        </div>
-      </div>
+      {/* מונה בלוקים */}
+      <motion.div
+        key={totalBlocks}
+        initial={{ scale: 1.3, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold whitespace-nowrap ${
+          isDark ? 'text-purple-400/80' : 'text-purple-600/90'
+        }`}
+      >
+        {blocks.filter(b => b.status === 'confirmed').length}/{totalBlocks} BLOCKS
+      </motion.div>
     </div>
   );
 }
