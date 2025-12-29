@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import CompoundInterestCalculator from './CompoundInterestCalculator';
 import InvestmentDashboard from './InvestmentDashboard';
-import LiveCurrencyRates from './LiveCurrencyRates';
 
 export default function FinanceSection({ isDark }) {
   const [calculatorData, setCalculatorData] = useState(null);
@@ -46,29 +45,21 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Calculator and Dashboard - Side by Side */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8 items-start">
-          {/* Calculator Section */}
-          <div>
-            <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              Investment Calculator
-            </h3>
-            <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
-          </div>
+        {/* Calculator */}
+        <div className="mb-8">
+          <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
+        </div>
 
-          {/* Dashboard Section */}
-          <div>
-            <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              Investment Dashboard
-            </h3>
+        {/* Dashboard */}
+        {calculatorData && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <InvestmentDashboard isDark={isDark} data={calculatorData} />
-          </div>
-        </div>
-
-        {/* Live Currency Rates */}
-        <div>
-          <LiveCurrencyRates isDark={isDark} />
-        </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -14,7 +14,7 @@ const quickReplies = [
   "Tell me about Ariel's skills",
   "What projects has he worked on?",
   "How can I contact Ariel?",
-  "What is compound interest?",
+  "What's his experience?",
 ];
 
 export default function ChatWidget({ isDark }) {
@@ -44,8 +44,8 @@ export default function ChatWidget({ isDark }) {
     if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('email')) {
       return "You can reach Ariel at arielshemesh1999@gmail.com or connect with him on LinkedIn. Feel free to scroll down to the Contact section for more options!";
     }
-    if (lowerMessage.includes('compound interest') || lowerMessage.includes('calculator')) {
-      return "Compound interest is when you earn interest on both your initial investment and previously earned interest. Use the calculator above to see how your investments can grow over time! The more frequently interest compounds, the more you earn.";
+    if (lowerMessage.includes('web3') || lowerMessage.includes('blockchain') || lowerMessage.includes('crypto')) {
+      return "Ariel's portfolio showcases his expertise in modern web technologies including Web3 and blockchain. The live cryptocurrency transactions you see are real-time data from various blockchains!";
     }
     if (lowerMessage.includes('education') || lowerMessage.includes('study') || lowerMessage.includes('degree')) {
       return "Ariel has a B.A. in Business Administration with a specialization in Information Systems from Ono Academic College. His studies covered data analysis, financial modeling, and database design.";
@@ -321,7 +321,7 @@ export default function ChatWidget({ isDark }) {
                 </motion.button>
               </div>
               <p className={`text-xs mt-2 text-center ${isDark ? 'text-white/30' : 'text-[#141225]/30'}`}>
-                🔗 Telegram bot integration coming soon
+                Powered by AI
               </p>
             </div>
           </motion.div>

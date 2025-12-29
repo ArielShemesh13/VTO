@@ -11,7 +11,7 @@ import FinanceSection from '../components/portfolio/FinanceSection';
 import ContactSection from '../components/portfolio/ContactSection';
 import ChatWidget from '../components/portfolio/ChatWidget';
 
-const sections = ['hero', 'education', 'skills', 'projects', 'finance', 'contact'];
+const sections = ['hero', 'education', 'skills', 'projects', 'contact'];
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
@@ -108,10 +108,6 @@ export default function Home() {
             
             <div id="projects">
               <ProjectsSection isDark={isDark} />
-            </div>
-            
-            <div id="finance">
-              <FinanceSection isDark={isDark} />
             </div>
             
             <div id="contact">
