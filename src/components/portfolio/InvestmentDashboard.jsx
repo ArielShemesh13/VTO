@@ -308,75 +308,74 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      {/* Investment Growth Over Time - Full Width */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className={`p-6 rounded-2xl ${
-          isDark 
-            ? 'bg-black/40 border border-purple-500/20' 
-            : 'bg-white/60 border border-[#244270]/10'
-        } backdrop-blur-xl`}
-      >
-        <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-          Investment Growth Over Time
-        </h4>
-        <div className="h-[500px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={yearlyData}>
-              <defs>
-                <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorNet" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-              <XAxis 
-                dataKey="year" 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-              />
-              <YAxis 
-                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
-                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                tickFormatter={(value) => {
-                  if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                  if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                  return `${currency?.symbol || '$'}${value}`;
-                }}
-                width={70}
-              />
-              <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(36, 66, 112, 0.1)' }} />
-              <Area 
-                type="monotone" 
-                dataKey="totalValue" 
-                stroke={isDark ? '#a855f7' : '#244270'} 
-                fillOpacity={1} 
-                fill="url(#colorTotal)" 
-                name="Gross Value"
-                strokeWidth={3}
-              />
-              <Area 
-                type="monotone" 
-                dataKey="netValue" 
-                stroke={isDark ? '#10b981' : '#059669'} 
-                fillOpacity={1} 
-                fill="url(#colorNet)" 
-                name="Net Value (After Tax)"
-                strokeWidth={3}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </motion.div>
-
-      {/* Bottom Section: Pie Chart + Investment Recommendations */}
+      {/* Bottom Section: Investment Growth + Pie Chart + Recommendations */}
       <div className="grid lg:grid-cols-2 gap-6">
+        {/* Investment Growth Over Time */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className={`p-6 rounded-2xl ${
+            isDark 
+              ? 'bg-black/40 border border-purple-500/20' 
+              : 'bg-white/60 border border-[#244270]/10'
+          } backdrop-blur-xl`}
+        >
+          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+            Investment Growth Over Time
+          </h4>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={yearlyData}>
+                <defs>
+                  <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor={isDark ? '#a855f7' : '#244270'} stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorNet" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor={isDark ? '#10b981' : '#059669'} stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+                <XAxis 
+                  dataKey="year" 
+                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
+                />
+                <YAxis 
+                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} 
+                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                  tickFormatter={(value) => {
+                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                    return `${currency?.symbol || '$'}${value}`;
+                  }}
+                  width={70}
+                />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(36, 66, 112, 0.1)' }} />
+                <Area 
+                  type="monotone" 
+                  dataKey="totalValue" 
+                  stroke={isDark ? '#a855f7' : '#244270'} 
+                  fillOpacity={1} 
+                  fill="url(#colorTotal)" 
+                  name="Gross Value"
+                  strokeWidth={3}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="netValue" 
+                  stroke={isDark ? '#10b981' : '#059669'} 
+                  fillOpacity={1} 
+                  fill="url(#colorNet)" 
+                  name="Net Value (After Tax)"
+                  strokeWidth={3}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
         {/* Pie Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
