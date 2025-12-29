@@ -2,36 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BlockchainAnimation({ isDark }) {
-  const [activeNodes, setActiveNodes] = useState([]);
+  const [blocks, setBlocks] = useState([]);
   const [transactions, setTransactions] = useState([]);
-  const [smartContracts, setSmartContracts] = useState([]);
 
-  // Generate network nodes
+  // Generate blockchain blocks
   useEffect(() => {
-    const nodes = Array.from({ length: 12 }, (_, i) => ({
+    const initialBlocks = Array.from({ length: 8 }, (_, i) => ({
       id: i,
-      angle: (i * 30) * (Math.PI / 180),
-      radius: 45,
-      active: Math.random() > 0.3,
-      type: ['validator', 'node', 'contract'][Math.floor(Math.random() * 3)],
+      angle: (i * 45) * (Math.PI / 180),
+      radius: 42,
+      hash: Math.random().toString(36).substring(2, 10).toUpperCase(),
+      verified: i < 6,
+      type: ['token', 'nft', 'data'][Math.floor(Math.random() * 3)],
     }));
-    setActiveNodes(nodes);
+    setBlocks(initialBlocks);
   }, []);
 
-  // Animate transactions
+  // Animate transactions between blocks
   useEffect(() => {
     const interval = setInterval(() => {
-      if (activeNodes.length === 0) return;
+      if (blocks.length === 0) return;
       
-      const from = Math.floor(Math.random() * activeNodes.length);
-      let to = Math.floor(Math.random() * activeNodes.length);
-      while (to === from) to = Math.floor(Math.random() * activeNodes.length);
+      const from = Math.floor(Math.random() * blocks.length);
+      let to = Math.floor(Math.random() * blocks.length);
+      while (to === from) to = Math.floor(Math.random() * blocks.length);
 
       const newTx = {
         id: Date.now() + Math.random(),
         from,
         to,
-        progress: 0,
         type: ['token', 'nft', 'data'][Math.floor(Math.random() * 3)],
       };
 
@@ -39,75 +38,56 @@ export default function BlockchainAnimation({ isDark }) {
 
       setTimeout(() => {
         setTransactions(prev => prev.filter(tx => tx.id !== newTx.id));
-      }, 2000);
-    }, 1200);
+      }, 1800);
+    }, 1500);
 
     return () => clearInterval(interval);
-  }, [activeNodes]);
+  }, [blocks]);
 
-  // Smart contract execution animation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newContract = {
-        id: Date.now(),
-        angle: Math.random() * 360,
-      };
-      setSmartContracts(prev => [...prev, newContract]);
-
-      setTimeout(() => {
-        setSmartContracts(prev => prev.filter(c => c.id !== newContract.id));
-      }, 3000);
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const getNodePosition = (node) => {
+  const getBlockPosition = (block) => {
     return {
-      x: 60 + Math.cos(node.angle) * node.radius,
-      y: 60 + Math.sin(node.angle) * node.radius,
+      x: 60 + Math.cos(block.angle) * block.radius,
+      y: 60 + Math.sin(block.angle) * block.radius,
     };
   };
 
   const getTxColor = (type) => {
-    if (type === 'token') return isDark ? '#10b981' : '#059669';
-    if (type === 'nft') return isDark ? '#f59e0b' : '#d97706';
+    if (type === 'token') return isDark ? '#10b981' : '#16a34a';
+    if (type === 'nft') return isDark ? '#f59e0b' : '#ea580c';
     return isDark ? '#3b82f6' : '#2563eb';
   };
 
-  const getNodeColor = (type) => {
-    if (type === 'validator') return isDark ? '#8b5cf6' : '#7c3aed';
-    if (type === 'contract') return isDark ? '#ec4899' : '#db2777';
-    return isDark ? '#06b6d4' : '#0891b2';
+  const getBlockColor = (type, verified) => {
+    if (!verified) return isDark ? '#6b7280' : '#9ca3af';
+    if (type === 'token') return isDark ? '#10b981' : '#16a34a';
+    if (type === 'nft') return isDark ? '#f59e0b' : '#ea580c';
+    return isDark ? '#3b82f6' : '#2563eb';
   };
 
   return (
     <div className="relative w-32 h-32">
       <svg viewBox="0 0 120 120" className="w-full h-full" fill="none">
         <defs>
-          {/* Gradients */}
-          <radialGradient id="centerCore">
-            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} stopOpacity="0.3" />
-            <stop offset="50%" stopColor={isDark ? '#06b6d4' : '#0891b2'} stopOpacity="0.15" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-
           <linearGradient id="tokenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="100%" stopColor="#059669" />
+            <stop offset="0%" stopColor={isDark ? '#10b981' : '#16a34a'} />
+            <stop offset="100%" stopColor={isDark ? '#059669' : '#15803d'} />
           </linearGradient>
 
           <linearGradient id="nftGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="100%" stopColor="#d97706" />
+            <stop offset="0%" stopColor={isDark ? '#f59e0b' : '#ea580c'} />
+            <stop offset="100%" stopColor={isDark ? '#d97706' : '#c2410c'} />
           </linearGradient>
 
           <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#2563eb" />
+            <stop offset="0%" stopColor={isDark ? '#3b82f6' : '#2563eb'} />
+            <stop offset="100%" stopColor={isDark ? '#2563eb' : '#1d4ed8'} />
           </linearGradient>
 
-          {/* Filters */}
+          <linearGradient id="verifyingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={isDark ? '#8b5cf6' : '#7c3aed'} />
+            <stop offset="100%" stopColor={isDark ? '#7c3aed' : '#6d28d9'} />
+          </linearGradient>
+
           <filter id="glow">
             <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
             <feMerge>
@@ -117,7 +97,7 @@ export default function BlockchainAnimation({ isDark }) {
           </filter>
 
           <filter id="strongGlow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
@@ -125,94 +105,77 @@ export default function BlockchainAnimation({ isDark }) {
           </filter>
         </defs>
 
-        {/* Background grid */}
+        {/* Center core pulse */}
         <motion.circle
-          cx="60" cy="60" r="55"
-          fill="none"
-          stroke={isDark ? 'rgba(139, 92, 246, 0.08)' : 'rgba(124, 58, 237, 0.08)'}
-          strokeWidth="0.5"
-          strokeDasharray="2 2"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: '60px 60px' }}
-        />
-
-        <motion.circle
-          cx="60" cy="60" r="35"
-          fill="none"
-          stroke={isDark ? 'rgba(6, 182, 212, 0.08)' : 'rgba(8, 145, 178, 0.08)'}
-          strokeWidth="0.5"
-          strokeDasharray="2 2"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: '60px 60px' }}
-        />
-
-        {/* Center core - DeFi Hub */}
-        <motion.circle
-          cx="60" cy="60" r="25"
-          fill="url(#centerCore)"
+          cx="60" cy="60" r="15"
+          fill={isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(124, 58, 237, 0.08)'}
           animate={{ 
-            scale: [1, 1.05, 1],
+            scale: [1, 1.1, 1],
             opacity: [0.3, 0.5, 0.3] 
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: '60px 60px' }}
         />
 
-
-
-        {/* Connections between adjacent nodes (circular chain) */}
-        {activeNodes.map((node, index) => {
-          const currentPos = getNodePosition(node);
-          const nextNode = activeNodes[(index + 1) % activeNodes.length];
-          const nextPos = getNodePosition(nextNode);
+        {/* Connections between adjacent blocks */}
+        {blocks.map((block, index) => {
+          const currentPos = getBlockPosition(block);
+          const nextBlock = blocks[(index + 1) % blocks.length];
+          const nextPos = getBlockPosition(nextBlock);
           
           return (
             <motion.line
-              key={`connection-${node.id}`}
+              key={`connection-${block.id}`}
               x1={currentPos.x} y1={currentPos.y}
               x2={nextPos.x} y2={nextPos.y}
-              stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(124, 58, 237, 0.2)'}
-              strokeWidth="1"
+              stroke={isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.2)'}
+              strokeWidth="1.5"
+              strokeDasharray="3 3"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
+              animate={{ opacity: 0.4 }}
               transition={{ delay: index * 0.05 }}
             />
           );
         })}
 
-        {/* Network Nodes */}
-        {activeNodes.map((node) => {
-          const pos = getNodePosition(node);
+        {/* Blockchain Blocks */}
+        {blocks.map((block) => {
+          const pos = getBlockPosition(block);
+          const blockSize = 8;
+          const blockColor = getBlockColor(block.type, block.verified);
+          
           return (
             <motion.g
-              key={node.id}
+              key={block.id}
               initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: node.active ? 1 : 0.3, scale: 1 }}
-              transition={{ delay: node.id * 0.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: block.id * 0.08, type: "spring", stiffness: 200 }}
             >
               {/* Connection to center */}
               <motion.line
                 x1="60" y1="60"
                 x2={pos.x} y2={pos.y}
-                stroke={getNodeColor(node.type)}
+                stroke={blockColor}
                 strokeWidth="0.5"
-                opacity="0.15"
+                opacity="0.2"
                 strokeDasharray="2 2"
               />
 
-              {/* Node pulse effect */}
-              {node.active && (
-                <motion.circle
-                  cx={pos.x} cy={pos.y} r="4"
+              {/* Block verification pulse */}
+              {block.verified && (
+                <motion.rect
+                  x={pos.x - blockSize / 2 - 1}
+                  y={pos.y - blockSize / 2 - 1}
+                  width={blockSize + 2}
+                  height={blockSize + 2}
+                  rx="1.5"
                   fill="none"
-                  stroke={getNodeColor(node.type)}
+                  stroke={blockColor}
                   strokeWidth="0.5"
                   initial={{ opacity: 0.5, scale: 1 }}
                   animate={{ 
                     opacity: 0,
-                    scale: 2.5
+                    scale: 1.8
                   }}
                   transition={{ 
                     duration: 2,
@@ -223,112 +186,161 @@ export default function BlockchainAnimation({ isDark }) {
                 />
               )}
 
-              {/* Node body */}
-              <circle
-                cx={pos.x} cy={pos.y} r="4"
-                fill={getNodeColor(node.type)}
+              {/* Block outer glow */}
+              <rect
+                x={pos.x - blockSize / 2 - 1}
+                y={pos.y - blockSize / 2 - 1}
+                width={blockSize + 2}
+                height={blockSize + 2}
+                rx="1"
+                fill={blockColor}
                 opacity="0.2"
               />
-              
-              <motion.circle
-                cx={pos.x} cy={pos.y} r="2.5"
-                fill={getNodeColor(node.type)}
+
+              {/* Main Block */}
+              <motion.rect
+                x={pos.x - blockSize / 2}
+                y={pos.y - blockSize / 2}
+                width={blockSize}
+                height={blockSize}
+                rx="1"
+                fill={blockColor}
                 filter="url(#glow)"
-                animate={node.active ? {
-                  scale: [1, 1.2, 1]
-                } : {}}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity,
-                  repeatDelay: Math.random() * 2
+                animate={block.verified ? {} : {
+                  opacity: [0.5, 1, 0.5]
                 }}
-                style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
+                transition={{ 
+                  duration: 1.5, 
+                  repeat: Infinity 
+                }}
               />
 
-              {/* Node highlight */}
-              <circle
-                cx={pos.x - 0.8} cy={pos.y - 0.8} r="0.8"
-                fill={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.8)'}
+              {/* Block inner detail */}
+              <rect
+                x={pos.x - blockSize / 2 + 1}
+                y={pos.y - blockSize / 2 + 1}
+                width={blockSize - 2}
+                height={blockSize - 2}
+                rx="0.5"
+                fill="none"
+                stroke={isDark ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.4)'}
+                strokeWidth="0.5"
               />
 
-              {/* Validator badge */}
-              {node.type === 'validator' && (
+              {/* Data lines inside block */}
+              <line
+                x1={pos.x - 2}
+                y1={pos.y - 1}
+                x2={pos.x + 2}
+                y2={pos.y - 1}
+                stroke={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.5)'}
+                strokeWidth="0.5"
+              />
+              <line
+                x1={pos.x - 2}
+                y1={pos.y + 1}
+                x2={pos.x + 2}
+                y2={pos.y + 1}
+                stroke={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.5)'}
+                strokeWidth="0.5"
+              />
+
+              {/* Verification checkmark */}
+              {block.verified && (
                 <motion.path
-                  d={`M ${pos.x - 1.5} ${pos.y} L ${pos.x - 0.5} ${pos.y + 1.2} L ${pos.x + 1.5} ${pos.y - 1}`}
-                  stroke="white"
-                  strokeWidth="0.6"
+                  d={`M ${pos.x - 1.5} ${pos.y} L ${pos.x - 0.5} ${pos.y + 1.5} L ${pos.x + 1.5} ${pos.y - 1}`}
+                  stroke={isDark ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.9)'}
+                  strokeWidth="0.8"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   fill="none"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.3, delay: node.id * 0.05 }}
+                  transition={{ duration: 0.3, delay: block.id * 0.08 }}
                 />
               )}
             </motion.g>
           );
         })}
 
-        {/* Transactions flowing between nodes */}
+        {/* Transactions flowing between blocks */}
         <AnimatePresence>
           {transactions.map((tx) => {
-            const fromPos = getNodePosition(activeNodes[tx.from]);
-            const toPos = getNodePosition(activeNodes[tx.to]);
+            const fromPos = getBlockPosition(blocks[tx.from]);
+            const toPos = getBlockPosition(blocks[tx.to]);
             
             return (
               <motion.g key={tx.id}>
-                {/* Transaction path */}
+                {/* Transaction path glow */}
                 <motion.line
                   x1={fromPos.x} y1={fromPos.y}
                   x2={toPos.x} y2={toPos.y}
                   stroke={getTxColor(tx.type)}
-                  strokeWidth="1"
+                  strokeWidth="2"
                   opacity="0"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 0.4, 0] }}
-                  transition={{ duration: 2 }}
+                  animate={{ opacity: [0, 0.3, 0] }}
+                  transition={{ duration: 1.8 }}
+                  filter="url(#strongGlow)"
                 />
 
-                {/* Moving particle */}
-                <motion.circle
-                  r="1.5"
-                  fill={getTxColor(tx.type)}
-                  filter="url(#strongGlow)"
+                {/* Moving data packet (cube) */}
+                <motion.g
                   initial={{ 
-                    cx: fromPos.x,
-                    cy: fromPos.y,
+                    x: fromPos.x,
+                    y: fromPos.y,
                     scale: 0
                   }}
                   animate={{ 
-                    cx: toPos.x,
-                    cy: toPos.y,
-                    scale: [0, 1.5, 1, 0]
+                    x: toPos.x,
+                    y: toPos.y,
+                    scale: [0, 1.2, 1, 0]
                   }}
                   transition={{ 
-                    duration: 2,
+                    duration: 1.8,
                     ease: "easeInOut"
                   }}
-                />
-
-                {/* Trail effect */}
-                {[...Array(3)].map((_, i) => (
-                  <motion.circle
-                    key={i}
-                    r="0.8"
+                >
+                  <rect
+                    x={-1.5}
+                    y={-1.5}
+                    width="3"
+                    height="3"
+                    rx="0.5"
                     fill={getTxColor(tx.type)}
-                    opacity="0.5"
+                    filter="url(#strongGlow)"
+                  />
+                  <rect
+                    x={-1}
+                    y={-1}
+                    width="2"
+                    height="2"
+                    rx="0.3"
+                    fill={isDark ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.5)'}
+                  />
+                </motion.g>
+
+                {/* Trail particles */}
+                {[...Array(3)].map((_, i) => (
+                  <motion.rect
+                    key={i}
+                    width="1.5"
+                    height="1.5"
+                    rx="0.3"
+                    fill={getTxColor(tx.type)}
+                    opacity="0.6"
                     initial={{ 
-                      cx: fromPos.x,
-                      cy: fromPos.y,
+                      x: fromPos.x - 0.75,
+                      y: fromPos.y - 0.75,
                       scale: 0
                     }}
                     animate={{ 
-                      cx: toPos.x,
-                      cy: toPos.y,
+                      x: toPos.x - 0.75,
+                      y: toPos.y - 0.75,
                       scale: [0, 1, 0]
                     }}
                     transition={{ 
-                      duration: 2,
+                      duration: 1.8,
                       delay: i * 0.15,
                       ease: "easeInOut"
                     }}
@@ -339,108 +351,77 @@ export default function BlockchainAnimation({ isDark }) {
           })}
         </AnimatePresence>
 
-        {/* Smart Contract Execution Rings */}
-        <AnimatePresence>
-          {smartContracts.map((contract) => (
-            <motion.g key={contract.id}>
-              {/* Execution wave */}
-              <motion.circle
-                cx="60" cy="60" r="15"
-                fill="none"
-                stroke={isDark ? '#ec4899' : '#db2777'}
-                strokeWidth="1.5"
-                initial={{ scale: 0, opacity: 0.8 }}
-                animate={{ 
-                  scale: 3,
-                  opacity: 0
-                }}
-                transition={{ 
-                  duration: 3,
-                  ease: "easeOut"
-                }}
-                style={{ transformOrigin: '60px 60px' }}
-              />
-
-              {/* Code particles */}
-              {[0, 72, 144, 216, 288].map((angle) => {
-                const rad = (angle + contract.angle) * (Math.PI / 180);
-                return (
-                  <motion.rect
-                    key={angle}
-                    width="2"
-                    height="1"
-                    fill={isDark ? '#ec4899' : '#db2777'}
-                    rx="0.5"
-                    initial={{
-                      x: 59,
-                      y: 59,
-                      opacity: 0
-                    }}
-                    animate={{
-                      x: 60 + Math.cos(rad) * 40 - 1,
-                      y: 60 + Math.sin(rad) * 40 - 0.5,
-                      opacity: [0, 1, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      ease: "easeOut"
-                    }}
-                  />
-                );
-              })}
-            </motion.g>
-          ))}
-        </AnimatePresence>
-
-        {/* Outer data stream */}
-        <motion.circle
-          cx="60" cy="60" r="58"
-          fill="none"
-          stroke={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(124, 58, 237, 0.2)'}
-          strokeWidth="2"
-          strokeDasharray="5 10"
+        {/* Center network hub - cubic design */}
+        <motion.g
           animate={{ 
-            rotate: 360,
-            strokeDashoffset: [0, -15]
+            rotate: [0, 360]
           }}
           transition={{ 
-            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-            strokeDashoffset: { duration: 2, repeat: Infinity, ease: "linear" }
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
           }}
           style={{ transformOrigin: '60px 60px' }}
-        />
+        >
+          {/* Outer cube */}
+          <rect
+            x="54" y="54"
+            width="12" height="12"
+            rx="2"
+            fill="none"
+            stroke={isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(124, 58, 237, 0.4)'}
+            strokeWidth="1"
+          />
+          
+          {/* Inner cube */}
+          <rect
+            x="56" y="56"
+            width="8" height="8"
+            rx="1"
+            fill={isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(124, 58, 237, 0.15)'}
+            stroke={isDark ? 'rgba(139, 92, 246, 0.5)' : 'rgba(124, 58, 237, 0.6)'}
+            strokeWidth="0.5"
+          />
+        </motion.g>
+
+        {/* Corner markers */}
+        {[
+          { x: 57, y: 57 },
+          { x: 63, y: 57 },
+          { x: 57, y: 63 },
+          { x: 63, y: 63 }
+        ].map((corner, i) => (
+          <motion.circle
+            key={i}
+            cx={corner.x}
+            cy={corner.y}
+            r="0.5"
+            fill={isDark ? '#8b5cf6' : '#7c3aed'}
+            animate={{ 
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.2
+            }}
+          />
+        ))}
       </svg>
 
-      {/* Glassmorphic overlay with stats */}
+      {/* Stats overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className={`text-center ${isDark ? 'text-white/30' : 'text-black/30'} text-[6px] font-mono`}>
-          <motion.div
-            key={transactions.length}
-            initial={{ scale: 1.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap"
-          >
-            {transactions.length} TX/s
-          </motion.div>
-        </div>
+        <motion.div
+          key={transactions.length}
+          initial={{ scale: 1.3, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[7px] font-mono font-bold ${
+            isDark ? 'text-purple-400/60' : 'text-purple-600/70'
+          }`}
+        >
+          {transactions.length} TX
+        </motion.div>
       </div>
-
-
-
-      {/* Rotating gradient rim */}
-      <motion.div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background: `conic-gradient(from 0deg, 
-            transparent 0deg, 
-            ${isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(124, 58, 237, 0.15)'} 60deg, 
-            ${isDark ? 'rgba(236, 72, 153, 0.15)' : 'rgba(219, 39, 119, 0.15)'} 120deg,
-            ${isDark ? 'rgba(6, 182, 212, 0.15)' : 'rgba(8, 145, 178, 0.15)'} 180deg,
-            transparent 240deg)`,
-        }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      />
     </div>
   );
 }
