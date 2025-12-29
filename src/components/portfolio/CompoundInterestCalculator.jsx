@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, TrendingUp, DollarSign, Percent, Calendar, HelpCircle, Target } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer } from 'recharts';
+import { Calculator, DollarSign, Percent, Calendar, HelpCircle } from 'lucide-react';
 
 const currencies = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
@@ -25,31 +24,80 @@ const tooltips = {
   currency: 'Select the currency for your investment calculations',
   initial: 'The amount of money you start with',
   monthly: 'How much you plan to add each month to your investment',
-  rate: 'The expected annual return rate (e.g., stock market average is ~7-10%)',
+  rate: 'The expected return rate',
   years: 'How long you plan to keep your money invested',
-  tax: 'Enter the capital gains tax rate in your country. Note: If you are referring to a provident fund (קרן השתלמות), there is NO capital gains tax, so enter 0. All other investments are subject to tax - check your country\'s rate',
-  compound: 'How often the interest is calculated and added to your balance',
-  target: 'The final amount you want to reach with your investment',
+  tax: 'Capital gains tax rate. For provident funds (קרן השתלמות), enter 0',
+  target: 'The final amount you want to reach',
 };
 
 export default function CompoundInterestCalculator({ isDark, onCalculate }) {
-  const [calculatorMode, setCalculatorMode] = useState('standard');
   const [principal, setPrincipal] = useState(10000);
   const [monthlyContribution, setMonthlyContribution] = useState(500);
   const [annualRate, setAnnualRate] = useState(7);
   const [years, setYears] = useState(10);
+  const [targetAmount, setTargetAmount] = useState('');
   const [currency, setCurrency] = useState(currencies[0]);
   const [capitalGainsTax, setCapitalGainsTax] = useState(25);
-  const [rateType, setRateType] = useState('annually'); // daily, weekly, monthly, quarterly, annually
-  const [targetAmount, setTargetAmount] = useState(100000);
+  const [rateType, setRateType] = useState('annually');
+  const [calculateField, setCalculateField] = useState(null); // Which field to calculate
 
   const results = useMemo(() => {
     const n = rateTypes[rateType].periods;
-    const t = years;
+    const t = years || 10;
 
-    if (calculatorMode === 'target') {
-      // Target mode: Calculate required rate
-      const target = targetAmount;
+    // If user wants to calculate target amount
+    if (calculateField === 'target' || (targetAmount === '' && principal && monthlyContribution && annualRate && years)) {
+      const r = annualRate / 100;
+      const periodRate = r / n;
+      const totalPeriods = n * t;
+      const contributionsPerYear = 12;
+      const contributionPerPeriod = (monthlyContribution * contributionsPerYear) / n;
+
+      const futureValuePrincipal = principal * Math.pow(1 + periodRate, totalPeriods);
+      const futureValueContributions = contributionPerPeriod * ((Math.pow(1 + periodRate, totalPeriods) - 1) / periodRate);
+
+      const totalFutureValue = futureValuePrincipal + futureValueContributions;
+      const totalContributions = principal + monthlyContribution * 12 * t;
+      const totalInterest = totalFutureValue - totalContributions;
+      const taxAmount = (totalInterest * capitalGainsTax) / 100;
+      const netFutureValue = totalFutureValue - taxAmount;
+
+      const yearlyData = [];
+      for (let year = 0; year <= t; year++) {
+        const fvPrincipal = principal * Math.pow(1 + periodRate, n * year);
+        const periods = n * year;
+        const fvContributions = periods > 0 ? contributionPerPeriod * ((Math.pow(1 + periodRate, periods) - 1) / periodRate) : 0;
+        const total = fvPrincipal + fvContributions;
+        const contributions = principal + monthlyContribution * 12 * year;
+        const interest = total - contributions;
+        const yearTax = (interest * capitalGainsTax) / 100;
+        const netValue = total - yearTax;
+        
+        yearlyData.push({
+          year,
+          totalValue: Math.round(total),
+          contributions: Math.round(contributions),
+          interest: Math.round(interest),
+          tax: Math.round(yearTax),
+          netValue: Math.round(netValue),
+        });
+      }
+
+      return {
+        futureValue: Math.round(totalFutureValue),
+        totalContributions: Math.round(totalContributions),
+        totalInterest: Math.round(totalInterest),
+        taxAmount: Math.round(taxAmount),
+        netFutureValue: Math.round(netFutureValue),
+        yearlyData,
+        calculatedField: null,
+        calculatedValue: null,
+      };
+    }
+    
+    // If user wants to calculate required rate
+    if (calculateField === 'rate' || (targetAmount && !annualRate && principal && monthlyContribution && years)) {
+      const target = parseFloat(targetAmount) || 100000;
       const totalMonthlyContributions = monthlyContribution * 12 * t;
       const totalContributions = principal + totalMonthlyContributions;
 
@@ -120,63 +168,23 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         taxAmount: Math.round(taxAmount),
         netFutureValue: Math.round(netFutureValue),
         yearlyData,
-        requiredRate: requiredRate.toFixed(2),
-        rateType,
-      };
-    } else {
-      // Standard mode: Calculate future value
-      const r = annualRate / 100;
-      const P = principal;
-      const PMT = monthlyContribution;
-
-      const periodRate = r / n;
-      const totalPeriods = n * t;
-      const contributionsPerYear = 12;
-      const contributionPerPeriod = (monthlyContribution * contributionsPerYear) / n;
-
-      const futureValuePrincipal = P * Math.pow(1 + periodRate, totalPeriods);
-      const futureValueContributions = contributionPerPeriod * ((Math.pow(1 + periodRate, totalPeriods) - 1) / periodRate);
-
-      const totalFutureValue = futureValuePrincipal + futureValueContributions;
-      const totalContributions = P + PMT * 12 * t;
-      const totalInterest = totalFutureValue - totalContributions;
-
-      const taxAmount = (totalInterest * capitalGainsTax) / 100;
-      const netFutureValue = totalFutureValue - taxAmount;
-
-      const yearlyData = [];
-      for (let year = 0; year <= t; year++) {
-        const fvPrincipal = P * Math.pow(1 + periodRate, n * year);
-        const periods = n * year;
-        const fvContributions = periods > 0 ? contributionPerPeriod * ((Math.pow(1 + periodRate, periods) - 1) / periodRate) : 0;
-        const total = fvPrincipal + fvContributions;
-        const contributions = P + PMT * 12 * year;
-        const interest = total - contributions;
-        const yearTax = (interest * capitalGainsTax) / 100;
-        const netValue = total - yearTax;
-        
-        yearlyData.push({
-          year,
-          totalValue: Math.round(total),
-          contributions: Math.round(contributions),
-          interest: Math.round(interest),
-          tax: Math.round(yearTax),
-          netValue: Math.round(netValue),
-        });
-      }
-
-      return {
-        futureValue: Math.round(totalFutureValue),
-        totalContributions: Math.round(totalContributions),
-        totalInterest: Math.round(totalInterest),
-        taxAmount: Math.round(taxAmount),
-        netFutureValue: Math.round(netFutureValue),
-        yearlyData,
-        requiredRate: null,
-        rateType,
+        calculatedField: 'rate',
+        calculatedValue: requiredRate.toFixed(2),
       };
     }
-  }, [calculatorMode, principal, monthlyContribution, annualRate, years, capitalGainsTax, rateType, targetAmount]);
+
+    // Default calculation
+    return {
+      futureValue: 0,
+      totalContributions: 0,
+      totalInterest: 0,
+      taxAmount: 0,
+      netFutureValue: 0,
+      yearlyData: [],
+      calculatedField: null,
+      calculatedValue: null,
+    };
+  }, [principal, monthlyContribution, annualRate, years, targetAmount, capitalGainsTax, rateType, calculateField]);
 
   React.useEffect(() => {
     onCalculate({ ...results, currency });
@@ -194,22 +202,6 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
 
   const labelClass = `flex items-center gap-2 text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`;
 
-  const CustomChartTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className={`p-3 rounded-xl ${isDark ? 'bg-[#141225] border border-purple-500/30' : 'bg-white border border-[#244270]/20'} shadow-xl`}>
-          <p className={`font-semibold mb-1 ${isDark ? 'text-white' : 'text-[#141225]'}`}>Year {label}</p>
-          {payload.map((entry, index) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {formatCurrency(entry.value)}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -225,43 +217,14 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         <div className={`p-3 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-[#244270]/10'}`}>
           <Calculator className={`w-6 h-6 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
         </div>
-        <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-          Investment Calculator
-        </h3>
-      </div>
-
-      {/* Mode Selector */}
-      <div className="flex gap-2 mb-6">
-        <button
-          onClick={() => setCalculatorMode('standard')}
-          className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all ${
-            calculatorMode === 'standard'
-              ? isDark
-                ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white'
-                : 'bg-gradient-to-r from-[#244270] to-[#4dbdce] text-white'
-              : isDark
-              ? 'bg-white/5 text-white/70 hover:bg-white/10'
-              : 'bg-[#244270]/5 text-[#141225]/70 hover:bg-[#244270]/10'
-          }`}
-        >
-          <Calculator className="w-4 h-4 inline mr-2" />
-          Standard Calculator
-        </button>
-        <button
-          onClick={() => setCalculatorMode('target')}
-          className={`flex-1 px-4 py-3 rounded-lg font-medium transition-all ${
-            calculatorMode === 'target'
-              ? isDark
-                ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white'
-                : 'bg-gradient-to-r from-[#244270] to-[#4dbdce] text-white'
-              : isDark
-              ? 'bg-white/5 text-white/70 hover:bg-white/10'
-              : 'bg-[#244270]/5 text-[#141225]/70 hover:bg-[#244270]/10'
-          }`}
-        >
-          <Target className="w-4 h-4 inline mr-2" />
-          Target Calculator
-        </button>
+        <div>
+          <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            Investment Calculator
+          </h3>
+          <p className={`text-xs ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>
+            Leave one field empty to calculate it
+          </p>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -336,72 +299,57 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           />
         </div>
 
-        {/* Rate or Target */}
-        {calculatorMode === 'standard' ? (
-          <div>
-            <label className={labelClass}>
-              <Percent className="w-4 h-4" />
-              <span>Interest Rate (%)</span>
-              <div className="relative group">
-                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
-                <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
-                  isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
-                }`}>
-                  {tooltips.rate}
-                </div>
+        {/* Interest Rate */}
+        <div>
+          <label className={labelClass}>
+            <Percent className="w-4 h-4" />
+            <span>Interest Rate (%) {results.calculatedField === 'rate' && '- Calculated'}</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.rate}
               </div>
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                value={annualRate}
-                onChange={(e) => setAnnualRate(Number(e.target.value))}
-                className={`${inputClass} pr-28`}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-              <select
-                value={rateType}
-                onChange={(e) => setRateType(e.target.value)}
-                className={`absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-sm font-medium ${
-                  isDark 
-                    ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300 hover:bg-purple-500/30' 
-                    : 'bg-[#244270]/10 border border-[#244270]/20 text-[#244270] hover:bg-[#244270]/20'
-                }`}
-              >
-                {Object.entries(rateTypes).map(([key, { label }]) => (
-                  <option key={key} value={key} className="bg-gray-900">
-                    {label}
-                  </option>
-                ))}
-              </select>
             </div>
-          </div>
-        ) : (
-          <div>
-            <label className={labelClass}>
-              <Target className="w-4 h-4" />
-              <span>Target Amount</span>
-              <div className="relative group">
-                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
-                <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
-                  isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
-                }`}>
-                  {tooltips.target}
-                </div>
-              </div>
-            </label>
+          </label>
+          <div className="relative">
             <input
               type="number"
-              value={targetAmount}
-              onChange={(e) => setTargetAmount(Number(e.target.value))}
-              className={inputClass}
+              value={results.calculatedField === 'rate' ? results.calculatedValue : annualRate}
+              onChange={(e) => {
+                setAnnualRate(Number(e.target.value));
+                setCalculateField(null);
+              }}
+              onFocus={() => {
+                if (targetAmount) {
+                  setCalculateField('rate');
+                  setAnnualRate('');
+                }
+              }}
+              className={`${inputClass} pr-28 ${results.calculatedField === 'rate' ? 'bg-green-500/10 border-green-500/30' : ''}`}
               min="0"
-              step="1000"
+              max="100"
+              step="0.1"
+              placeholder="Leave empty to calculate"
             />
+            <select
+              value={rateType}
+              onChange={(e) => setRateType(e.target.value)}
+              className={`absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-sm font-medium ${
+                isDark 
+                  ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300 hover:bg-purple-500/30' 
+                  : 'bg-[#244270]/10 border border-[#244270]/20 text-[#244270] hover:bg-[#244270]/20'
+              }`}
+            >
+              {Object.entries(rateTypes).map(([key, { label }]) => (
+                <option key={key} value={key} className="bg-gray-900">
+                  {label}
+                </option>
+              ))}
+            </select>
           </div>
-        )}
+        </div>
 
         {/* Investment Period */}
         <div>
@@ -424,6 +372,38 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
             className={inputClass}
             min="1"
             max="50"
+          />
+        </div>
+
+        {/* Target Amount */}
+        <div>
+          <label className={labelClass}>
+            <DollarSign className="w-4 h-4" />
+            <span>Target Amount {!results.calculatedField && '(Optional)'}</span>
+            <div className="relative group">
+              <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-50 hover:opacity-100" />
+              <div className={`absolute left-0 bottom-full mb-2 w-64 p-2 rounded-lg text-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 ${
+                isDark ? 'bg-purple-500/90 text-white' : 'bg-[#244270]/90 text-white'
+              }`}>
+                {tooltips.target}
+              </div>
+            </div>
+          </label>
+          <input
+            type="number"
+            value={targetAmount}
+            onChange={(e) => {
+              setTargetAmount(e.target.value);
+              if (e.target.value) {
+                setCalculateField('rate');
+              } else {
+                setCalculateField(null);
+              }
+            }}
+            className={inputClass}
+            min="0"
+            step="1000"
+            placeholder="Leave empty for standard calculation"
           />
         </div>
 
@@ -459,13 +439,13 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
           Investment Summary
         </h4>
         
-        {calculatorMode === 'target' && results.requiredRate && (
+        {results.calculatedField === 'rate' && (
           <div className="mb-6 text-center">
             <p className={`text-xs mb-2 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-              Required Annual Return Rate
+              Required Return Rate
             </p>
             <p className={`text-3xl font-bold ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
-              {results.requiredRate}%
+              {results.calculatedValue}%
             </p>
             <p className={`text-xs mt-1 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
               {rateTypes[rateType].label} compounding
@@ -475,9 +455,7 @@ export default function CompoundInterestCalculator({ isDark, onCalculate }) {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>
-              {calculatorMode === 'target' ? 'Target Value' : 'Gross Value'}
-            </p>
+            <p className={`text-xs mb-1 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Future Value</p>
             <p className={`text-base md:text-lg font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'} break-words`}>
               {formatCurrency(results.futureValue)}
             </p>

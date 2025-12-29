@@ -68,10 +68,7 @@ export default function CryptoAddressAnimation({ isDark }) {
         }
         
         if (newTransactions.length > 0) {
-          setTransactions(prev => {
-            const combined = [...newTransactions, ...prev];
-            return combined.slice(0, 10);
-          });
+          setTransactions(newTransactions.slice(0, 4));
         }
       } catch (error) {
         console.error('Error fetching BTC:', error);
