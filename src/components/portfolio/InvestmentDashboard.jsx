@@ -113,87 +113,39 @@ export default function InvestmentDashboard({ isDark, data }) {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Pie Chart */}
-        <div className="h-full">
-          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-            Portfolio Breakdown
-          </h4>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="35%"
-                  outerRadius="65%"
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  formatter={(value) => formatCurrency(value)}
-                  contentStyle={{
-                    fontSize: '13px',
-                    padding: '8px 12px',
-                    borderRadius: '8px'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          
-          {/* Legend */}
-          <div className="flex flex-wrap justify-center gap-4 mt-4">
-            {pieData.map((item) => (
-              <div key={item.name} className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }} />
-                <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-                  {item.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Annual Interest Growth */}
-        <div>
-          <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-            Annual Interest Earned
-          </h4>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={yearlyData.slice(1)}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
-                <XAxis 
-                  dataKey="year" 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
-                />
-                <YAxis 
-                  stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
-                  tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
-                  tickFormatter={(value) => {
-                    if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
-                    if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
-                    return `${currency?.symbol || '$'}${value}`;
-                  }}
-                  width={70}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar 
-                  dataKey="interest" 
-                  fill={isDark ? '#a855f7' : '#244270'} 
-                  name="Interest Earned"
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      {/* Annual Interest Growth */}
+      <div className="mt-8">
+        <h4 className={`text-sm font-medium mb-4 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+          Annual Interest Earned
+        </h4>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={yearlyData.slice(1)}>
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+              <XAxis 
+                dataKey="year" 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 12 }}
+              />
+              <YAxis 
+                stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
+                tick={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}
+                tickFormatter={(value) => {
+                  if (value >= 1000000) return `${currency?.symbol || '$'}${(value / 1000000).toFixed(1)}M`;
+                  if (value >= 1000) return `${currency?.symbol || '$'}${(value / 1000).toFixed(0)}k`;
+                  return `${currency?.symbol || '$'}${value}`;
+                }}
+                width={70}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar 
+                dataKey="interest" 
+                fill={isDark ? '#a855f7' : '#244270'} 
+                name="Interest Earned"
+                radius={[6, 6, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 

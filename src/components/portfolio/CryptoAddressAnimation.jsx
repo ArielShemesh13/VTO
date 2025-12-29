@@ -76,11 +76,15 @@ export default function CryptoAddressAnimation({ isDark }) {
     return () => clearInterval(interval);
   }, [btcPrice]);
 
-  // Trigger animation every 5 seconds on existing transactions
+  // Trigger animation every 5 seconds - only when data is stable
   useEffect(() => {
     if (transactions.length === 0) return;
 
-    let currentIndex = 1; // Start from second transaction (first was already animated on load)
+    // Don't start animation loop immediately after data load
+    const timeSinceUpdate = Date.now() - lastUpdateTime;
+    if (timeSinceUpdate < 3000) return; // Wait 3 seconds after data load
+
+    let currentIndex = 1; // Start from second transaction
     const animateNext = () => {
       if (transactions.length === 0) return;
       setAnimatingTx(transactions[currentIndex].id);
@@ -90,7 +94,7 @@ export default function CryptoAddressAnimation({ isDark }) {
 
     const interval = setInterval(animateNext, 5000);
     return () => clearInterval(interval);
-  }, [transactions]);
+  }, [transactions, lastUpdateTime]);
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center overflow-hidden">

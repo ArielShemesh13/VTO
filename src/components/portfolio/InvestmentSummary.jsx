@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function InvestmentSummary({ isDark, data, currency }) {
   if (!data || !data.futureValue) return null;
@@ -7,6 +8,12 @@ export default function InvestmentSummary({ isDark, data, currency }) {
   const formatCurrency = (value) => {
     return `${currency.symbol}${value.toLocaleString()}`;
   };
+
+  const pieData = [
+    { name: 'Invested', value: data.totalContributions, color: isDark ? '#06b6d4' : '#0891b2' },
+    { name: 'Gains', value: data.totalInterest, color: isDark ? '#10b981' : '#059669' },
+    { name: 'Tax', value: data.taxAmount, color: isDark ? '#ef4444' : '#dc2626' },
+  ];
 
   return (
     <motion.div
@@ -20,7 +27,7 @@ export default function InvestmentSummary({ isDark, data, currency }) {
       }`}
     >
       <h4 className={`text-lg font-bold mb-6 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-        Investment Growth Over Time
+        Investment Summary
       </h4>
       
 
@@ -61,6 +68,52 @@ export default function InvestmentSummary({ isDark, data, currency }) {
         <p className={`text-xs text-center mt-2 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
           ROI: {data.totalContributions > 0 ? ((data.netFutureValue / data.totalContributions - 1) * 100).toFixed(1) : '0'}%
         </p>
+      </div>
+
+      {/* Pie Chart */}
+      <div className={`mt-6 pt-6 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
+        <h5 className={`text-sm font-medium mb-4 text-center ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+          Portfolio Breakdown
+        </h5>
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieData}
+                cx="50%"
+                cy="50%"
+                innerRadius="35%"
+                outerRadius="65%"
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip 
+                formatter={(value) => formatCurrency(value)}
+                contentStyle={{
+                  fontSize: '13px',
+                  padding: '8px 12px',
+                  borderRadius: '8px'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        
+        {/* Legend */}
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
+          {pieData.map((item) => (
+            <div key={item.name} className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded" style={{ backgroundColor: item.color }} />
+              <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                {item.name}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
