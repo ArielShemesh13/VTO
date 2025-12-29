@@ -57,7 +57,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
           const valueBtc = valueSat / 1e8;
           const valueUsd = valueBtc * prices.BTC;
           
-          if (valueUsd >= 100000 && valueBtc > 0) {
+          if (valueUsd >= 10000 && valueBtc > 0) {
             setTransactions(prev => ({
               ...prev,
               BTC: {
@@ -102,7 +102,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
           const valueEth = valueWei / 1e18;
           const valueUsd = valueEth * prices.ETH;
           
-          if (valueUsd >= 100000 && valueEth > 0) {
+          if (valueUsd >= 10000 && valueEth > 0) {
             setTransactions(prev => ({
               ...prev,
               ETH: {
@@ -143,7 +143,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
           const amount = parseInt(tx.value) / 1e18;
           const valueUsd = amount * prices.LINK;
           
-          if (valueUsd >= 100000) {
+          if (valueUsd >= 10000) {
             setTransactions(prev => ({
               ...prev,
               LINK: {
@@ -193,7 +193,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
           const amount = 1000 + Math.random() * 2000;
           const valueUsd = amount * prices.SOL;
           
-          if (valueUsd >= 100000) {
+          if (valueUsd >= 10000) {
             const fakeHash = 'SOL_' + Math.random().toString(36).substring(2, 15);
             setTransactions(prev => ({
               ...prev,
@@ -245,7 +245,7 @@ export default function EthereumTransactionsAnimation({ isDark }) {
             const amount = parseInt(tx.Amount) / 1000000;
             const valueUsd = amount * prices.XRP;
             
-            if (valueUsd >= 100000) {
+            if (valueUsd >= 10000) {
               setTransactions(prev => ({
                 ...prev,
                 XRP: {
