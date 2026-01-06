@@ -5,9 +5,9 @@ import AnimatedLogo from './AnimatedLogo';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/arielSHEMESH1999', label: 'GitHub' },
+    { icon: Github, href: 'https://github.com/ArielShemesh13', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:arielshemesh1999@gmail.com', label: 'Email' },
+    { icon: Mail, href: 'mailto:ArielShemesh1999@gmail.com', label: 'Email' },
   ];
 
   const handleDownloadCV = () => {
