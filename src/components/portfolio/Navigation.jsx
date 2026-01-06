@@ -71,7 +71,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                     className={`absolute -bottom-1 left-0 right-0 h-0.5 ${
                       isDark 
                         ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400'
-                        : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'
+                        : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
                     }`}
                     layoutId="activeNav"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
