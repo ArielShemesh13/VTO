@@ -64,10 +64,7 @@ Sent from your portfolio website contact form
             Get In Touch
           </p>
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            Let's{' '}
-            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} bg-clip-text text-transparent`}>
-              Connect
-            </span>
+            Let's Connect
           </h2>
           <p className={`max-w-2xl mx-auto ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
             Looking for an entry-level data analyst? I'm actively seeking opportunities to bring fresh thinking, 

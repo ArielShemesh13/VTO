@@ -40,10 +40,7 @@ export default function EducationSection({ isDark }) {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center mb-16">
             <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              Academic{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} bg-clip-text text-transparent`}>
-                Background
-              </span>
+              Academic Background
             </h2>
           </motion.div>
 
