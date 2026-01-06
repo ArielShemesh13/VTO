@@ -10,9 +10,6 @@ export default function AnimatedLogo({ isDark }) {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: isDark ? '#141b33' : '#1a2540',
-      borderRadius: '16px',
-      overflow: 'hidden',
     }}>
       <div style={{
         position: 'relative',
@@ -20,15 +17,6 @@ export default function AnimatedLogo({ isDark }) {
         height: '300px',
       }}>
         <style>{`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-          }
-          
-          .logo-container {
-            animation: float 4s ease-in-out infinite;
-          }
-          
           .shape {
             position: absolute;
             top: 0;
@@ -122,7 +110,7 @@ export default function AnimatedLogo({ isDark }) {
           }
         `}</style>
         
-        <div className="logo-container">
+        <div>
           <div className="shape-white"></div>
           <div className="shape shape-top"></div>
           <div className="shape shape-right"></div>
