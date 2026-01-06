@@ -65,7 +65,7 @@ Sent from your portfolio website contact form
           </p>
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
             Let's{' '}
-            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#c4b5fd] via-[#a78bfa] to-[#8b5cf6]'} bg-clip-text text-transparent`}>
+            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'text-[#a5b4fc]'} bg-clip-text text-transparent`}>
               Connect
             </span>
           </h2>
@@ -197,7 +197,7 @@ Sent from your portfolio website contact form
 
                   <motion.button
                     type="submit"
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#c4b5fd] via-[#a78bfa] to-[#8b5cf6] text-white hover:from-[#ddd6fe] hover:via-[#c4b5fd] hover:to-[#a78bfa]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-purple-500/25'} transition-all duration-300`}
+                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-[#a5b4fc] text-white hover:bg-[#8b9dfc]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-indigo-400/25'} transition-all duration-300`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
