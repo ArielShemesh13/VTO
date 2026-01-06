@@ -48,14 +48,9 @@ export default function SkillsSection({ isDark }) {
 
         <div className="grid md:grid-cols-3 gap-8">
           {capabilities.map((capability, index) => (
-            <motion.div
+            <div
               key={capability.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
               className={`p-6 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/70 border border-[#c7d2fe] hover:border-[#a5b4fc]'} backdrop-blur-xl transition-all duration-300 group`}
-              whileHover={{ y: -5 }}
             >
               <div className="text-5xl mb-4">{capability.icon}</div>
               
@@ -69,22 +64,18 @@ export default function SkillsSection({ isDark }) {
               
               <div className="space-y-2">
                 {capability.skills.map((skill, skillIndex) => (
-                  <motion.div
+                  <div
                     key={skill}
                     className="flex items-center gap-2"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.2 + skillIndex * 0.05 }}
                   >
                     <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]'}`} />
                     <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#475569]'}`}>
                       {skill}
                     </span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
