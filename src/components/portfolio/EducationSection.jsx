@@ -8,19 +8,19 @@ export default function EducationSection({ isDark }) {
       icon: Database,
       title: 'Data Analysis & Insights',
       items: ['SQL', 'ERD Modeling', 'Python (Pandas)', 'Power BI', 'Advanced Excel'],
-      color: 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-emerald-500 to-green-500',
     },
     {
       icon: TrendingUp,
       title: 'Marketing & Finance Operations',
       items: ['Financial Modeling', 'Risk Assessment', 'ERP Systems (SAP)', 'Monday.com'],
-      color: 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-orange-500 to-amber-500',
     },
     {
       icon: Code,
       title: 'Web Development',
       items: ['React', 'JavaScript', 'HTML', 'CSS', 'Firebase', 'LocalStorage'],
-      color: 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-blue-500 to-cyan-500',
     },
   ];
 
@@ -129,7 +129,7 @@ export default function EducationSection({ isDark }) {
                   <div className="space-y-2">
                     {skill.items.map((item, itemIndex) => (
                       <div key={item} className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${isDark ? 'from-purple-400 to-cyan-400' : 'from-[#4dbdce] to-[#a855f7]'}`} />
+                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${skill.color}`} />
                         <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
                           {item}
                         </span>
@@ -138,7 +138,7 @@ export default function EducationSection({ isDark }) {
                   </div>
                 </div>
 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${isDark ? 'from-purple-500 via-cyan-500 to-blue-500' : 'from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${skill.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
           </div>
