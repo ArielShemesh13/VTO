@@ -8,22 +8,19 @@ export default function EducationSection({ isDark }) {
       icon: Database,
       title: 'Data Analysis & Insights',
       items: ['SQL', 'ERD Modeling', 'Python (Pandas)', 'Power BI', 'Advanced Excel'],
-      color: 'from-blue-500 to-cyan-500',
-      iconBg: 'bg-blue-500',
+      color: isDark ? 'from-purple-500 to-pink-500' : 'from-[#4dbdce] to-[#a855f7]',
     },
     {
       icon: TrendingUp,
       title: 'Marketing & Finance Operations',
       items: ['Financial Modeling', 'Risk Assessment', 'ERP Systems (SAP)', 'Monday.com'],
-      color: 'from-green-500 to-emerald-500',
-      iconBg: 'bg-green-500',
+      color: isDark ? 'from-cyan-500 to-blue-500' : 'from-[#4dbdce] to-[#a855f7]',
     },
     {
       icon: Code,
       title: 'Web Development',
       items: ['React', 'JavaScript', 'HTML', 'CSS', 'Firebase', 'LocalStorage'],
-      color: 'from-purple-500 to-pink-500',
-      iconBg: 'bg-purple-500',
+      color: isDark ? 'from-blue-500 to-purple-500' : 'from-[#4dbdce] to-[#a855f7]',
     },
   ];
 
@@ -47,7 +44,7 @@ export default function EducationSection({ isDark }) {
             </p>
             <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               Academic{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'} bg-clip-text text-transparent`}>
                 Background
               </span>
             </h2>
@@ -108,28 +105,32 @@ export default function EducationSection({ isDark }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
                 whileHover={{ y: -8 }}
-                className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
+                className={`group relative overflow-hidden rounded-2xl bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 backdrop-blur-xl transition-all duration-500`}
               >
                 <div className="relative h-32 overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${skill.color}/20`} />
-
+                  <div className={`absolute inset-0 bg-gradient-to-br ${skill.color.replace('from-', 'from-').replace('to-', 'to-')}/20`} />
+                  
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-16 h-16 rounded-xl ${skill.iconBg} flex items-center justify-center shadow-lg`}>
+                    <motion.div
+                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6, ease: "easeInOut" }}
+                    >
                       <skill.icon className="text-white" size={28} />
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <h3 className="text-xl font-bold mb-4 text-white">
                     {skill.title}
                   </h3>
-
+                  
                   <div className="space-y-2">
                     {skill.items.map((item, itemIndex) => (
                       <div key={item} className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-[#4dbdce]'}`} />
-                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
+                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-cyan-400" />
+                        <span className="text-sm text-white/70">
                           {item}
                         </span>
                       </div>
@@ -137,7 +138,7 @@ export default function EducationSection({ isDark }) {
                   </div>
                 </div>
 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               </motion.div>
             ))}
           </div>

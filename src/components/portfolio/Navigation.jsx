@@ -38,18 +38,18 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}>{'<'}</span>
+            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'<'}</span>
             <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               AS
             </span>
             <motion.span
-              className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}
+              className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
               |
             </motion.span>
-            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}>{'/>'}</span>
+            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'/>'}</span>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -71,7 +71,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                     className={`absolute -bottom-1 left-0 right-0 h-0.5 ${
                       isDark 
                         ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400'
-                        : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'
+                        : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
                     }`}
                     layoutId="activeNav"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}

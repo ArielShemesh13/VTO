@@ -2,57 +2,120 @@ import React from 'react';
 
 export default function AnimatedLogo({ isDark }) {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+      minHeight: '384px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <div style={{
+        position: 'relative',
+        width: '200px',
+        height: '200px',
+      }}>
+        <style>{`
+          .logo-shape {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            box-sizing: border-box;
+            z-index: 3;
+            width: 46px;
+            height: 81px;
+            top: 63px;
+            left: -40.5px;
+            transform: rotate(30deg) skewX(30deg);
+            border-radius: 0 21px 1.5px 3px;
+          }
+          
+          .logo-shape::before,
+          .logo-shape::after {
+            content: "";
+            position: absolute;
+          }
+          
+          .logo-shape::before {
+            width: 30px;
+            height: 40.2px;
+            left: -28.5px;
+          }
+          
+          .logo-shape::after {
+            width: 46.5px;
+            height: 40.2px;
+            left: -46.35px;
+            border-radius: 1.5px 24px 0 3.6px;
+          }
+          
+          .logo-shape-white {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            box-sizing: border-box;
+            z-index: 1;
+            width: 45px;
+            height: 45px;
+            background: #fff;
+          }
+          
+          .logo-shape-top {
+            top: -75px;
+            border-bottom-right-radius: 3px;
+            transform: rotateZ(150deg) skewX(30.8deg);
+            background: linear-gradient(to bottom, #c8b2ff 30%, #ac6dff);
+          }
+          
+          .logo-shape-top::before {
+            background: linear-gradient(to bottom, #c8b2ff 70%, #c3a7ff);
+          }
+          
+          .logo-shape-top::after {
+            background: linear-gradient(to right, #a760f3, #9b56f2 50%, #8648f1 90%);
+          }
+          
+          .logo-shape-right {
+            top: -6px;
+            left: 79.5px;
+            transform: rotate(-90deg) skewX(30deg);
+            background: linear-gradient(to bottom, #b3b2ff, #b29dff, #a16cff);
+          }
+          
+          .logo-shape-right::before {
+            background: linear-gradient(to bottom, #b3b1ff, #b2a0ff);
+          }
+          
+          .logo-shape-right::after {
+            background: linear-gradient(to right, #7c99ff, #6f82ff 50%, #5f61ff 90%);
+          }
+          
+          .logo-shape-left {
+            background: linear-gradient(to bottom, #c7b4ff 30%, #7d99ff);
+          }
+          
+          .logo-shape-left::before {
+            background: linear-gradient(to bottom, #c7b2ff 70%, #b5aeff);
+          }
+          
+          .logo-shape-left::after {
+            background: linear-gradient(to right, #9f6aff, #8864ff 50%, #7160ff 90%);
+          }
+        `}</style>
         
-        @keyframes pulse {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 0.8; }
-        }
-        
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        .logo-container {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .logo-ring {
-          animation: rotate 20s linear infinite;
-        }
-        
-        .logo-pulse {
-          animation: pulse 3s ease-in-out infinite;
-        }
-      `}</style>
-      
-      <div className="logo-container relative w-80 h-80">
-        {/* Outer ring */}
-        <div className={`logo-ring absolute inset-0 rounded-full border-4 ${isDark ? 'border-purple-500/30' : 'border-[#4dbdce]/30'}`} />
-        
-        {/* Middle ring */}
-        <div className={`logo-ring absolute inset-8 rounded-full border-2 ${isDark ? 'border-cyan-500/40' : 'border-[#6366f1]/40'}`} style={{ animationDirection: 'reverse', animationDuration: '15s' }} />
-        
-        {/* Inner glow */}
-        <div className={`logo-pulse absolute inset-16 rounded-full ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-cyan-500/20' : 'bg-gradient-to-br from-[#4dbdce]/20 to-[#a855f7]/20'} blur-xl`} />
-        
-        {/* Center element */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className={`w-32 h-32 rounded-full ${isDark ? 'bg-gradient-to-br from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-br from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} flex items-center justify-center shadow-2xl`}>
-            <span className="text-4xl font-bold text-white">AS</span>
-          </div>
+        <div>
+          <div className="logo-shape-white"></div>
+          <div className="logo-shape logo-shape-top"></div>
+          <div className="logo-shape logo-shape-right"></div>
+          <div className="logo-shape logo-shape-left"></div>
         </div>
-        
-        {/* Floating particles */}
-        <div className={`absolute top-1/4 left-1/4 w-3 h-3 rounded-full ${isDark ? 'bg-purple-400' : 'bg-[#4dbdce]'} logo-pulse`} />
-        <div className={`absolute top-1/3 right-1/4 w-2 h-2 rounded-full ${isDark ? 'bg-cyan-400' : 'bg-[#6366f1]'} logo-pulse`} style={{ animationDelay: '1s' }} />
-        <div className={`absolute bottom-1/4 left-1/3 w-2 h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-[#a855f7]'} logo-pulse`} style={{ animationDelay: '2s' }} />
       </div>
     </div>
   );
