@@ -87,8 +87,10 @@ export default function ProjectsSection({ isDark }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
-            Featured{' '}
+          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : ''}`}>
+            <span className={`${isDark ? '' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent'}`}>
+              Featured{' '}
+            </span>
             <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500'} bg-clip-text text-transparent`}>
               Projects
             </span>

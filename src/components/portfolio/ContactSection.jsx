@@ -63,8 +63,10 @@ Sent from your portfolio website contact form
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-cyan-600'}`}>
             Get In Touch
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
-            Let's{' '}
+          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : ''}`}>
+            <span className={`${isDark ? '' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent'}`}>
+              Let's{' '}
+            </span>
             <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500'} bg-clip-text text-transparent`}>
               Connect
             </span>
