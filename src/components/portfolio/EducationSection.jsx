@@ -39,12 +39,12 @@ export default function EducationSection({ isDark }) {
       <div className="max-w-6xl mx-auto w-full">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center mb-16">
-            <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+            <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-cyan-600'}`}>
               Education
             </p>
-            <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-cyan-700'}`}>
               Academic{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500'} bg-clip-text text-transparent`}>
                 Background
               </span>
             </h2>
@@ -70,10 +70,10 @@ export default function EducationSection({ isDark }) {
               </motion.div>
 
               <div className="flex-1">
-                <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
                   B.A. in Business Administration
                 </h3>
-                <p className={`text-lg mb-2 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+                <p className={`text-lg mb-2 ${isDark ? 'text-purple-400' : 'text-cyan-600'}`}>
                   with Specialization in Information Systems
                 </p>
                 <p className={`text-md ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
@@ -89,9 +89,9 @@ export default function EducationSection({ isDark }) {
             transition={{ delay: 0.4 }}
             className="mb-8"
           >
-            <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-cyan-700'}`}>
               What I{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500'} bg-clip-text text-transparent`}>
                 Do
               </span>
             </h3>
@@ -122,7 +122,7 @@ export default function EducationSection({ isDark }) {
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
                     {skill.title}
                   </h3>
                   
