@@ -1,15 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import CompoundInterestCalculator from './CompoundInterestCalculator';
-import InvestmentDashboard from './InvestmentDashboard';
 
 export default function FinanceSection({ isDark }) {
-  const [calculatorData, setCalculatorData] = useState(null);
-
-  const handleCalculate = useCallback((data) => {
-    setCalculatorData(data);
-  }, []);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-7xl mx-auto w-full">
@@ -45,24 +37,21 @@ export default function FinanceSection({ isDark }) {
           </p>
         </motion.div>
 
-        {/* Calculator - Full Width */}
-        <div className="mb-8">
-          <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            Investment Calculator
-          </h3>
-          <CompoundInterestCalculator isDark={isDark} onCalculate={handleCalculate} />
-        </div>
-
-        {/* Results Dashboard */}
-        {calculatorData && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <InvestmentDashboard isDark={isDark} data={calculatorData} />
-          </motion.div>
-        )}
+        {/* Content Coming Soon */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className={`text-center p-12 rounded-2xl ${
+            isDark 
+              ? 'bg-black/40 border border-purple-500/20' 
+              : 'bg-white/60 border border-[#244270]/10'
+          } backdrop-blur-xl`}
+        >
+          <p className={`text-lg ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+            Financial analytics tools coming soon...
+          </p>
+        </motion.div>
       </div>
     </section>
   );
