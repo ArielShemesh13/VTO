@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const projects = [
   {
@@ -66,6 +66,18 @@ const projects = [
 ];
 
 export default function ProjectsSection({ isDark }) {
+  const scrollContainerRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
@@ -83,9 +95,28 @@ export default function ProjectsSection({ isDark }) {
           </h2>
         </motion.div>
 
-        <div className="overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex gap-6 min-w-max">
-            {projects.map((project, index) => (
+        <div className="relative">
+          <motion.button
+            onClick={() => scroll('left')}
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full ${isDark ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white' : 'bg-[#244270]/30 hover:bg-[#244270]/50 text-white'} backdrop-blur-sm transition-all shadow-lg`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronLeft size={28} />
+          </motion.button>
+
+          <motion.button
+            onClick={() => scroll('right')}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full ${isDark ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white' : 'bg-[#244270]/30 hover:bg-[#244270]/50 text-white'} backdrop-blur-sm transition-all shadow-lg`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronRight size={28} />
+          </motion.button>
+
+          <div ref={scrollContainerRef} className="overflow-x-auto pb-4 scrollbar-hide px-16">
+            <div className="flex gap-4 min-w-max">
+              {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -167,6 +198,7 @@ export default function ProjectsSection({ isDark }) {
                   <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
                 </motion.div>
               ))}
+            </div>
           </div>
         </div>
 

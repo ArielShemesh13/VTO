@@ -123,22 +123,7 @@ export default function HeroSection({ isDark, onNavigate }) {
           </motion.div>
         </div>
 
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-        >
-          <motion.button
-            onClick={() => onNavigate('education')}
-            className={`flex flex-col items-center gap-2 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
-            <ChevronDown size={20} />
-          </motion.button>
-        </motion.div>
+
       </div>
     </section>
   );
