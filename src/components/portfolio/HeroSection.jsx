@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
+import AnimatedLogo from './AnimatedLogo';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
@@ -108,6 +109,17 @@ export default function HeroSection({ isDark, onNavigate }) {
                 Download CV
               </motion.button>
             </motion.div>
+            </motion.div>
+
+            <motion.div
+            className="relative hidden lg:flex justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            >
+            <div className="w-full max-w-md h-96">
+              <AnimatedLogo isDark={isDark} />
+            </div>
             </motion.div>
             </div>
 
