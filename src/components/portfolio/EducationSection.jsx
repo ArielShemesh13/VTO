@@ -89,10 +89,9 @@ export default function EducationSection({ isDark }) {
             transition={{ delay: 0.4 }}
             className="mb-8"
           >
-            <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              What I{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
-                Do
+            <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center`}>
+              <span className="bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                What I Do
               </span>
             </h3>
           </motion.div>
@@ -104,20 +103,15 @@ export default function EducationSection({ isDark }) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                whileHover={{ y: -8 }}
                 className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
               >
                 <div className="relative h-32 overflow-hidden">
                   <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                   
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
-                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.3 }}
-                    >
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}>
                       <skill.icon className="text-white" size={28} />
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
 
