@@ -28,7 +28,7 @@ export default function IntroAnimation({ onComplete, isDark }) {
     }),
   };
 
-  const name = "Welcome to my portfolio";
+  const name = "Ariel Shemesh";
   const title = "Data Analyst & Web3-Oriented Developer";
 
   return (

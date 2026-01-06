@@ -50,38 +50,7 @@ export default function EducationSection({ isDark }) {
             </h2>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className={`mb-12 p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 group`}
-            whileHover={{ y: -5 }}
-          >
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <motion.div 
-                className={`flex-shrink-0 w-24 h-24 rounded-2xl ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border border-purple-500/30' : 'bg-gradient-to-br from-[#6366f1]/10 to-[#8b5cf6]/10 border border-[#6366f1]/30'} backdrop-blur-sm flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300`}
-              >
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/he/c/c8/Ono_Academic_College_Logo.png" 
-                  alt="Ono Academic College"
-                  className="w-20 h-20 object-contain"
-                  onError={(e) => { e.target.style.display = 'none'; }}
-                />
-              </motion.div>
 
-              <div className="flex-1">
-                <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                  B.A. in Business Administration
-                </h3>
-                <p className={`text-lg mb-2 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
-                  with Specialization in Information Systems
-                </p>
-                <p className={`text-md ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-                  Ono Academic College
-                </p>
-              </div>
-            </div>
-          </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
