@@ -1,0 +1,134 @@
+import React from 'react';
+
+export default function AnimatedLogo({ isDark }) {
+  return (
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+      minHeight: '384px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: isDark ? '#141b33' : '#1a2540',
+      borderRadius: '16px',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'relative',
+        width: '300px',
+        height: '300px',
+      }}>
+        <style>{`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+          }
+          
+          .logo-container {
+            animation: float 4s ease-in-out infinite;
+          }
+          
+          .shape {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            box-sizing: border-box;
+            z-index: 3;
+            width: 15.4vmin;
+            height: 27vmin;
+            top: 21vmin;
+            left: -13.5vmin;
+            transform: rotate(30deg) skewX(30deg);
+            border-radius: 0 7vmin 0.5vmin 1vmin;
+          }
+          
+          .shape::before,
+          .shape::after {
+            content: "";
+            position: absolute;
+          }
+          
+          .shape::before {
+            width: 10vmin;
+            height: 13.4vmin;
+            left: -9.5vmin;
+          }
+          
+          .shape::after {
+            width: 15.5vmin;
+            height: 13.4vmin;
+            left: -15.45vmin;
+            border-radius: 0.5vmin 8vmin 0 1.2vmin;
+          }
+          
+          .shape-white {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            box-sizing: border-box;
+            z-index: 1;
+            width: 15vmin;
+            height: 15vmin;
+            background: #fff;
+          }
+          
+          .shape-top {
+            top: -25vmin;
+            border-bottom-right-radius: 1vmin;
+            transform: rotateZ(150deg) skewX(30.8deg);
+            background: linear-gradient(to bottom, #c8b2ff 30%, #ac6dff);
+          }
+          
+          .shape-top::before {
+            background: linear-gradient(to bottom, #c8b2ff 70%, #c3a7ff);
+          }
+          
+          .shape-top::after {
+            background: linear-gradient(to right, #a760f3, #9b56f2 50%, #8648f1 90%);
+          }
+          
+          .shape-right {
+            top: -2vmin;
+            left: 26.5vmin;
+            transform: rotate(-90deg) skewX(30deg);
+            background: linear-gradient(to bottom, #b3b2ff, #b29dff, #a16cff);
+          }
+          
+          .shape-right::before {
+            background: linear-gradient(to bottom, #b3b1ff, #b2a0ff);
+          }
+          
+          .shape-right::after {
+            background: linear-gradient(to right, #7c99ff, #6f82ff 50%, #5f61ff 90%);
+          }
+          
+          .shape-left {
+            background: linear-gradient(to bottom, #c7b4ff 30%, #7d99ff);
+          }
+          
+          .shape-left::before {
+            background: linear-gradient(to bottom, #c7b2ff 70%, #b5aeff);
+          }
+          
+          .shape-left::after {
+            background: linear-gradient(to right, #9f6aff, #8864ff 50%, #7160ff 90%);
+          }
+        `}</style>
+        
+        <div className="logo-container">
+          <div className="shape-white"></div>
+          <div className="shape shape-top"></div>
+          <div className="shape shape-right"></div>
+          <div className="shape shape-left"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
