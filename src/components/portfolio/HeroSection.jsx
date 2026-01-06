@@ -30,15 +30,6 @@ export default function HeroSection({ isDark, onNavigate }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <motion.p
-              className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-cyan-400' : 'text-[#244270]'}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Welcome to my portfolio
-            </motion.p>
-            
             <motion.h1
               className={`text-5xl md:text-7xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
               initial={{ opacity: 0, y: 20 }}
