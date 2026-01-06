@@ -60,7 +60,7 @@ Sent from your portfolio website contact form
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
+          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-emerald-600'}`}>
             Get In Touch
           </p>
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
