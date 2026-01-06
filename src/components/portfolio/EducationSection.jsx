@@ -44,7 +44,7 @@ export default function EducationSection({ isDark }) {
             </p>
             <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               Academic{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#c4b5fd] via-[#a78bfa] to-[#8b5cf6]'} bg-clip-text text-transparent`}>
                 Background
               </span>
             </h2>
@@ -91,7 +91,7 @@ export default function EducationSection({ isDark }) {
           >
             <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               What I{' '}
-              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#c4b5fd] via-[#a78bfa] to-[#8b5cf6]'} bg-clip-text text-transparent`}>
                 Do
               </span>
             </h3>
