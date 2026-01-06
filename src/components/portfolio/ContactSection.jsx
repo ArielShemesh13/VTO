@@ -12,7 +12,7 @@ export default function ContactSection({ isDark }) {
     
     // Send email notification
     await base44.integrations.Core.SendEmail({
-      to: 'ArielShemesh1999@gmail.com',
+      to: 'arielshemesh1999@gmail.com',
       subject: `New Contact Form Message from ${formData.name}`,
       body: `
 You have received a new message through your portfolio contact form:
@@ -42,12 +42,12 @@ Sent from your portfolio website contact form
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'ArielShemesh1999@gmail.com', href: 'mailto:ArielShemesh1999@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
     { icon: MapPin, label: 'Location', value: 'Israel' },
   ];
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/ArielShemesh13', label: 'GitHub' },
+    { icon: Github, href: 'https://github.com/arielSHEMESH1999', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/', label: 'LinkedIn' },
   ];
 
