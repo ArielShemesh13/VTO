@@ -60,14 +60,12 @@ Sent from your portfolio website contact form
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-cyan-600'}`}>
+          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
             Get In Touch
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : ''}`}>
-            <span className={`${isDark ? '' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent'}`}>
-              Let's{' '}
-            </span>
-            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500'} bg-clip-text text-transparent`}>
+          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            Let's{' '}
+            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
               Connect
             </span>
           </h2>
@@ -85,7 +83,7 @@ Sent from your portfolio website contact form
             transition={{ delay: 0.2 }}
           >
             <div className={`p-8 rounded-2xl h-full ${isDark ? 'bg-black/40 border border-white/10' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl`}>
-              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
+              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
                 Contact Information
               </h3>
 
@@ -147,7 +145,7 @@ Sent from your portfolio website contact form
             transition={{ delay: 0.3 }}
           >
             <div className={`p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-white/10' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl`}>
-              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-cyan-700'}`}>
+              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
                 Send a Message
               </h3>
 
