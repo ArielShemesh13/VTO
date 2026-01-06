@@ -8,19 +8,19 @@ export default function EducationSection({ isDark }) {
       icon: Database,
       title: 'Data Analysis & Insights',
       items: ['SQL', 'ERD Modeling', 'Python (Pandas)', 'Power BI', 'Advanced Excel'],
-      color: isDark ? 'from-purple-500 to-pink-500' : 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-[#4dbdce] to-[#a855f7]',
     },
     {
       icon: TrendingUp,
       title: 'Marketing & Finance Operations',
       items: ['Financial Modeling', 'Risk Assessment', 'ERP Systems (SAP)', 'Monday.com'],
-      color: isDark ? 'from-cyan-500 to-blue-500' : 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-[#4dbdce] to-[#a855f7]',
     },
     {
       icon: Code,
       title: 'Web Development',
       items: ['React', 'JavaScript', 'HTML', 'CSS', 'Firebase', 'LocalStorage'],
-      color: isDark ? 'from-blue-500 to-purple-500' : 'from-[#4dbdce] to-[#a855f7]',
+      color: 'from-[#4dbdce] to-[#a855f7]',
     },
   ];
 
