@@ -5,16 +5,16 @@ import AnimatedLogo from './AnimatedLogo';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/arielSHEMESH1999', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:arielshemesh1999@gmail.com', label: 'Email' },
+    { icon: Mail, href: 'mailto:contact@versifytoken.com', label: 'Email' },
+    { icon: Github, href: '#', label: 'Documentation' },
+    { icon: Linkedin, href: '#', label: 'Partners' },
   ];
 
   const handleDownloadCV = () => {
-    const cvUrl = 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695265d8033eeaadafd2f1f8/a5900e37a_ArielShemeshCV_pdf.pdf';
+    const cvUrl = 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/ef265248e_SIM_Swap_Security_Paradigm_Shift.pdf';
     const link = document.createElement('a');
     link.href = cvUrl;
-    link.download = 'Ariel_Shemesh_CV.pdf';
+    link.download = 'VT_SIM_Swap_Security.pdf';
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -36,18 +36,17 @@ export default function HeroSection({ isDark, onNavigate }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              Welcome to my portfolio
+              פתרון חדשני לאבטחת זהות דיגיטלית
             </motion.p>
-            
+
             <motion.h1
               className={`text-5xl md:text-7xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Hi, I'm{' '}
               <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'} bg-clip-text text-transparent`}>
-                Ariel Shemesh
+                VT - Versify Token
               </span>
             </motion.h1>
 
@@ -57,9 +56,9 @@ export default function HeroSection({ isDark, onNavigate }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
-              raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
-              I transform complex datasets into clear, strategic decisions that drive business growth.
+              <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>טוקן אימות זהות מתקדם</span> המציע פתרון פורץ דרך לאיום החוזר ההולך ומתרחב של
+              <span className={isDark ? 'text-cyan-400' : 'text-[#4dbdce]'}> מתקפת SIM SWAP</span>. 
+              הפתרון משלב אימות ביומטרי, זיהוי חיוניות, וחיבור מאובטח ל-API - ומבטיח הגנה מרובת שכבות מפני תקיפות SIM SWAP.
             </motion.p>
 
             <motion.div
@@ -96,9 +95,9 @@ export default function HeroSection({ isDark, onNavigate }) {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Contact Me
+                צור קשר
               </motion.button>
-              
+
               <motion.button
                 onClick={handleDownloadCV}
                 className={`px-8 py-4 rounded-xl font-semibold flex items-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-white hover:from-purple-500/30 hover:to-cyan-500/30 border border-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20 border border-[#244270]/20'} backdrop-blur-sm transition-all duration-300 shadow-lg ${isDark ? 'shadow-purple-500/20' : ''}`}
@@ -106,7 +105,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                 whileTap={{ scale: 0.98 }}
               >
                 <Download size={18} />
-                Download CV
+                הורד מצגת
               </motion.button>
             </motion.div>
           </motion.div>

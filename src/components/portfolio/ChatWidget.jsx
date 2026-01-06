@@ -6,15 +6,15 @@ const initialMessages = [
   {
     id: 1,
     role: 'assistant',
-    content: "👋 Hi! I'm Ariel's Data Bot (Beta). This is an experimental assistant. For real-time chat, connect via Telegram! Ask me about Ariel's skills, experience, or projects.",
+    content: "👋 שלום! אני בוט מידע על VT - Versify Token. זהו עוזר ניסיוני. לצ'אט בזמן אמת, התחבר דרך טלגרם! שאל אותי על הפתרון, היתרונות, או האתגרים.",
   },
 ];
 
 const quickReplies = [
-  "Tell me about Ariel's skills",
-  "What projects has he worked on?",
-  "How can I contact Ariel?",
-  "What's his experience?",
+  "ספר לי על הפתרון VT",
+  "מהם היתרונות?",
+  "איך ליצור קשר?",
+  "מהם האתגרים?",
 ];
 
 export default function ChatWidget({ isDark }) {
@@ -35,26 +35,26 @@ export default function ChatWidget({ isDark }) {
   const generateResponse = (userMessage) => {
     const lowerMessage = userMessage.toLowerCase();
     
-    if (lowerMessage.includes('skill') || lowerMessage.includes('expertise')) {
-      return "Ariel is skilled in Data Analysis (SQL, Python, Power BI, Excel), Business Intelligence, and Web Development (React, JavaScript). He specializes in turning raw data into actionable insights!";
+    if (lowerMessage.includes('פתרון') || lowerMessage.includes('vt') || lowerMessage.includes('versify')) {
+      return "פתרון VT (Versify Token) הוא טוקן אימות זהות מתקדם המציע הגנה מרובת שכבות מפני מתקפות SIM SWAP. הפתרון משלב אימות ביומטרי, זיהוי חיוניות, וחיבור מאובטח ל-API!";
     }
-    if (lowerMessage.includes('project')) {
-      return "Ariel has worked on several exciting projects including Excel & Azure Integration for data analysis, SQL Database Modeling with complex queries, and End-to-End Data Analysis projects using Python and Power BI dashboards.";
+    if (lowerMessage.includes('יתרון') || lowerMessage.includes('תועלת')) {
+      return "היתרונות העיקריים: אבטחה הסרת תקדים, סטנדרט אחיד לכלל השוק, חיזוק שרותי זהות, ובסיס למערכת זהות לאומית עתידית. הפתרון מוריד את שיעור הונאות ה-SIM SWAP קרוב לאפס!";
     }
-    if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('email')) {
-      return "You can reach Ariel at arielshemesh1999@gmail.com or connect with him on LinkedIn. Feel free to scroll down to the Contact section for more options!";
+    if (lowerMessage.includes('קשר') || lowerMessage.includes('contact') || lowerMessage.includes('email')) {
+      return "ניתן ליצור קשר דרך contact@versifytoken.com או לגלול למטה לסעיף יצירת קשר לאפשרויות נוספות!";
     }
-    if (lowerMessage.includes('telegram')) {
-      return "🚀 Telegram integration coming soon! This will enable real-time AI chat powered by advanced language models. Stay tuned!";
+    if (lowerMessage.includes('אתגר') || lowerMessage.includes('בעי')) {
+      return "האתגרים העיקריים: פיתוח והטמעת API מאובטח מול מערכות Legacy, קבלת אישור רגולטור, חוקי הגנת הפרטיות, ו-User Friction. האסטרטגיה היא יישום מדורג (Phased Rollout) והתחלה עם פיילוט!";
     }
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-      return "Hello! 👋 Great to meet you! I'm here to answer any questions about Ariel's portfolio. What would you like to know?";
+    if (lowerMessage.includes('שלום') || lowerMessage.includes('היי') || lowerMessage.includes('הי')) {
+      return "שלום! 👋 נעים מאוד! אני כאן לענות על שאלות לגבי פתרון VT - Versify Token. מה תרצה לדעת?";
     }
-    if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
-      return "Ariel has hands-on experience in data analysis, working with SQL, Python (Pandas), Power BI, and advanced Excel. He's also developed web applications using React and JavaScript. Check out the Projects section for detailed examples!";
+    if (lowerMessage.includes('sim swap') || lowerMessage.includes('מתקפ')) {
+      return "מתקפת SIM SWAP היא שבה תוקף משכנע את חברת הסלולר להעביר מספר טלפון לכרטיס SIM חדש. התוקף משתלט על כל התקשורת - שיחות, SMS - ומקבל גישה לחשבונות. מקרים מפורסמים: T-Mobile ($33M), חשבון הטוויטר של ג'ק דורסי, ו-17+ אתרים פופולריים!";
     }
     
-    return "Thanks for your question! I'm an experimental chatbot. For full AI capabilities, connect via Telegram (coming soon). Try asking about Ariel's skills, projects, or contact info!";
+    return "תודה על השאלה! אני צ'אטבוט ניסיוני. ליכולות AI מלאות, התחבר דרך טלגרם (בקרוב). נסה לשאול על הפתרון VT, יתרונות, או יצירת קשר!";
   };
 
   const handleSend = async (message = inputValue) => {
