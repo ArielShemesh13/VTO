@@ -41,8 +41,15 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
           >
             <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'<'}</span>
             <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              AS
+              AS.
             </span>
+            <motion.span
+              className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            >
+              |
+            </motion.span>
             <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'/>'}</span>
           </motion.div>
 

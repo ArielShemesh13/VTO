@@ -114,8 +114,8 @@ export default function ProjectsSection({ isDark }) {
             <ChevronRight size={28} />
           </motion.button>
 
-          <div ref={scrollContainerRef} className="overflow-x-auto pb-4 scrollbar-hide px-16">
-            <div className="flex gap-4 min-w-max">
+          <div ref={scrollContainerRef} className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide px-16">
+            <div className="flex gap-4 min-w-max py-2">
               {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
