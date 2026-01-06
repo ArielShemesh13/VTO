@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Save message to database
+    await base44.entities.ContactMessage.create({
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      status: 'new'
+    });
+    
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
     setFormData({ name: '', email: '', message: '' });
