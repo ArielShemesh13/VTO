@@ -134,8 +134,8 @@ export default function ProjectsSection({ isDark }) {
           {/* Projects Carousel */}
           <div className="overflow-hidden">
             <motion.div
-              className="grid md:grid-cols-3 gap-6"
-              animate={{ x: `-${currentIndex * (100 / itemsPerPage)}%` }}
+              className="flex gap-6"
+              animate={{ x: `-${currentIndex * (33.333 + 2)}%` }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               {projects.map((project, index) => (
@@ -146,7 +146,7 @@ export default function ProjectsSection({ isDark }) {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 min-w-full md:min-w-0`}
+                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[calc(33.333%-1rem)]`}
                 >
                   <div className="relative h-40 overflow-hidden">
                     <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
