@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
-import Clock3D from './Clock3D';
+import EconomicNewsCarousel from './EconomicNewsCarousel';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
@@ -118,7 +118,7 @@ export default function HeroSection({ isDark, onNavigate }) {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="w-full max-w-md h-96">
-              <Clock3D isDark={isDark} />
+              <EconomicNewsCarousel isDark={isDark} />
             </div>
           </motion.div>
         </div>
