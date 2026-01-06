@@ -97,34 +97,48 @@ export default function EducationSection({ isDark }) {
             </h3>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {skills.map((skill, index) => (
               <motion.div
                 key={skill.title}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className={`p-6 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-300 group`}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8 }}
+                className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
               >
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center mb-4`}>
-                  <skill.icon className="text-white" size={24} />
+                <div className="relative h-32 overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${skill.color.replace('from-', 'from-').replace('to-', 'to-')}/20`} />
+                  
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6, ease: "easeInOut" }}
+                    >
+                      <skill.icon className="text-white" size={28} />
+                    </motion.div>
+                  </div>
                 </div>
-                
-                <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                  {skill.title}
-                </h3>
-                
-                <div className="space-y-2">
-                  {skill.items.map((item, itemIndex) => (
-                    <div key={item} className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'}`} />
-                      <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-                        {item}
-                      </span>
-                    </div>
-                  ))}
+
+                <div className="p-6">
+                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                    {skill.title}
+                  </h3>
+                  
+                  <div className="space-y-2">
+                    {skill.items.map((item, itemIndex) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'}`} />
+                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
           </div>
