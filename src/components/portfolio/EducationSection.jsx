@@ -138,7 +138,7 @@ export default function EducationSection({ isDark }) {
                   </div>
                 </div>
 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
           </div>
