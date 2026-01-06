@@ -35,20 +35,22 @@ export default function HeroSection({ isDark, onNavigate }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
+              dir="rtl"
             >
-              Welcome to my portfolio
+              פתרון אבטחה מתקדם
             </motion.p>
-            
+
             <motion.h1
               className={`text-5xl md:text-7xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
+              dir="rtl"
             >
-              Hi, I'm{' '}
               <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'} bg-clip-text text-transparent`}>
-                Ariel Shemesh
+                Verito
               </span>
+              {' '}#222222
             </motion.h1>
 
             <motion.p
@@ -56,10 +58,11 @@ export default function HeroSection({ isDark, onNavigate }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
+              dir="rtl"
             >
-              <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
-              raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
-              I transform complex datasets into clear, strategic decisions that drive business growth.
+              <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>מתקפת החזרת השלקטה:</span> איום ה-SIM SWAP
+              <br />
+              הגנת פתרון איומות זהות מתקדם לאבטחת התקשורת הסלולרית
             </motion.p>
 
             <motion.div
@@ -89,6 +92,7 @@ export default function HeroSection({ isDark, onNavigate }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
+              dir="rtl"
             >
               <motion.button
                 onClick={() => onNavigate('contact')}
@@ -96,17 +100,16 @@ export default function HeroSection({ isDark, onNavigate }) {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Contact Me
+                צור קשר
               </motion.button>
-              
+
               <motion.button
-                onClick={handleDownloadCV}
+                onClick={() => onNavigate('education')}
                 className={`px-8 py-4 rounded-xl font-semibold flex items-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-white hover:from-purple-500/30 hover:to-cyan-500/30 border border-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20 border border-[#244270]/20'} backdrop-blur-sm transition-all duration-300 shadow-lg ${isDark ? 'shadow-purple-500/20' : ''}`}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Download size={18} />
-                Download CV
+                למד עוד
               </motion.button>
             </motion.div>
           </motion.div>
