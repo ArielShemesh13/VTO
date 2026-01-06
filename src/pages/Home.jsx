@@ -9,7 +9,7 @@ import SkillsSection from '../components/portfolio/SkillsSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
 
 import ContactSection from '../components/portfolio/ContactSection';
-import ChatWidget from '../components/portfolio/ChatWidget';
+
 
 const sections = ['hero', 'education', 'skills', 'projects', 'contact'];
 
@@ -113,8 +113,6 @@ export default function Home() {
             <div id="contact">
               <ContactSection isDark={isDark} />
             </div>
-
-            <ChatWidget isDark={isDark} />
           </motion.div>
         )}
       </AnimatePresence>
