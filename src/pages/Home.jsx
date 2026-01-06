@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedBackground from '../components/portfolio/AnimatedBackground';
-import IntroAnimation from '../components/portfolio/IntroAnimation';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
-
 import ContactSection from '../components/portfolio/ContactSection';
 
 
 const sections = ['hero', 'education', 'projects', 'contact'];
 
 export default function Home() {
-  const [showIntro, setShowIntro] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
   const [isDark, setIsDark] = useState(true);
-
-  const handleIntroComplete = () => {
-    setShowIntro(false);
-  };
 
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -71,46 +64,36 @@ export default function Home() {
     } transition-colors duration-500`}>
       <AnimatedBackground isDark={isDark} />
       
-      <AnimatePresence>
-        {showIntro && (
-          <IntroAnimation onComplete={handleIntroComplete} isDark={isDark} />
-        )}
-      </AnimatePresence>
+      <motion.div
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="relative z-10"
+      >
+        <Navigation 
+          activeSection={activeSection}
+          onNavigate={navigateToSection}
+          isDark={isDark}
+          toggleTheme={toggleTheme}
+        />
 
-      <AnimatePresence>
-        {!showIntro && (
-          <motion.div
-            variants={pageVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="relative z-10"
-          >
-            <Navigation 
-              activeSection={activeSection}
-              onNavigate={navigateToSection}
-              isDark={isDark}
-              toggleTheme={toggleTheme}
-            />
+        <div id="hero">
+          <HeroSection isDark={isDark} onNavigate={navigateToSection} />
+        </div>
+        
+        <div id="education">
+          <EducationSection isDark={isDark} />
+        </div>
+        
+        <div id="projects">
+          <ProjectsSection isDark={isDark} />
+        </div>
 
-            <div id="hero">
-              <HeroSection isDark={isDark} onNavigate={navigateToSection} />
-            </div>
-            
-            <div id="education">
-              <EducationSection isDark={isDark} />
-            </div>
-            
-            <div id="projects">
-              <ProjectsSection isDark={isDark} />
-            </div>
-
-            <div id="contact">
-              <ContactSection isDark={isDark} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <div id="contact">
+          <ContactSection isDark={isDark} />
+        </div>
+      </motion.div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');

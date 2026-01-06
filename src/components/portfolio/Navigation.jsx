@@ -38,18 +38,18 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'<'}</span>
+            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}>{'<'}</span>
             <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               AS
             </span>
             <motion.span
-              className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
+              className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
               |
             </motion.span>
-            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'/>'}</span>
+            <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#4dbdce]'}`}>{'/>'}</span>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-8">
