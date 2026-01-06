@@ -54,12 +54,16 @@ export default function EducationSection({ isDark }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className={`mb-12 p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 group`}
-            whileHover={{ y: -5 }}
+            className={`mb-12 p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 group relative overflow-hidden`}
+            whileHover={{ y: -8 }}
           >
+            <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+            
             <div className="flex flex-col md:flex-row items-start gap-6">
               <motion.div 
-                className={`flex-shrink-0 w-24 h-24 rounded-2xl ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border border-purple-500/30' : 'bg-gradient-to-br from-[#6366f1]/10 to-[#8b5cf6]/10 border border-[#6366f1]/30'} backdrop-blur-sm flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300`}
+                className={`flex-shrink-0 w-24 h-24 rounded-2xl ${isDark ? 'bg-gradient-to-br from-purple-500/20 to-cyan-500/20 border border-purple-500/30' : 'bg-gradient-to-br from-[#6366f1]/10 to-[#8b5cf6]/10 border border-[#6366f1]/30'} backdrop-blur-sm flex items-center justify-center overflow-hidden`}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
                 <img 
                   src="https://upload.wikimedia.org/wikipedia/he/c/c8/Ono_Academic_College_Logo.png" 
@@ -76,8 +80,12 @@ export default function EducationSection({ isDark }) {
                 <p className={`text-lg mb-2 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
                   with Specialization in Information Systems
                 </p>
-                <p className={`text-md ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+                <p className={`text-md mb-4 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
                   Ono Academic College
+                </p>
+                <p className={`text-sm ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>
+                  Gained comprehensive knowledge in business operations, information systems, and data-driven decision making. 
+                  Developed expertise in analyzing complex business problems and implementing technological solutions.
                 </p>
               </div>
             </div>
