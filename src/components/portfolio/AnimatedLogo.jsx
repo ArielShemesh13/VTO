@@ -13,12 +13,11 @@ export default function AnimatedLogo({ isDark }) {
     }}>
       <div style={{
         position: 'relative',
-        width: '150px',
-        height: '150px',
-        transform: 'scale(0.5)',
+        width: '200px',
+        height: '200px',
       }}>
         <style>{`
-          .shape {
+          .logo-shape {
             position: absolute;
             top: 0;
             right: 0;
@@ -27,34 +26,34 @@ export default function AnimatedLogo({ isDark }) {
             margin: auto;
             box-sizing: border-box;
             z-index: 3;
-            width: 15.4vmin;
-            height: 27vmin;
-            top: 21vmin;
-            left: -13.5vmin;
+            width: 46px;
+            height: 81px;
+            top: 63px;
+            left: -40.5px;
             transform: rotate(30deg) skewX(30deg);
-            border-radius: 0 7vmin 0.5vmin 1vmin;
+            border-radius: 0 21px 1.5px 3px;
           }
           
-          .shape::before,
-          .shape::after {
+          .logo-shape::before,
+          .logo-shape::after {
             content: "";
             position: absolute;
           }
           
-          .shape::before {
-            width: 10vmin;
-            height: 13.4vmin;
-            left: -9.5vmin;
+          .logo-shape::before {
+            width: 30px;
+            height: 40.2px;
+            left: -28.5px;
           }
           
-          .shape::after {
-            width: 15.5vmin;
-            height: 13.4vmin;
-            left: -15.45vmin;
-            border-radius: 0.5vmin 8vmin 0 1.2vmin;
+          .logo-shape::after {
+            width: 46.5px;
+            height: 40.2px;
+            left: -46.35px;
+            border-radius: 1.5px 24px 0 3.6px;
           }
           
-          .shape-white {
+          .logo-shape-white {
             position: absolute;
             top: 0;
             right: 0;
@@ -63,59 +62,59 @@ export default function AnimatedLogo({ isDark }) {
             margin: auto;
             box-sizing: border-box;
             z-index: 1;
-            width: 15vmin;
-            height: 15vmin;
+            width: 45px;
+            height: 45px;
             background: #fff;
           }
           
-          .shape-top {
-            top: -25vmin;
-            border-bottom-right-radius: 1vmin;
+          .logo-shape-top {
+            top: -75px;
+            border-bottom-right-radius: 3px;
             transform: rotateZ(150deg) skewX(30.8deg);
             background: linear-gradient(to bottom, #c8b2ff 30%, #ac6dff);
           }
           
-          .shape-top::before {
+          .logo-shape-top::before {
             background: linear-gradient(to bottom, #c8b2ff 70%, #c3a7ff);
           }
           
-          .shape-top::after {
+          .logo-shape-top::after {
             background: linear-gradient(to right, #a760f3, #9b56f2 50%, #8648f1 90%);
           }
           
-          .shape-right {
-            top: -2vmin;
-            left: 26.5vmin;
+          .logo-shape-right {
+            top: -6px;
+            left: 79.5px;
             transform: rotate(-90deg) skewX(30deg);
             background: linear-gradient(to bottom, #b3b2ff, #b29dff, #a16cff);
           }
           
-          .shape-right::before {
+          .logo-shape-right::before {
             background: linear-gradient(to bottom, #b3b1ff, #b2a0ff);
           }
           
-          .shape-right::after {
+          .logo-shape-right::after {
             background: linear-gradient(to right, #7c99ff, #6f82ff 50%, #5f61ff 90%);
           }
           
-          .shape-left {
+          .logo-shape-left {
             background: linear-gradient(to bottom, #c7b4ff 30%, #7d99ff);
           }
           
-          .shape-left::before {
+          .logo-shape-left::before {
             background: linear-gradient(to bottom, #c7b2ff 70%, #b5aeff);
           }
           
-          .shape-left::after {
+          .logo-shape-left::after {
             background: linear-gradient(to right, #9f6aff, #8864ff 50%, #7160ff 90%);
           }
         `}</style>
         
         <div>
-          <div className="shape-white"></div>
-          <div className="shape shape-top"></div>
-          <div className="shape shape-right"></div>
-          <div className="shape shape-left"></div>
+          <div className="logo-shape-white"></div>
+          <div className="logo-shape logo-shape-top"></div>
+          <div className="logo-shape logo-shape-right"></div>
+          <div className="logo-shape logo-shape-left"></div>
         </div>
       </div>
     </div>
