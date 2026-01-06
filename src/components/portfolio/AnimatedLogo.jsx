@@ -108,9 +108,22 @@ export default function AnimatedLogo({ isDark }) {
           .logo-shape-left::after {
             background: linear-gradient(to right, #9f6aff, #8864ff 50%, #7160ff 90%);
           }
+          
+          @keyframes rotate360 {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+          
+          .logo-container {
+            animation: rotate360 8s linear infinite;
+          }
         `}</style>
         
-        <div>
+        <div className="logo-container">
           <div className="logo-shape-white"></div>
           <div className="logo-shape logo-shape-top"></div>
           <div className="logo-shape logo-shape-right"></div>
