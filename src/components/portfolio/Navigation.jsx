@@ -34,14 +34,14 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <motion.div
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-1 cursor-pointer"
             onClick={() => handleNavClick('hero')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'<'}</span>
             <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              AS.
+              AS
             </span>
             <motion.span
               className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
