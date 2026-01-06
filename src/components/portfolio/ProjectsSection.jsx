@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
@@ -66,18 +66,6 @@ const projects = [
 ];
 
 export default function ProjectsSection({ isDark }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 3;
-  const maxIndex = Math.max(0, projects.length - itemsPerPage);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
@@ -95,50 +83,9 @@ export default function ProjectsSection({ isDark }) {
           </h2>
         </motion.div>
 
-        <div className="relative">
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-4 mb-8 justify-center">
-            <motion.button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className={`p-3 rounded-full ${
-                isDark 
-                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-white disabled:opacity-30' 
-                  : 'bg-[#244270]/20 hover:bg-[#244270]/30 text-[#244270] disabled:opacity-30'
-              } transition-all disabled:cursor-not-allowed`}
-              whileHover={{ scale: currentIndex === 0 ? 1 : 1.1 }}
-              whileTap={{ scale: currentIndex === 0 ? 1 : 0.95 }}
-            >
-              <ChevronLeft size={24} />
-            </motion.button>
-            
-            <span className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-              {currentIndex + 1} - {Math.min(currentIndex + itemsPerPage, projects.length)} of {projects.length}
-            </span>
-
-            <motion.button
-              onClick={handleNext}
-              disabled={currentIndex >= maxIndex}
-              className={`p-3 rounded-full ${
-                isDark 
-                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-white disabled:opacity-30' 
-                  : 'bg-[#244270]/20 hover:bg-[#244270]/30 text-[#244270] disabled:opacity-30'
-              } transition-all disabled:cursor-not-allowed`}
-              whileHover={{ scale: currentIndex >= maxIndex ? 1 : 1.1 }}
-              whileTap={{ scale: currentIndex >= maxIndex ? 1 : 0.95 }}
-            >
-              <ChevronRight size={24} />
-            </motion.button>
-          </div>
-
-          {/* Projects Carousel */}
-          <div className="overflow-hidden">
-            <motion.div
-              className="flex gap-6"
-              animate={{ x: `-${currentIndex * (33.333 + 2)}%` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              {projects.map((project, index) => (
+        <div className="overflow-x-auto pb-4 scrollbar-hide">
+          <div className="flex gap-6 min-w-max">
+            {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -146,7 +93,7 @@ export default function ProjectsSection({ isDark }) {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[calc(33.333%-1rem)]`}
+                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-80`}
                 >
                   <div className="relative h-40 overflow-hidden">
                     <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
@@ -220,9 +167,18 @@ export default function ProjectsSection({ isDark }) {
                   <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
                 </motion.div>
               ))}
-            </motion.div>
           </div>
         </div>
+
+        <style>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </div>
     </section>
   );

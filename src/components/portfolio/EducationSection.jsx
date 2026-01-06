@@ -80,57 +80,6 @@ export default function EducationSection({ isDark }) {
               </div>
             </div>
           </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <h3 className={`text-2xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              What I Studied
-            </h3>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={skill.title}
-                  variants={itemVariants}
-                  className={`p-6 rounded-2xl relative ${isDark ? 'bg-black/40 border border-white/10 hover:border-purple-500/30' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-300 group`}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="mb-4">
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${skill.color} p-0.5`}>
-                      <div className={`w-full h-full rounded-xl ${isDark ? 'bg-[#0a0118]' : 'bg-white'} flex items-center justify-center`}>
-                        <skill.icon className={`w-7 h-7 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <h4 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                    {skill.title}
-                  </h4>
-
-                  <div className="space-y-2">
-                    {skill.items.map((item, itemIndex) => (
-                      <motion.div
-                        key={item}
-                        className="flex items-center gap-2"
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 + itemIndex * 0.05 }}
-                      >
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${skill.color}`} />
-                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-                          {item}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>
