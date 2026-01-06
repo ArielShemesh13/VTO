@@ -13,6 +13,17 @@ export default function AnimatedBackground({ isDark }) {
           ? 'bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.03),transparent_50%)]'
           : 'bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.03),transparent_50%)]'
       }`} />
+      
+      {/* Grid Pattern */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: isDark
+            ? 'linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)'
+            : 'linear-gradient(rgba(36, 66, 112, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(36, 66, 112, 0.08) 1px, transparent 1px)',
+          backgroundSize: '50px 50px',
+        }}
+      />
     </div>
   );
 }
