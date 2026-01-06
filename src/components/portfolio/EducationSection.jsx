@@ -37,8 +37,8 @@ export default function EducationSection({ isDark }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
-        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-          <motion.div variants={itemVariants} className="text-center mb-16">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center mb-16">
             <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>
               Education
             </p>
@@ -51,7 +51,9 @@ export default function EducationSection({ isDark }) {
           </motion.div>
 
           <motion.div 
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
             className={`mb-12 p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 group`}
             whileHover={{ y: -5 }}
           >
@@ -81,7 +83,12 @@ export default function EducationSection({ isDark }) {
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="mb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-8"
+          >
             <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               What I{' '}
               <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'} bg-clip-text text-transparent`}>
@@ -90,11 +97,13 @@ export default function EducationSection({ isDark }) {
             </h3>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {skills.map((skill, index) => (
               <motion.div
                 key={skill.title}
-                variants={itemVariants}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
                 className={`p-6 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-300 group`}
                 whileHover={{ y: -5 }}
               >
