@@ -13,8 +13,9 @@ export default function AnimatedLogo({ isDark }) {
     }}>
       <div style={{
         position: 'relative',
-        width: '300px',
-        height: '300px',
+        width: '150px',
+        height: '150px',
+        transform: 'scale(0.5)',
       }}>
         <style>{`
           .shape {
