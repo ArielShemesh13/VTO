@@ -87,34 +87,6 @@ export default function SkillsSection({ isDark }) {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="mt-12"
-        >
-          <h3 className={`text-center text-lg font-medium mb-6 ${isDark ? 'text-white/60' : 'text-[#475569]'}`}>
-            Professional Attributes
-          </h3>
-          
-          <div className="flex flex-wrap justify-center gap-3">
-            {['Analytical Thinking', 'Problem Solving', 'Attention to Detail', 'AI-Powered Tools', 'Hebrew (Native)', 'Russian (Native)', 'English (Advanced)'].map((tool, index) => (
-              <motion.span
-                key={tool}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7 + index * 0.05 }}
-                whileHover={{ scale: 1.1, y: -3 }}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium cursor-default ${isDark ? 'bg-purple-500/10 text-purple-300/80 border border-purple-500/20 hover:border-purple-500/50 hover:bg-purple-500/20' : 'bg-[#6366f1]/10 text-[#4338ca] border border-[#c7d2fe] hover:border-[#a5b4fc] hover:bg-[#6366f1]/15'} transition-all duration-300`}
-              >
-                {tool}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
