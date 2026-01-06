@@ -111,13 +111,9 @@ export default function EducationSection({ isDark }) {
                   <div className={`absolute inset-0 bg-gradient-to-br ${skill.color.replace('from-', 'from-').replace('to-', 'to-')}/20`} />
                   
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
-                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6, ease: "easeInOut" }}
-                    >
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}>
                       <skill.icon className="text-white" size={28} />
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
 
