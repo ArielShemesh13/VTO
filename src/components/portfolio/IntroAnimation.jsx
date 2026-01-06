@@ -28,8 +28,8 @@ export default function IntroAnimation({ onComplete, isDark }) {
     }),
   };
 
-  const name = "Welcome to my portfolio";
-  const title = "Data Analyst & Web3-Oriented Developer";
+  const name = "01001000 01101001";
+  const title = "Welcome to my portfolio";
 
   return (
     <AnimatePresence>
