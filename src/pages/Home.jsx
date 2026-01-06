@@ -5,13 +5,12 @@ import IntroAnimation from '../components/portfolio/IntroAnimation';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
-import SkillsSection from '../components/portfolio/SkillsSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
 
 import ContactSection from '../components/portfolio/ContactSection';
 
 
-const sections = ['hero', 'education', 'skills', 'projects', 'contact'];
+const sections = ['hero', 'education', 'projects', 'contact'];
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
@@ -100,10 +99,6 @@ export default function Home() {
             
             <div id="education">
               <EducationSection isDark={isDark} />
-            </div>
-            
-            <div id="skills">
-              <SkillsSection isDark={isDark} />
             </div>
             
             <div id="projects">

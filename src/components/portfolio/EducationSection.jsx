@@ -80,6 +80,45 @@ export default function EducationSection({ isDark }) {
               </div>
             </div>
           </motion.div>
+
+          <motion.div variants={itemVariants} className="mb-8">
+            <h3 className={`text-3xl md:text-4xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+              What I{' '}
+              <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'} bg-clip-text text-transparent`}>
+                Do
+              </span>
+            </h3>
+          </motion.div>
+
+          <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-8">
+            {skills.map((skill, index) => (
+              <motion.div
+                key={skill.title}
+                variants={itemVariants}
+                className={`p-6 rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/40' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-300 group`}
+                whileHover={{ y: -5 }}
+              >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center mb-4`}>
+                  <skill.icon className="text-white" size={24} />
+                </div>
+                
+                <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                  {skill.title}
+                </h3>
+                
+                <div className="space-y-2">
+                  {skill.items.map((item, itemIndex) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'}`} />
+                      <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>
