@@ -122,15 +122,15 @@ export default function EducationSection({ isDark }) {
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                  <h3 className="text-xl font-bold mb-4 text-white">
                     {skill.title}
                   </h3>
                   
                   <div className="space-y-2">
                     {skill.items.map((item, itemIndex) => (
                       <div key={item} className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#244270] to-[#4dbdce]'}`} />
-                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-cyan-400" />
+                        <span className="text-sm text-white/70">
                           {item}
                         </span>
                       </div>
