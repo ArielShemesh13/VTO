@@ -108,7 +108,7 @@ export default function EducationSection({ isDark }) {
                 className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
               >
                 <div className="relative h-32 overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${skill.color.replace('from-', 'from-').replace('to-', 'to-')}/20`} />
+                  <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                   
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
@@ -129,7 +129,7 @@ export default function EducationSection({ isDark }) {
                   <div className="space-y-2">
                     {skill.items.map((item, itemIndex) => (
                       <div key={item} className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${skill.color}`} />
+                        <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
                         <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
                           {item}
                         </span>
@@ -138,7 +138,7 @@ export default function EducationSection({ isDark }) {
                   </div>
                 </div>
 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${skill.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
           </div>
