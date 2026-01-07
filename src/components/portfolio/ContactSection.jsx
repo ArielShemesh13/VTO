@@ -4,7 +4,7 @@ import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react'
 import { base44 } from '@/api/base44Client';
 
 export default function ContactSection({ isDark }) {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', role: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -15,30 +15,30 @@ export default function ContactSection({ isDark }) {
       to: 'arielshemesh1999@gmail.com',
       subject: `New Contact Form Message from ${formData.name}`,
       body: `
-You have received a new message through your portfolio contact form:
+    You have received a new message through your portfolio contact form:
 
-Name: ${formData.name}
-Email: ${formData.email}
+    שם: ${formData.name}
+    תפקיד: ${formData.role}
 
-Message:
-${formData.message}
+    תוכן:
+    ${formData.message}
 
----
-Sent from your portfolio website contact form
+    ---
+    Sent from your portfolio website contact form
       `
     });
     
     // Save message to database
     await base44.entities.ContactMessage.create({
       name: formData.name,
-      email: formData.email,
+      role: formData.role,
       message: formData.message,
       status: 'new'
     });
     
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: '', role: '', message: '' });
   };
 
   const contactInfo = [
@@ -169,14 +169,14 @@ Sent from your portfolio website contact form
                   </div>
 
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>Email Address</label>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>תפקיד / Role</label>
                     <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      type="text"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="john@example.com"
+                      placeholder="Data Analyst, Developer, etc."
                     />
                   </div>
 
