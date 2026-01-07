@@ -6,15 +6,20 @@ import { base44 } from '@/api/base44Client';
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     
-    // Send email notification
-    await base44.integrations.Core.SendEmail({
-      to: 'arielshemesh1999@gmail.com',
-      subject: `הודעה חדשה מ-${formData.name}`,
-      body: `שם השולח: ${formData.name}
+    try {
+      // Send email notification
+      await base44.integrations.Core.SendEmail({
+        to: 'arielshemesh1999@gmail.com',
+        subject: `הודעה חדשה מ-${formData.name}`,
+        body: `שם השולח: ${formData.name}
 מייל השולח: ${formData.email}
 
 תוכן ההודעה:
@@ -22,19 +27,25 @@ ${formData.message}
 
 ---
 נשלח מאתר הפורטפוליו שלך`
-    });
-    
-    // Save message to database
-    await base44.entities.ContactMessage.create({
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      status: 'new'
-    });
-    
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', email: '', message: '' });
+      });
+      
+      // Save message to database
+      await base44.entities.ContactMessage.create({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        status: 'new'
+      });
+      
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
+      setFormData({ name: '', email: '', message: '' });
+    } catch (err) {
+      setError('שגיאה בשליחת ההודעה. אנא נסה שוב.');
+      console.error('Error sending message:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -150,6 +161,16 @@ ${formData.message}
                   <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
                   <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
                 </motion.div>
+              ) : error ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-4">
+                  <p className="text-red-500 mb-4">{error}</p>
+                  <button 
+                    onClick={() => setError('')}
+                    className={`px-6 py-2 rounded-xl ${isDark ? 'bg-purple-500/20 text-white hover:bg-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20'}`}
+                  >
+                    נסה שוב
+                  </button>
+                </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
@@ -190,12 +211,13 @@ ${formData.message}
 
                   <motion.button
                     type="submit"
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    disabled={loading}
+                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''} ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
+                    whileHover={!loading ? { scale: 1.02 } : {}}
+                    whileTap={!loading ? { scale: 0.98 } : {}}
                   >
                     <Send size={18} />
-                    Send Message
+                    {loading ? 'שולח...' : 'Send Message'}
                   </motion.button>
                 </form>
               )}
