@@ -42,7 +42,7 @@ Sent from your portfolio website contact form
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'arielshemesh3333@gmail.com', href: 'mailto:arielshemesh3333@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
     { icon: MapPin, label: 'Location', value: 'Israel' },
   ];
 
