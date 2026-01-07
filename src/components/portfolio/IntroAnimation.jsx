@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import AnimatedLogo from './AnimatedLogo';
 
 export default function IntroAnimation({ onComplete, isDark }) {
   const [phase, setPhase] = useState(0);
@@ -85,13 +86,11 @@ export default function IntroAnimation({ onComplete, isDark }) {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: phase >= 1 ? 1 : 0, scale: phase >= 1 ? 1 : 0.5 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex justify-center mb-8"
+            className="flex justify-center items-center mb-8"
           >
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/a9b06971b_image.png" 
-              alt="Logo"
-              className="w-64 md:w-80 h-auto"
-            />
+            <div className="w-64 md:w-80 h-64 md:h-80">
+              <AnimatedLogo isDark={isDark} />
+            </div>
           </motion.div>
 
           <motion.div
