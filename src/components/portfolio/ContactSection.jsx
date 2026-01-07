@@ -18,7 +18,7 @@ export default function ContactSection({ isDark }) {
     try {
       await Promise.all([
         base44.integrations.Core.SendEmail({
-          to: 'arielshemesh1999@gmail.com',
+          to: 'Arielshemesh3333@gmail.com',
           subject: `New Contact Form Message from ${formData.name}`,
           body: `
 You have received a new message through your portfolio contact form:
@@ -50,7 +50,7 @@ Sent from your portfolio website contact form
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'Arielshemesh3333@gmail.com', href: 'mailto:Arielshemesh3333@gmail.com' },
     { icon: MapPin, label: 'Location', value: 'Israel' },
   ];
 
