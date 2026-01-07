@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Database, TrendingUp, Code } from 'lucide-react';
+import { GraduationCap, TrendingUp, Code } from 'lucide-react';
 
 export default function EducationSection({ isDark }) {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const tabs = [
+  const skills = [
     {
       icon: GraduationCap,
       title: 'Academic Degree',
@@ -43,61 +41,48 @@ export default function EducationSection({ isDark }) {
           </h2>
         </motion.div>
 
-        <div className="flex justify-center mb-8 gap-4">
-          {tabs.map((tab, index) => (
-            <motion.button
-              key={tab.title}
-              onClick={() => setActiveTab(index)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                activeTab === index
-                  ? isDark
-                    ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg'
-                    : 'bg-gradient-to-r from-[#4dbdce] to-[#6366f1] text-white shadow-lg'
-                  : isDark
-                  ? 'bg-white/5 text-white/60 hover:bg-white/10'
-                  : 'bg-[#244270]/5 text-[#141225]/60 hover:bg-[#244270]/10'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+        <div className="grid md:grid-cols-3 gap-6">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={skill.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + index * 0.1 }}
+              className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
             >
-              {tab.title}
-            </motion.button>
+              <div className="relative h-32 overflow-hidden">
+                <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
+                
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div
+                    className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <skill.icon className="text-white" size={28} />
+                  </motion.div>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                  {skill.title}
+                </h3>
+                
+                <div className="space-y-2">
+                  {skill.items.map((item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
+                      <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
-
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className={`p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-white/10' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl max-w-3xl mx-auto`}
-        >
-          <div className="flex items-center gap-4 mb-6">
-            <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${tabs[activeTab].color} flex items-center justify-center shadow-lg`}>
-              {React.createElement(tabs[activeTab].icon, { className: "text-white", size: 28 })}
-            </div>
-            <h3 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              {tabs[activeTab].title}
-            </h3>
-          </div>
-
-          <div className="space-y-3">
-            {tabs[activeTab].items.map((item, index) => (
-              <motion.div
-                key={item}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-center gap-3"
-              >
-                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
-                <span className={`text-base ${isDark ? 'text-white/80' : 'text-[#141225]/80'}`}>
-                  {item}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
