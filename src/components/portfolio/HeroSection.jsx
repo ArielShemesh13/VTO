@@ -1,25 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
+import { BarChart3, Database, Code2 } from 'lucide-react';
 import AnimatedLogo from './AnimatedLogo';
 
 export default function HeroSection({ isDark, onNavigate }) {
-  const socialLinks = [
-    { icon: Github, href: 'https://github.com/arielSHEMESH1999', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:arielshemesh1999@gmail.com', label: 'Email' },
+  const skills = [
+    { icon: BarChart3, label: 'Data Analysis', color: isDark ? 'from-purple-500 to-pink-500' : 'from-[#4dbdce] to-[#6366f1]' },
+    { icon: Database, label: 'Power BI', color: isDark ? 'from-cyan-500 to-blue-500' : 'from-[#6366f1] to-[#a855f7]' },
+    { icon: Code2, label: 'Web Development', color: isDark ? 'from-blue-500 to-purple-500' : 'from-[#a855f7] to-[#4dbdce]' },
   ];
-
-  const handleDownloadCV = () => {
-    const cvUrl = 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695265d8033eeaadafd2f1f8/a5900e37a_ArielShemeshCV_pdf.pdf';
-    const link = document.createElement('a');
-    link.href = cvUrl;
-    link.download = 'Ariel_Shemesh_CV.pdf';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
@@ -54,51 +43,28 @@ export default function HeroSection({ isDark, onNavigate }) {
             </motion.p>
 
             <motion.div
-              className="flex gap-4 mb-8"
+              className="flex gap-6 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  className={`p-3 rounded-xl ${isDark ? 'bg-purple-500/10 hover:bg-purple-500/20 text-white border border-purple-500/20 hover:border-purple-500/40' : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'} backdrop-blur-sm transition-all duration-300`}
-                  whileHover={{ scale: 1.1, y: -3 }}
-                  whileTap={{ scale: 0.95 }}
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={skill.label}
+                  className={`flex flex-col items-center gap-3`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 + index * 0.1 }}
+                  whileHover={{ y: -5 }}
                 >
-                  <social.icon size={22} />
-                </motion.a>
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${skill.color} flex items-center justify-center shadow-lg ${isDark ? 'shadow-purple-500/20' : 'shadow-cyan-500/15'}`}>
+                    <skill.icon className="text-white" size={28} />
+                  </div>
+                  <span className={`text-sm font-medium ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                    {skill.label}
+                  </span>
+                </motion.div>
               ))}
-            </motion.div>
-
-            <motion.div
-              className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.button
-                onClick={() => onNavigate('contact')}
-                className={`px-8 py-4 rounded-xl font-semibold text-white ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Contact Me
-              </motion.button>
-              
-              <motion.button
-                onClick={handleDownloadCV}
-                className={`px-8 py-4 rounded-xl font-semibold flex items-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-white hover:from-purple-500/30 hover:to-cyan-500/30 border border-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20 border border-[#244270]/20'} backdrop-blur-sm transition-all duration-300 shadow-lg ${isDark ? 'shadow-purple-500/20' : ''}`}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Download size={18} />
-                Download CV
-              </motion.button>
             </motion.div>
           </motion.div>
 
