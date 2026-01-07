@@ -112,6 +112,8 @@ export default function EducationSection({ isDark }) {
                   </div>
                 </div>
 
+                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+
                 <div 
                   className="light-toggle"
                   onClick={() => toggleCard(index)}
@@ -325,21 +327,18 @@ export default function EducationSection({ isDark }) {
 
                 .light-toggle {
                 position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 3rem;
-                width: 100%;
-                border-radius: 0 0 1rem 1rem;
-                background: ${isDark ? 'rgba(168, 85, 247, 0.15)' : 'rgba(77, 189, 206, 0.15)'};
-                backdrop-filter: blur(10px);
+                bottom: 1rem;
+                right: 1rem;
+                height: 2rem;
+                width: 3.5rem;
+                border-radius: 0.5rem;
+                background: rgba(0, 0, 0, 0.3);
+                box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
+                          inset 0 0 1px 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(77, 189, 206, 0.3)'},
+                          inset 0 -1px 1px 0.15rem rgba(255,255,255,0.05);
                 cursor: pointer;
                 transition: all 0.4s ease-in-out;
                 z-index: 10;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-top: 1px solid ${isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(77, 189, 206, 0.2)'};
                 }
 
                 .light-toggle::before {
@@ -351,53 +350,46 @@ export default function EducationSection({ isDark }) {
                 top: 0;
                 bottom: 0;
                 margin: auto;
-                width: 4rem;
-                height: 0.6rem;
-                border-radius: 0.3rem;
-                background: ${isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.3)'};
+                width: 2.5rem;
+                height: 0.5rem;
+                border-radius: 0.2rem;
+                background: rgba(0, 0, 0, 0.5);
                 transition: all 0.4s ease-in-out;
                 }
 
                 .toggle-handle {
                 position: absolute;
                 top: 0;
-                bottom: 0;
+                bottom: 0.04rem;
                 margin: auto;
-                left: calc(50% - 2rem + 0.3rem);
-                width: 1.4rem;
-                height: 1.4rem;
-                background: ${isDark ? '#6b21a8' : '#0e7490'};
-                border-radius: 0.25rem;
+                left: 0.5rem;
+                width: 40%;
+                height: 30%;
+                background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
+                border-radius: 0.2rem;
                 box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
                           inset 0 -1px 1px 0 rgba(0,0,0,0.3),
-                          0 2px 6px rgba(0,0,0,0.4);
+                          0 0 1px 1px rgba(0,0,0,0.2),
+                          1px 2px 4px 1px rgba(0,0,0,0.3);
                 transition: all 0.4s ease-in-out;
                 }
 
                 .luminous-education-card.active .toggle-handle {
-                transform: translateX(2rem);
-                background: ${isDark ? '#a855f7' : '#22d3ee'};
+                transform: translateX(1.2rem);
+                background: ${isDark ? '#a855f7' : '#4dbdce'};
                 box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
                           inset 0 -1px 1px 0 rgba(255,255,255,0.3),
-                          0 0 8px 2px ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(34, 211, 238, 0.6)'};
-                }
-
-                .luminous-education-card.active .light-toggle {
-                background: ${isDark ? 'rgba(168, 85, 247, 0.25)' : 'rgba(34, 211, 238, 0.25)'};
-                border-top-color: ${isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(34, 211, 238, 0.4)'};
+                          0 0 2px 1px rgba(0,0,0,0.3),
+                          1px 2px 4px 1px rgba(0,0,0,0.2);
                 }
 
                 .luminous-education-card.active .light-toggle::before {
-                background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(34, 211, 238, 0.5)'};
-                box-shadow: 0 0 0.5rem 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(34, 211, 238, 0.6)'};
-                }
-
-                .light-toggle:hover {
-                background: ${isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(77, 189, 206, 0.2)'};
+                background: ${isDark ? 'rgba(168, 85, 247, 0.8)' : 'rgba(77, 189, 206, 0.8)'};
+                box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
                 }
 
                 .light-toggle:hover:not(.luminous-education-card.active .light-toggle) .toggle-handle {
-                transform: translateX(0.2rem);
+                transform: translateX(0.15rem);
                 }
                 `}</style>
         </motion.div>
