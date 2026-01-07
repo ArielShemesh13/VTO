@@ -6,15 +6,18 @@ import { base44 } from '@/api/base44Client';
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSending(true);
     
-    // Send email notification
-    await base44.integrations.Core.SendEmail({
-      to: 'arielshemesh1999@gmail.com',
-      subject: `New Contact Form Message from ${formData.name}`,
-      body: `
+    try {
+      // Send email notification
+      await base44.integrations.Core.SendEmail({
+        to: 'arielshemesh1999@gmail.com',
+        subject: `New Contact Form Message from ${formData.name}`,
+        body: `
 You have received a new message through your portfolio contact form:
 
 Name: ${formData.name}
@@ -25,20 +28,22 @@ ${formData.message}
 
 ---
 Sent from your portfolio website contact form
-      `
-    });
-    
-    // Save message to database
-    await base44.entities.ContactMessage.create({
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      status: 'new'
-    });
-    
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', email: '', message: '' });
+        `
+      });
+      
+      // Save message to database
+      await base44.entities.ContactMessage.create({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        status: 'new'
+      });
+      
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+    } finally {
+      setSending(false);
+    }
   };
 
   const contactInfo = [
@@ -147,12 +152,16 @@ Sent from your portfolio website contact form
               </h3>
 
               {submitted ? (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
-                    <CheckCircle className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  className="flex flex-col items-center justify-center py-20"
+                >
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${isDark ? 'bg-emerald-500/20 border-2 border-emerald-500/40' : 'bg-emerald-100 border-2 border-emerald-300'}`}>
+                    <CheckCircle className={`w-10 h-10 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                   </div>
-                  <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
-                  <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
+                  <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message Sent Successfully</h3>
+                  <p className={`text-base ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>Thank you for reaching out. I'll get back to you soon!</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -194,12 +203,26 @@ Sent from your portfolio website contact form
 
                   <motion.button
                     type="submit"
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    disabled={sending}
+                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 ${sending ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    whileHover={!sending ? { scale: 1.02 } : {}}
+                    whileTap={!sending ? { scale: 0.98 } : {}}
                   >
-                    <Send size={18} />
-                    Send Message
+                    {sending ? (
+                      <>
+                        <motion.div 
+                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        SENDING...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        Send Message
+                      </>
+                    )}
                   </motion.button>
                 </form>
               )}
