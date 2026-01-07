@@ -46,9 +46,10 @@ export default function EducationSection({ isDark }) {
             <motion.div
               key={skill.title}
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + index * 0.1 }}
-              className={`luminous-card group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className={`luminous-card group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-300`}
             >
               <div className="light-effect">
                 <div className="slit"></div>
@@ -58,13 +59,9 @@ export default function EducationSection({ isDark }) {
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110`}>
                     <skill.icon className="text-white" size={28} />
-                  </motion.div>
+                  </div>
                 </div>
               </div>
 
@@ -102,7 +99,8 @@ export default function EducationSection({ isDark }) {
           width: 100%;
           pointer-events: none;
           opacity: 0;
-          transition: opacity 0.5s ease-in-out;
+          transition: opacity 0.3s ease-in-out;
+          will-change: opacity;
         }
 
         .luminous-card:hover .light-effect {
@@ -120,6 +118,7 @@ export default function EducationSection({ isDark }) {
           transform: rotateX(-76deg);
           background: ${isDark ? '#a855f7' : '#4dbdce'};
           box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
+          will-change: transform;
         }
 
         .light-glow {
