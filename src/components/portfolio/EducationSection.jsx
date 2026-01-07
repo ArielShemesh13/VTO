@@ -48,8 +48,12 @@ export default function EducationSection({ isDark }) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + index * 0.1 }}
-              className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
+              className={`luminous-card group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
             >
+              <div className="light-effect">
+                <div className="slit"></div>
+                <div className="light-glow"></div>
+              </div>
               <div className="relative h-32 overflow-hidden">
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                 
@@ -84,6 +88,53 @@ export default function EducationSection({ isDark }) {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        .luminous-card {
+          position: relative;
+        }
+
+        .light-effect {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 100%;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .luminous-card:hover .light-effect {
+          opacity: 1;
+        }
+
+        .slit {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+          width: 64%;
+          height: 1.2rem;
+          transform: rotateX(-76deg);
+          background: ${isDark ? '#a855f7' : '#4dbdce'};
+          box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
+        }
+
+        .light-glow {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+          width: 60%;
+          height: 50%;
+          background: ${isDark ? '#c084fc' : '#38bdf8'};
+          filter: blur(2rem);
+          opacity: 0.8;
+        }
+      `}</style>
     </section>
   );
 }
