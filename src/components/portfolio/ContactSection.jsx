@@ -12,7 +12,7 @@ export default function ContactSection({ isDark }) {
     
     // Send email notification
     await base44.integrations.Core.SendEmail({
-      to: 'arielshemesh1999@gmail.com',
+      to: 'Arielshemesh3333@gmail.com',
       subject: `New Contact Form Message from ${formData.name}`,
       body: `
 You have received a new message through your portfolio contact form:
@@ -26,14 +26,6 @@ ${formData.message}
 ---
 Sent from your portfolio website contact form
       `
-    });
-    
-    // Save message to database
-    await base44.entities.ContactMessage.create({
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      status: 'new'
     });
     
     setSubmitted(true);
