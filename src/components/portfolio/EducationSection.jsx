@@ -74,7 +74,7 @@ export default function EducationSection({ isDark }) {
         >
           <div className="flex items-center gap-4 mb-6">
             <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${tabs[activeTab].color} flex items-center justify-center shadow-lg`}>
-              <tabs[activeTab].icon className="text-white" size={28} />
+              {React.createElement(tabs[activeTab].icon, { className: "text-white", size: 28 })}
             </div>
             <h3 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
               {tabs[activeTab].title}
