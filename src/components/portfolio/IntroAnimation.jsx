@@ -82,83 +82,27 @@ export default function IntroAnimation({ onComplete, isDark }) {
 
         <div className="relative z-10 text-center">
           <motion.div
-            className="flex items-center justify-center gap-4 mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: phase >= 1 ? 1 : 0 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: phase >= 1 ? 1 : 0, scale: phase >= 1 ? 1 : 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex justify-center mb-8"
           >
-            <motion.span
-              className={`text-6xl md:text-8xl font-light ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: phase >= 1 ? 0 : -100, opacity: phase >= 1 ? 1 : 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              {'<'}
-            </motion.span>
-            
-            <div className="flex overflow-hidden">
-              {name.split('').map((letter, i) => (
-                <motion.span
-                  key={i}
-                  custom={i}
-                  variants={letterVariants}
-                  initial="hidden"
-                  animate={phase >= 2 ? "visible" : "hidden"}
-                  className={`text-4xl md:text-7xl font-bold ${
-                    isDark ? 'text-white' : 'text-[#141225]'
-                  } ${letter === ' ' ? 'mx-3' : ''}`}
-                  style={{
-                    textShadow: isDark 
-                      ? '0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(168, 85, 247, 0.3)'
-                      : '0 0 30px rgba(36, 66, 112, 0.3)',
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </div>
-
-            <motion.span
-              className={`text-6xl md:text-8xl font-light ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x: phase >= 1 ? 0 : 100, opacity: phase >= 1 ? 1 : 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              {'/>'}
-            </motion.span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            <p className={`text-xl md:text-2xl tracking-[0.3em] uppercase ${
-              isDark ? 'text-purple-300/80' : 'text-[#244270]/80'
-            }`}>
-              {title}
-            </p>
-            <motion.div
-              className={`h-0.5 mx-auto mt-4 ${
-                isDark 
-                  ? 'bg-gradient-to-r from-transparent via-purple-400 to-transparent'
-                  : 'bg-gradient-to-r from-transparent via-[#244270] to-transparent'
-              }`}
-              initial={{ width: 0 }}
-              animate={{ width: phase >= 3 ? '200px' : 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <img 
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/a9b06971b_image.png" 
+              alt="Logo"
+              className="w-64 md:w-80 h-auto"
             />
           </motion.div>
 
           <motion.div
             className="mt-12 flex justify-center gap-2"
             initial={{ opacity: 0 }}
-            animate={{ opacity: phase >= 3 ? 1 : 0 }}
+            animate={{ opacity: phase >= 2 ? 1 : 0 }}
           >
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className={`w-2 h-2 rounded-full ${isDark ? 'bg-purple-400' : 'bg-[#244270]'}`}
+                className={`w-3 h-3 rounded-full ${isDark ? 'bg-purple-400' : 'bg-[#244270]'}`}
                 animate={{
                   scale: [1, 1.5, 1],
                   opacity: [0.5, 1, 0.5],
