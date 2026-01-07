@@ -5,6 +5,7 @@ import IntroAnimation from '../components/portfolio/IntroAnimation';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
+import LuminousCard from '../components/portfolio/LuminousCard';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
 
 import ContactSection from '../components/portfolio/ContactSection';
@@ -100,6 +101,8 @@ export default function Home() {
             <div id="education">
               <EducationSection isDark={isDark} />
             </div>
+            
+            <LuminousCard isDark={isDark} />
             
             <div id="projects">
               <ProjectsSection isDark={isDark} />
