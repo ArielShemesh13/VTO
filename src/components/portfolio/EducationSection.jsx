@@ -54,10 +54,6 @@ export default function EducationSection({ isDark }) {
             </h2>
           </motion.div>
 
-
-
-
-
           <div className="grid md:grid-cols-3 gap-6">
             {skills.map((skill, index) => (
               <motion.div
@@ -119,278 +115,269 @@ export default function EducationSection({ isDark }) {
                     ))}
                   </div>
                 </div>
+              </motion.div>
+            ))}
+          </div>
 
+          <style jsx>{`
+            .luminous-education-card {
+              position: relative;
+            }
 
+            .light-layer {
+              position: absolute;
+              left: 0;
+              top: 0;
+              height: 100%;
+              width: 100%;
+              transform-style: preserve-3d;
+              perspective: 400px;
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 0.4s ease-in-out;
+            }
 
-                <div 
-                  className="light-toggle"
-                  onClick={() => toggleCard(index)}
-                >
-                  <div className="toggle-handle"></div>
-                </div>
-                </motion.div>
-                ))}
-                </div>
+            .luminous-education-card.active .light-layer {
+              opacity: 1;
+            }
 
-                <style jsx>{`
-                .luminous-education-card {
-                position: relative;
-                }
+            .slit {
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              width: 64%;
+              height: 1.2rem;
+              transform: rotateX(-76deg);
+              background: ${isDark ? '#121212' : '#1a1a1a'};
+              box-shadow: 0 0 4px 0 transparent;
+              transition: all 0.4s ease-in-out;
+            }
 
-                .light-layer {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                width: 100%;
-                transform-style: preserve-3d;
-                perspective: 400px;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.4s ease-in-out;
-                }
+            .luminous-education-card.active .slit {
+              background: ${isDark ? '#a855f7' : '#4dbdce'};
+              box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
+            }
 
-                .luminous-education-card.active .light-layer {
-                opacity: 1;
-                }
+            .lumen {
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+              width: 100%;
+              height: 100%;
+              pointer-events: none;
+              perspective: 400px;
+            }
 
-                .slit {
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  width: 64%;
-                  height: 1.2rem;
-                  transform: rotateX(-76deg);
-                  background: ${isDark ? '#121212' : '#1a1a1a'};
-                  box-shadow: 0 0 4px 0 transparent;
-                  transition: all 0.4s ease-in-out;
-                }
+            .min {
+              width: 120%;
+              height: 100%;
+              background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(147, 51, 234, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(77, 189, 206, 0.2)'} 30%, transparent 70%);
+              position: absolute;
+              left: -10%;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              filter: blur(3rem);
+              opacity: 0.8;
+            }
 
-                .luminous-education-card.active .slit {
-                  background: ${isDark ? '#a855f7' : '#4dbdce'};
-                  box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
-                }
+            .mid {
+              width: 110%;
+              height: 90%;
+              background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(56, 189, 248, 0.6)'} 0%, ${isDark ? 'rgba(147, 51, 234, 0.3)' : 'rgba(77, 189, 206, 0.3)'} 40%, transparent 80%);
+              position: absolute;
+              left: -5%;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              filter: blur(4rem);
+              opacity: 1;
+            }
 
-                .lumen {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                perspective: 400px;
-                }
+            .hi {
+              width: 100%;
+              height: 80%;
+              background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(192, 132, 252, 0.8)' : 'rgba(77, 189, 206, 0.8)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 50%, transparent 90%);
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+              filter: blur(5rem);
+              opacity: 1;
+            }
 
-                .min {
-                  width: 120%;
-                  height: 100%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(147, 51, 234, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(77, 189, 206, 0.2)'} 30%, transparent 70%);
-                  position: absolute;
-                  left: -10%;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  filter: blur(3rem);
-                  opacity: 0.8;
-                }
+            .darken {
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+              width: 100%;
+              height: 100%;
+              pointer-events: none;
+              perspective: 400px;
+              opacity: 0.5;
+            }
 
-                .mid {
-                  width: 110%;
-                  height: 90%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(56, 189, 248, 0.6)'} 0%, ${isDark ? 'rgba(147, 51, 234, 0.3)' : 'rgba(77, 189, 206, 0.3)'} 40%, transparent 80%);
-                  position: absolute;
-                  left: -5%;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  filter: blur(4rem);
-                  opacity: 1;
-                }
+            .darken > * {
+              transition: opacity 0.4s ease-in-out;
+            }
 
-                .hi {
-                  width: 100%;
-                  height: 80%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(192, 132, 252, 0.8)' : 'rgba(77, 189, 206, 0.8)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 50%, transparent 90%);
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  filter: blur(5rem);
-                  opacity: 1;
-                }
+            .luminous-education-card.active .darken {
+              opacity: 0.8;
+            }
 
-                .darken {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                perspective: 400px;
-                opacity: 0.5;
-                }
+            .sl {
+              width: 64%;
+              height: 10rem;
+              background: linear-gradient(transparent, rgba(0,0,0,0.8));
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 9.6em;
+              margin: auto;
+              filter: blur(0.2rem);
+              opacity: 0.1;
+              border-radius: 100% 100% 0 0;
+              transform: rotateX(22deg);
+            }
 
-                .darken > * {
-                transition: opacity 0.4s ease-in-out;
-                }
+            .luminous-education-card.active .sl {
+              opacity: 0.2;
+            }
 
-                .luminous-education-card.active .darken {
-                opacity: 0.8;
-                }
+            .ll {
+              width: 62%;
+              height: 10rem;
+              background: linear-gradient(transparent, rgba(0,0,0,0.6));
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 11em;
+              margin: auto;
+              filter: blur(0.8rem);
+              opacity: 0.4;
+              border-radius: 100% 100% 0 0;
+              transform: rotateX(-22deg);
+            }
 
-                .sl {
-                  width: 64%;
-                  height: 10rem;
-                  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  bottom: 9.6em;
-                  margin: auto;
-                  filter: blur(0.2rem);
-                  opacity: 0.1;
-                  border-radius: 100% 100% 0 0;
-                  transform: rotateX(22deg);
-                }
+            .luminous-education-card.active .ll {
+              opacity: 1;
+            }
 
-                .luminous-education-card.active .sl {
-                  opacity: 0.2;
-                }
+            .slt {
+              width: 0.5rem;
+              height: 4rem;
+              background: linear-gradient(transparent, rgba(0,0,0,0.3));
+              position: absolute;
+              left: 0;
+              right: 11.5rem;
+              bottom: 3.9em;
+              margin: auto;
+              opacity: 0.6;
+              border-radius: 100% 100% 0 0;
+              transform: skewY(-42deg);
+            }
 
-                .ll {
-                  width: 62%;
-                  height: 10rem;
-                  background: linear-gradient(transparent, rgba(0,0,0,0.6));
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  bottom: 11em;
-                  margin: auto;
-                  filter: blur(0.8rem);
-                  opacity: 0.4;
-                  border-radius: 100% 100% 0 0;
-                  transform: rotateX(-22deg);
-                }
+            .luminous-education-card.active .slt {
+              opacity: 1;
+            }
 
-                .luminous-education-card.active .ll {
-                  opacity: 1;
-                }
+            .srt {
+              width: 0.5rem;
+              height: 4rem;
+              background: linear-gradient(transparent, rgba(0,0,0,0.3));
+              position: absolute;
+              right: 0;
+              left: 11.5rem;
+              bottom: 3.9em;
+              margin: auto;
+              opacity: 0.6;
+              border-radius: 100% 100% 0 0;
+              transform: skewY(42deg);
+            }
 
-                .slt {
-                  width: 0.5rem;
-                  height: 4rem;
-                  background: linear-gradient(transparent, rgba(0,0,0,0.3));
-                  position: absolute;
-                  left: 0;
-                  right: 11.5rem;
-                  bottom: 3.9em;
-                  margin: auto;
-                  opacity: 0.6;
-                  border-radius: 100% 100% 0 0;
-                  transform: skewY(-42deg);
-                }
+            .luminous-education-card.active .srt {
+              opacity: 1;
+            }
 
-                .luminous-education-card.active .slt {
-                  opacity: 1;
-                }
+            .light-toggle {
+              position: relative;
+              flex-shrink: 0;
+              height: 3rem;
+              width: 1.75rem;
+              border-radius: 0.5rem;
+              background: rgba(0, 0, 0, 0.3);
+              box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
+                          inset 0 0 1px 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(77, 189, 206, 0.3)'},
+                          inset 0 -1px 1px 0.15rem rgba(255,255,255,0.05);
+              cursor: pointer;
+              transition: all 0.4s ease-in-out;
+              z-index: 10;
+            }
 
-                .srt {
-                  width: 0.5rem;
-                  height: 4rem;
-                  background: linear-gradient(transparent, rgba(0,0,0,0.3));
-                  position: absolute;
-                  right: 0;
-                  left: 11.5rem;
-                  bottom: 3.9em;
-                  margin: auto;
-                  opacity: 0.6;
-                  border-radius: 100% 100% 0 0;
-                  transform: skewY(42deg);
-                }
+            .light-toggle::before {
+              content: "";
+              display: block;
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+              width: 0.45rem;
+              height: 2.2rem;
+              border-radius: 0.2rem;
+              background: rgba(0, 0, 0, 0.5);
+              transition: all 0.4s ease-in-out;
+            }
 
-                .luminous-education-card.active .srt {
-                  opacity: 1;
-                }
+            .toggle-handle {
+              position: absolute;
+              left: 0;
+              right: 0.04rem;
+              margin: auto;
+              top: 0.4rem;
+              width: 35%;
+              height: 35%;
+              background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
+              border-radius: 0.2rem;
+              box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
+                          inset 0 -1px 1px 0 rgba(0,0,0,0.3),
+                          0 0 1px 1px rgba(0,0,0,0.2),
+                          1px 2px 4px 1px rgba(0,0,0,0.3);
+              transition: all 0.4s ease-in-out;
+            }
 
-                .light-toggle {
-                  position: relative;
-                  flex-shrink: 0;
-                  height: 3rem;
-                  width: 1.75rem;
-                  border-radius: 0.5rem;
-                  background: rgba(0, 0, 0, 0.3);
-                  box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
-                              inset 0 0 1px 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(77, 189, 206, 0.3)'},
-                              inset 0 -1px 1px 0.15rem rgba(255,255,255,0.05);
-                  cursor: pointer;
-                  transition: all 0.4s ease-in-out;
-                  z-index: 10;
-                }
+            .luminous-education-card.active .toggle-handle {
+              transform: translateY(1.3rem);
+              background: ${isDark ? '#a855f7' : '#4dbdce'};
+              box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
+                          inset 0 -1px 1px 0 rgba(255,255,255,0.3),
+                          0 0 2px 1px rgba(0,0,0,0.3),
+                          1px 2px 4px 1px rgba(0,0,0,0.2);
+            }
 
-                .light-toggle::before {
-                  content: "";
-                  display: block;
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  top: 0;
-                  bottom: 0;
-                  margin: auto;
-                  width: 0.45rem;
-                  height: 2.2rem;
-                  border-radius: 0.2rem;
-                  background: rgba(0, 0, 0, 0.5);
-                  transition: all 0.4s ease-in-out;
-                }
+            .luminous-education-card.active .light-toggle::before {
+              background: ${isDark ? 'rgba(168, 85, 247, 0.8)' : 'rgba(77, 189, 206, 0.8)'};
+              box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
+            }
 
-                .toggle-handle {
-                  position: absolute;
-                  left: 0;
-                  right: 0.04rem;
-                  margin: auto;
-                  top: 0.4rem;
-                  width: 35%;
-                  height: 35%;
-                  background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
-                  border-radius: 0.2rem;
-                  box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
-                              inset 0 -1px 1px 0 rgba(0,0,0,0.3),
-                              0 0 1px 1px rgba(0,0,0,0.2),
-                              1px 2px 4px 1px rgba(0,0,0,0.3);
-                  transition: all 0.4s ease-in-out;
-                }
-
-                .luminous-education-card.active .toggle-handle {
-                  transform: translateY(1.3rem);
-                  background: ${isDark ? '#a855f7' : '#4dbdce'};
-                  box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
-                              inset 0 -1px 1px 0 rgba(255,255,255,0.3),
-                              0 0 2px 1px rgba(0,0,0,0.3),
-                              1px 2px 4px 1px rgba(0,0,0,0.2);
-                }
-
-                .luminous-education-card.active .light-toggle::before {
-                  background: ${isDark ? 'rgba(168, 85, 247, 0.8)' : 'rgba(77, 189, 206, 0.8)'};
-                  box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
-                }
-
-                .light-toggle:hover .toggle-handle {
-                  transform: translateY(0.15rem);
-                }
-
-                .luminous-education-card.active .light-toggle:hover .toggle-handle {
-                  transform: translateY(1.15rem);
-                }
-                `}</style>
+            .light-toggle:hover .toggle-handle {
+              transform: translateY(0.15rem);
+            }
+            
+            .luminous-education-card.active .light-toggle:hover .toggle-handle {
+              transform: translateY(1.15rem);
+            }
+          `}</style>
         </motion.div>
       </div>
     </section>
