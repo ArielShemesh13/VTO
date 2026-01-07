@@ -1,8 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, ChevronDown } from 'lucide-react';
+import { Github, Linkedin, Mail, ChevronDown, Download } from 'lucide-react';
 import AnimatedLogo from './AnimatedLogo';
-import DownloadButton from './DownloadButton';
 
 export default function HeroSection({ isDark, onNavigate }) {
   const socialLinks = [
@@ -77,7 +76,7 @@ export default function HeroSection({ isDark, onNavigate }) {
             </motion.div>
 
             <motion.div
-              className="flex flex-wrap gap-4 items-center"
+              className="flex flex-wrap gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
@@ -90,8 +89,16 @@ export default function HeroSection({ isDark, onNavigate }) {
               >
                 Contact Me
               </motion.button>
-
-              <DownloadButton isDark={isDark} onDownload={handleDownloadCV} />
+              
+              <motion.button
+                onClick={handleDownloadCV}
+                className={`px-8 py-4 rounded-xl font-semibold flex items-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-white hover:from-purple-500/30 hover:to-cyan-500/30 border border-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20 border border-[#244270]/20'} backdrop-blur-sm transition-all duration-300 shadow-lg ${isDark ? 'shadow-purple-500/20' : ''}`}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Download size={18} />
+                Download CV
+              </motion.button>
             </motion.div>
           </motion.div>
 
