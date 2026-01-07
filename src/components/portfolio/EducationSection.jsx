@@ -179,46 +179,42 @@ export default function EducationSection({ isDark }) {
                 }
 
                 .min {
-                  width: 70%;
-                  height: 3rem;
-                  background: linear-gradient(${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(77, 189, 206, 0.6)'}, transparent);
+                  width: 100%;
+                  height: 80%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'} 0%, transparent 60%);
                   position: absolute;
                   left: 0;
                   right: 0;
-                  bottom: 2.5rem;
+                  bottom: 0;
                   margin: auto;
-                  transform: rotateX(42deg);
-                  opacity: 0.4;
+                  filter: blur(2rem);
+                  opacity: 0.6;
                 }
 
                 .mid {
-                  width: 74%;
-                  height: 13rem;
-                  background: linear-gradient(${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(77, 189, 206, 0.6)'}, transparent);
+                  width: 90%;
+                  height: 70%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.7)' : 'rgba(77, 189, 206, 0.7)'} 0%, transparent 50%);
                   position: absolute;
                   left: 0;
                   right: 0;
-                  bottom: 10em;
+                  bottom: 0;
                   margin: auto;
-                  transform: rotateX(42deg);
-                  filter: blur(1rem);
+                  filter: blur(3rem);
                   opacity: 0.8;
-                  border-radius: 0 0 100% 100%;
                 }
 
                 .hi {
-                  width: 50%;
-                  height: 13rem;
-                  background: linear-gradient(${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(77, 189, 206, 0.6)'}, transparent);
+                  width: 70%;
+                  height: 60%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.9)' : 'rgba(77, 189, 206, 0.9)'} 0%, transparent 40%);
                   position: absolute;
                   left: 0;
                   right: 0;
-                  bottom: 12em;
+                  bottom: 0;
                   margin: auto;
-                  transform: rotateX(-22deg);
-                  filter: blur(1rem);
-                  opacity: 0.6;
-                  border-radius: 0 0 100% 100%;
+                  filter: blur(4rem);
+                  opacity: 0.9;
                 }
 
                 .darken {
@@ -318,70 +314,70 @@ export default function EducationSection({ isDark }) {
                 }
 
                 .light-toggle {
-                position: absolute;
-                bottom: 1rem;
-                right: 1rem;
-                height: 2rem;
-                width: 3.5rem;
-                border-radius: 0.5rem;
-                background: rgba(0, 0, 0, 0.3);
-                box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
-                          inset 0 0 1px 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(77, 189, 206, 0.3)'},
-                          inset 0 -1px 1px 0.15rem rgba(255,255,255,0.05);
-                cursor: pointer;
-                transition: all 0.4s ease-in-out;
-                z-index: 10;
+                  position: absolute;
+                  top: 1.5rem;
+                  right: 1rem;
+                  height: 3.5rem;
+                  width: 2rem;
+                  border-radius: 0.5rem;
+                  background: rgba(0, 0, 0, 0.3);
+                  box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
+                              inset 0 0 1px 0.15rem ${isDark ? 'rgba(168, 85, 247, 0.3)' : 'rgba(77, 189, 206, 0.3)'},
+                              inset 0 -1px 1px 0.15rem rgba(255,255,255,0.05);
+                  cursor: pointer;
+                  transition: all 0.4s ease-in-out;
+                  z-index: 10;
                 }
 
                 .light-toggle::before {
-                content: "";
-                display: block;
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                width: 2.5rem;
-                height: 0.5rem;
-                border-radius: 0.2rem;
-                background: rgba(0, 0, 0, 0.5);
-                transition: all 0.4s ease-in-out;
+                  content: "";
+                  display: block;
+                  position: absolute;
+                  left: 0;
+                  right: 0;
+                  top: 0;
+                  bottom: 0;
+                  margin: auto;
+                  width: 0.5rem;
+                  height: 2.5rem;
+                  border-radius: 0.2rem;
+                  background: rgba(0, 0, 0, 0.5);
+                  transition: all 0.4s ease-in-out;
                 }
 
                 .toggle-handle {
-                position: absolute;
-                top: 0;
-                bottom: 0.04rem;
-                margin: auto;
-                left: 0.5rem;
-                width: 40%;
-                height: 30%;
-                background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
-                border-radius: 0.2rem;
-                box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
-                          inset 0 -1px 1px 0 rgba(0,0,0,0.3),
-                          0 0 1px 1px rgba(0,0,0,0.2),
-                          1px 2px 4px 1px rgba(0,0,0,0.3);
-                transition: all 0.4s ease-in-out;
+                  position: absolute;
+                  left: 0;
+                  right: 0.04rem;
+                  margin: auto;
+                  top: 0.5rem;
+                  width: 30%;
+                  height: 40%;
+                  background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
+                  border-radius: 0.2rem;
+                  box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
+                              inset 0 -1px 1px 0 rgba(0,0,0,0.3),
+                              0 0 1px 1px rgba(0,0,0,0.2),
+                              1px 2px 4px 1px rgba(0,0,0,0.3);
+                  transition: all 0.4s ease-in-out;
                 }
 
                 .luminous-education-card.active .toggle-handle {
-                transform: translateX(1.2rem);
-                background: ${isDark ? '#a855f7' : '#4dbdce'};
-                box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
-                          inset 0 -1px 1px 0 rgba(255,255,255,0.3),
-                          0 0 2px 1px rgba(0,0,0,0.3),
-                          1px 2px 4px 1px rgba(0,0,0,0.2);
+                  transform: translateY(1.2rem);
+                  background: ${isDark ? '#a855f7' : '#4dbdce'};
+                  box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
+                              inset 0 -1px 1px 0 rgba(255,255,255,0.3),
+                              0 0 2px 1px rgba(0,0,0,0.3),
+                              1px 2px 4px 1px rgba(0,0,0,0.2);
                 }
 
                 .luminous-education-card.active .light-toggle::before {
-                background: ${isDark ? 'rgba(168, 85, 247, 0.8)' : 'rgba(77, 189, 206, 0.8)'};
-                box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
+                  background: ${isDark ? 'rgba(168, 85, 247, 0.8)' : 'rgba(77, 189, 206, 0.8)'};
+                  box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
                 }
 
                 .light-toggle:hover:not(.luminous-education-card.active .light-toggle) .toggle-handle {
-                transform: translateX(0.15rem);
+                  transform: translateY(0.15rem);
                 }
                 `}</style>
         </motion.div>
