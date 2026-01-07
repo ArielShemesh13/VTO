@@ -19,12 +19,17 @@ export default function ContactSection({ isDark }) {
       await base44.integrations.Core.SendEmail({
         from_name: formData.name,
         to: 'arielshemesh1999@gmail.com',
-        subject: `New Contact Form Message from ${formData.name}`,
-        body: `Name: ${formData.name}
+        subject: `MESSAGE FROM ${formData.email} - ${formData.name}`,
+        body: `CONTACT FORM SUBMISSION
+
+Name: ${formData.name}
 Email: ${formData.email}
 
 Message:
-${formData.message}`
+${formData.message}
+
+---
+REPLY TO: ${formData.email}`
       });
       
       // Save message to database
