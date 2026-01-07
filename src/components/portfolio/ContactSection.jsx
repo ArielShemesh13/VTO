@@ -16,11 +16,30 @@ export default function ContactSection({ isDark }) {
     setIsSending(true);
     
     try {
-      await base44.entities.ContactMessage.create({
+      const messageData = {
         name: formData.name,
         email: formData.email,
         message: formData.message,
         status: 'new'
+      };
+      
+      await base44.entities.ContactMessage.create(messageData);
+      
+      await base44.integrations.Core.SendEmail({
+        to: 'Arielshemesh3333@gmail.com',
+        subject: `New Contact Form Inquiry from ${formData.name}`,
+        body: `
+You have received a new message through your portfolio contact form:
+
+Sender Name: ${formData.name}
+Sender Email: ${formData.email}
+
+Message:
+${formData.message}
+
+---
+Date Received: ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}
+        `
       });
       
       setSubmitted(true);
