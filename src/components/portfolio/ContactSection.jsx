@@ -4,23 +4,29 @@ import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react'
 import { base44 } from '@/api/base44Client';
 
 export default function ContactSection({ isDark }) {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', role: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSending(true);
     
-    // Save message to database - the agent will handle sending the email
-    await base44.entities.ContactMessage.create({
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
-      status: 'new'
-    });
-    
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', email: '', message: '' });
+    try {
+      // Save message to database - the agent will handle sending the email
+      await base44.entities.ContactMessage.create({
+        name: formData.name,
+        email: formData.role,
+        message: formData.message,
+        status: 'new'
+      });
+      
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
+      setFormData({ name: '', role: '', message: '' });
+    } finally {
+      setSending(false);
+    }
   };
 
   const contactInfo = [
@@ -151,14 +157,14 @@ export default function ContactSection({ isDark }) {
                   </div>
 
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>Email Address</label>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>Role</label>
                     <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      type="text"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="john@example.com"
+                      placeholder="Data Analyst"
                     />
                   </div>
 
@@ -176,12 +182,13 @@ export default function ContactSection({ isDark }) {
 
                   <motion.button
                     type="submit"
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    disabled={sending}
+                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed`}
+                    whileHover={!sending ? { scale: 1.02 } : {}}
+                    whileTap={!sending ? { scale: 0.98 } : {}}
                   >
                     <Send size={18} />
-                    Send Message
+                    {sending ? 'SENDING...' : 'SEND MESSAGE'}
                   </motion.button>
                 </form>
               )}
