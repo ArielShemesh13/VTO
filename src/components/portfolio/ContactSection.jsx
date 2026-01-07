@@ -14,8 +14,7 @@ export default function ContactSection({ isDark }) {
     await base44.integrations.Core.SendEmail({
       to: 'arielshemesh1999@gmail.com',
       subject: `New Contact Form Message from ${formData.name}`,
-      body: `הודעה חדשה מטופס יצירת קשר:
-
+      body: `
     שם השולח: ${formData.name}
     מייל השולח: ${formData.email}
 
@@ -174,7 +173,7 @@ export default function ContactSection({ isDark }) {
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="Type your email"
+                      placeholder="Type your email here"
                     />
                   </div>
 
