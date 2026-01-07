@@ -6,21 +6,16 @@ import { base44 } from '@/api/base44Client';
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
     
-    try {
-      // Send email notification
-      await base44.integrations.Core.SendEmail({
-        from_name: formData.name,
-        to: 'arielshemesh3333@gmail.com',
-        subject: `MESSAGE FROM ${formData.email} - ${formData.name}`,
-        body: `CONTACT FORM SUBMISSION
+    // Send email notification
+    await base44.integrations.Core.SendEmail({
+      to: 'arielshemesh1999@gmail.com',
+      subject: `New Contact Form Message from ${formData.name}`,
+      body: `
+You have received a new message through your portfolio contact form:
 
 Name: ${formData.name}
 Email: ${formData.email}
@@ -29,30 +24,25 @@ Message:
 ${formData.message}
 
 ---
-REPLY TO: ${formData.email}`
-      });
-      
-      // Save message to database
-      await base44.entities.ContactMessage.create({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        status: 'new'
-      });
-      
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 3000);
-      setFormData({ name: '', email: '', message: '' });
-    } catch (err) {
-      setError('שגיאה בשליחת ההודעה. אנא נסה שוב.');
-      console.error('Error sending message:', err);
-    } finally {
-      setLoading(false);
-    }
+Sent from your portfolio website contact form
+      `
+    });
+    
+    // Save message to database
+    await base44.entities.ContactMessage.create({
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      status: 'new'
+    });
+    
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+    setFormData({ name: '', email: '', message: '' });
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'arielshemesh3333@gmail.com', href: 'mailto:arielshemesh3333@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
     { icon: MapPin, label: 'Location', value: 'Israel' },
   ];
 
@@ -164,16 +154,6 @@ REPLY TO: ${formData.email}`
                   <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
                   <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
                 </motion.div>
-              ) : error ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-4">
-                  <p className="text-red-500 mb-4">{error}</p>
-                  <button 
-                    onClick={() => setError('')}
-                    className={`px-6 py-2 rounded-xl ${isDark ? 'bg-purple-500/20 text-white hover:bg-purple-500/30' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20'}`}
-                  >
-                    נסה שוב
-                  </button>
-                </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
@@ -184,7 +164,7 @@ REPLY TO: ${formData.email}`
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-purple-500/20 text-white placeholder-white/30 focus:border-purple-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="Type your full name here"
+                      placeholder="John Doe"
                     />
                   </div>
 
@@ -196,7 +176,7 @@ REPLY TO: ${formData.email}`
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="Type your email here"
+                      placeholder="john@example.com"
                     />
                   </div>
 
@@ -214,13 +194,12 @@ REPLY TO: ${formData.email}`
 
                   <motion.button
                     type="submit"
-                    disabled={loading}
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''} ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
-                    whileHover={!loading ? { scale: 1.02 } : {}}
-                    whileTap={!loading ? { scale: 0.98 } : {}}
+                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Send size={18} />
-                    {loading ? 'SENDING...' : 'SEND MESSAGE'}
+                    Send Message
                   </motion.button>
                 </form>
               )}
