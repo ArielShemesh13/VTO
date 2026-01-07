@@ -5,21 +5,21 @@ import { GraduationCap, Database, TrendingUp, Code } from 'lucide-react';
 export default function EducationSection({ isDark }) {
   const skills = [
     {
-      icon: Database,
-      title: 'Data Analysis & Insights',
-      items: ['SQL', 'ERD Modeling', 'Python (Pandas)', 'Power BI', 'Advanced Excel'],
+      icon: GraduationCap,
+      title: 'Academic Degree',
+      items: ['BA in Business Administration', 'Specialization: Information Systems', 'Ono Academic College (2023-2026)', 'Focus: Analytical Thinking & Data-Driven Processes'],
       color: 'from-emerald-500 to-green-500',
     },
     {
       icon: TrendingUp,
-      title: 'Marketing & Finance Operations',
-      items: ['Financial Modeling', 'Risk Assessment', 'ERP Systems (SAP)', 'Monday.com'],
+      title: 'Mentorship & Excellence',
+      items: ['Mentored students on the autism spectrum', 'High emotional intelligence & sensitivity', 'Personal guidance and empowerment', 'Dean\'s List honoree for academic excellence'],
       color: 'from-orange-500 to-amber-500',
     },
     {
       icon: Code,
-      title: 'Web Development',
-      items: ['React', 'JavaScript', 'HTML', 'CSS', 'Firebase', 'LocalStorage'],
+      title: 'Professional Capabilities',
+      items: ['Web development & digital interfaces', 'Data analysis & business insights', 'Trend analysis & pattern recognition', 'AI agents & intelligent automation'],
       color: 'from-blue-500 to-cyan-500',
     },
   ];
