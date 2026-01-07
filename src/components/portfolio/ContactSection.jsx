@@ -17,16 +17,14 @@ export default function ContactSection({ isDark }) {
     try {
       // Send email notification
       await base44.integrations.Core.SendEmail({
+        from_name: formData.name,
         to: 'arielshemesh1999@gmail.com',
-        subject: `הודעה חדשה מ-${formData.name}`,
-        body: `שם השולח: ${formData.name}
-מייל השולח: ${formData.email}
+        subject: `New Contact Form Message from ${formData.name}`,
+        body: `Name: ${formData.name}
+Email: ${formData.email}
 
-תוכן ההודעה:
-${formData.message}
-
----
-נשלח מאתר הפורטפוליו שלך`
+Message:
+${formData.message}`
       });
       
       // Save message to database
@@ -217,7 +215,7 @@ ${formData.message}
                     whileTap={!loading ? { scale: 0.98 } : {}}
                   >
                     <Send size={18} />
-                    {loading ? 'שולח...' : 'Send Message'}
+                    {loading ? 'SENDING...' : 'SEND MESSAGE'}
                   </motion.button>
                 </form>
               )}
