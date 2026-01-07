@@ -54,21 +54,7 @@ export default function EducationSection({ isDark }) {
                 <div className="slit"></div>
                 <div className="light-glow"></div>
               </div>
-              <div className="relative h-32 overflow-hidden">
-                <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
-                
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <skill.icon className="text-white" size={28} />
-                  </motion.div>
-                </div>
-              </div>
-
-              <div className="p-6">
+              <div className="p-6 pt-8">
                 <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
                   {skill.title}
                 </h3>
