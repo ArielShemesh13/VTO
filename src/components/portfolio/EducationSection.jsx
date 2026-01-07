@@ -96,9 +96,17 @@ export default function EducationSection({ isDark }) {
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                    {skill.title}
-                  </h3>
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                      {skill.title}
+                    </h3>
+                    <div 
+                      className="light-toggle"
+                      onClick={() => toggleCard(index)}
+                    >
+                      <div className="toggle-handle"></div>
+                    </div>
+                  </div>
                   
                   <div className="space-y-2">
                     {skill.items.map((item, itemIndex) => (
@@ -179,24 +187,11 @@ export default function EducationSection({ isDark }) {
                 }
 
                 .min {
-                  width: 100%;
-                  height: 80%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'} 0%, transparent 60%);
+                  width: 120%;
+                  height: 100%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(147, 51, 234, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.2)' : 'rgba(77, 189, 206, 0.2)'} 30%, transparent 70%);
                   position: absolute;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  margin: auto;
-                  filter: blur(2rem);
-                  opacity: 0.6;
-                }
-
-                .mid {
-                  width: 90%;
-                  height: 70%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.7)' : 'rgba(77, 189, 206, 0.7)'} 0%, transparent 50%);
-                  position: absolute;
-                  left: 0;
+                  left: -10%;
                   right: 0;
                   bottom: 0;
                   margin: auto;
@@ -204,17 +199,30 @@ export default function EducationSection({ isDark }) {
                   opacity: 0.8;
                 }
 
+                .mid {
+                  width: 110%;
+                  height: 90%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.6)' : 'rgba(56, 189, 248, 0.6)'} 0%, ${isDark ? 'rgba(147, 51, 234, 0.3)' : 'rgba(77, 189, 206, 0.3)'} 40%, transparent 80%);
+                  position: absolute;
+                  left: -5%;
+                  right: 0;
+                  bottom: 0;
+                  margin: auto;
+                  filter: blur(4rem);
+                  opacity: 1;
+                }
+
                 .hi {
-                  width: 70%;
-                  height: 60%;
-                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(168, 85, 247, 0.9)' : 'rgba(77, 189, 206, 0.9)'} 0%, transparent 40%);
+                  width: 100%;
+                  height: 80%;
+                  background: radial-gradient(ellipse at center bottom, ${isDark ? 'rgba(192, 132, 252, 0.8)' : 'rgba(77, 189, 206, 0.8)'} 0%, ${isDark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(56, 189, 248, 0.4)'} 50%, transparent 90%);
                   position: absolute;
                   left: 0;
                   right: 0;
                   bottom: 0;
                   margin: auto;
-                  filter: blur(4rem);
-                  opacity: 0.9;
+                  filter: blur(5rem);
+                  opacity: 1;
                 }
 
                 .darken {
@@ -314,11 +322,10 @@ export default function EducationSection({ isDark }) {
                 }
 
                 .light-toggle {
-                  position: absolute;
-                  top: 1.5rem;
-                  right: 1rem;
-                  height: 3.5rem;
-                  width: 2rem;
+                  position: relative;
+                  flex-shrink: 0;
+                  height: 3rem;
+                  width: 1.75rem;
                   border-radius: 0.5rem;
                   background: rgba(0, 0, 0, 0.3);
                   box-shadow: inset 0 -4px 4px 0.15rem rgba(0,0,0,0.2), 
@@ -338,8 +345,8 @@ export default function EducationSection({ isDark }) {
                   top: 0;
                   bottom: 0;
                   margin: auto;
-                  width: 0.5rem;
-                  height: 2.5rem;
+                  width: 0.45rem;
+                  height: 2.2rem;
                   border-radius: 0.2rem;
                   background: rgba(0, 0, 0, 0.5);
                   transition: all 0.4s ease-in-out;
@@ -350,9 +357,9 @@ export default function EducationSection({ isDark }) {
                   left: 0;
                   right: 0.04rem;
                   margin: auto;
-                  top: 0.5rem;
-                  width: 30%;
-                  height: 40%;
+                  top: 0.4rem;
+                  width: 35%;
+                  height: 35%;
                   background: ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
                   border-radius: 0.2rem;
                   box-shadow: inset 0 1px 2px 0 rgba(255,255,255,0.3),
@@ -363,7 +370,7 @@ export default function EducationSection({ isDark }) {
                 }
 
                 .luminous-education-card.active .toggle-handle {
-                  transform: translateY(1.2rem);
+                  transform: translateY(1.3rem);
                   background: ${isDark ? '#a855f7' : '#4dbdce'};
                   box-shadow: inset 0 1px 6px 0 rgba(255,255,255,0.5),
                               inset 0 -1px 1px 0 rgba(255,255,255,0.3),
@@ -376,8 +383,12 @@ export default function EducationSection({ isDark }) {
                   box-shadow: 0 0 0.3rem 0.1rem ${isDark ? 'rgba(168, 85, 247, 0.5)' : 'rgba(77, 189, 206, 0.5)'};
                 }
 
-                .light-toggle:hover:not(.luminous-education-card.active .light-toggle) .toggle-handle {
+                .light-toggle:hover .toggle-handle {
                   transform: translateY(0.15rem);
+                }
+
+                .luminous-education-card.active .light-toggle:hover .toggle-handle {
+                  transform: translateY(1.15rem);
                 }
                 `}</style>
         </motion.div>
