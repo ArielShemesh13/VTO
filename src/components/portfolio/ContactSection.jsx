@@ -10,22 +10,11 @@ export default function ContactSection({ isDark }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Send email notification
-    await base44.integrations.Core.SendEmail({
-      to: 'Arielshemesh3333@gmail.com',
-      subject: `New Contact Form Message from ${formData.name}`,
-      body: `
-You have received a new message through your portfolio contact form:
-
-Name: ${formData.name}
-Email: ${formData.email}
-
-Message:
-${formData.message}
-
----
-Sent from your portfolio website contact form
-      `
+    // Send email via backend function
+    await base44.functions.invoke('sendContactEmail', {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message
     });
     
     setSubmitted(true);
