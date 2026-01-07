@@ -4,7 +4,7 @@ import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react'
 import { base44 } from '@/api/base44Client';
 
 export default function ContactSection({ isDark }) {
-  const [formData, setFormData] = useState({ name: '', role: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -14,31 +14,29 @@ export default function ContactSection({ isDark }) {
     await base44.integrations.Core.SendEmail({
       to: 'arielshemesh1999@gmail.com',
       subject: `New Contact Form Message from ${formData.name}`,
-      body: `
-    You have received a new message through your portfolio contact form:
+      body: `הודעה חדשה מטופס יצירת קשר:
 
-    שם: ${formData.name}
-    תפקיד: ${formData.role}
+    שם השולח: ${formData.name}
+    מייל השולח: ${formData.email}
 
-    תוכן:
+    תוכן ההודעה:
     ${formData.message}
 
     ---
-    Sent from your portfolio website contact form
-      `
+    נשלח מאתר הפורטפוליו שלך`
     });
     
     // Save message to database
     await base44.entities.ContactMessage.create({
       name: formData.name,
-      role: formData.role,
+      email: formData.email,
       message: formData.message,
       status: 'new'
     });
     
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', role: '', message: '' });
+    setFormData({ name: '', email: '', message: '' });
   };
 
   const contactInfo = [
@@ -164,19 +162,19 @@ export default function ContactSection({ isDark }) {
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-purple-500/20 text-white placeholder-white/30 focus:border-purple-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="John Doe"
+                      placeholder="Type your full name here"
                     />
                   </div>
 
                   <div>
-                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>תפקיד / Role</label>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>Email Address</label>
                     <input
-                      type="text"
-                      value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="Data Analyst, Developer, etc."
+                      placeholder="Type your email"
                     />
                   </div>
 
