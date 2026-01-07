@@ -18,7 +18,7 @@ export default function ContactSection({ isDark }) {
       // Send email notification
       await base44.integrations.Core.SendEmail({
         from_name: formData.name,
-        to: 'arielshemesh1999@gmail.com',
+        to: 'arielshemesh3333@gmail.com',
         subject: `MESSAGE FROM ${formData.email} - ${formData.name}`,
         body: `CONTACT FORM SUBMISSION
 
@@ -52,7 +52,7 @@ REPLY TO: ${formData.email}`
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'arielshemesh3333@gmail.com', href: 'mailto:arielshemesh3333@gmail.com' },
     { icon: MapPin, label: 'Location', value: 'Israel' },
   ];
 
