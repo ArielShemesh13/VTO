@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import DigitalClock from './DigitalClock';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -16,34 +17,22 @@ export default function ContactSection({ isDark }) {
     setIsSending(true);
     
     try {
-      await Promise.all([
-        base44.integrations.Core.SendEmail({
-          to: 'arielshemesh1999@gmail.com',
-          subject: `New Contact Form Message from ${formData.name}`,
-          body: `
-You have received a new message through your portfolio contact form:
+      const response = await base44.functions.invoke('sendContactEmail', {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message
+      });
 
-Name: ${formData.name}
-Email: ${formData.email}
-
-Message:
-${formData.message}
-
----
-Sent from your portfolio website contact form
-          `
-        }),
-        base44.entities.ContactMessage.create({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          status: 'new'
-        })
-      ]);
-      
-      setSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setSubmitted(false), 3000);
+      if (response.data.success) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 3000);
+      } else {
+        throw new Error(response.data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to send message. Please try again or email directly at arielshemesh1999@gmail.com');
     } finally {
       setIsSending(false);
     }
@@ -178,21 +167,25 @@ Sent from your portfolio website contact form
                     />
                   </div>
 
-                  <motion.button
-                    type="submit"
-                    disabled={isSending}
-                    className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 ${isSending ? 'opacity-90 cursor-not-allowed' : ''}`}
-                    whileHover={!isSending ? { scale: 1.02 } : {}}
-                    whileTap={!isSending ? { scale: 0.98 } : {}}
-                  >
-                    <motion.div
-                      animate={isSending ? { rotate: 360 } : {}}
-                      transition={{ duration: 1, repeat: isSending ? Infinity : 0, ease: "linear" }}
+                  <div className="flex items-center gap-4">
+                    <DigitalClock isDark={isDark} />
+                    
+                    <motion.button
+                      type="submit"
+                      disabled={isSending}
+                      className={`flex-1 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 ${isSending ? 'opacity-90 cursor-not-allowed' : ''}`}
+                      whileHover={!isSending ? { scale: 1.02 } : {}}
+                      whileTap={!isSending ? { scale: 0.98 } : {}}
                     >
-                      <Send size={18} />
-                    </motion.div>
-                    {isSending ? 'SENDING...' : 'Send Message'}
-                  </motion.button>
+                      <motion.div
+                        animate={isSending ? { rotate: 360 } : {}}
+                        transition={{ duration: 1, repeat: isSending ? Infinity : 0, ease: "linear" }}
+                      >
+                        <Send size={18} />
+                      </motion.div>
+                      {isSending ? 'SENDING...' : 'Send Message'}
+                    </motion.button>
+                  </div>
                 </form>
               )}
             </div>
