@@ -74,10 +74,10 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         .fingerprint-container {
           align-items: center;
           background: ${isDark 
-            ? 'linear-gradient(135deg, #a855f7, #06b6d4)' 
-            : 'linear-gradient(135deg, #4dbdce, #6366f1)'};
+            ? 'linear-gradient(135deg, #34d399, #10b981)' 
+            : 'linear-gradient(135deg, #6ee7b7, #34d399)'};
           border-radius: 40px;
-          box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+          box-shadow: 0 14px 28px rgba(52, 211, 153, 0.4), 0 10px 10px rgba(16, 185, 129, 0.3);
           display: flex;
           height: 80px;
           justify-content: center;
@@ -99,7 +99,7 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           left: -8px;
           opacity: 0;
           position: absolute;
-          stroke: #777;
+          stroke: rgba(255, 255, 255, 0.5);
           top: -9px;
           transition: opacity 1ms;
         }
@@ -186,7 +186,7 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           0% { opacity: 1; transform: scale(1); }
           6% { opacity: 0; transform: scale(0.5); }
           94% { opacity: 0; transform: scale(0.5); }
-          100% { opacity: 1; transform: scale(1); }
+          100% { opacity: 0; transform: scale(0.5); }
         }
         
         @keyframes Ok {
