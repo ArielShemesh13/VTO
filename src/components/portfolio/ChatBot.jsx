@@ -1,17 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Loader2 } from 'lucide-react';
+import { Send, Loader2, AlertCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function ChatBot({ isDark }) {
-  const [messages, setMessages] = useState([
-    { role: 'bot', content: "Hi! I'm here to help. What's your name?" }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [currentInput, setCurrentInput] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [step, setStep] = useState('name');
-  const [userData, setUserData] = useState({ name: '', email: '', message: '' });
+  const [userData, setUserData] = useState({ name: '', email: '' });
+  const [emailError, setEmailError] = useState('');
+  const [conversationId, setConversationId] = useState(null);
   const messagesEndRef = useRef(null);
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const canSendMessage = () => {
+    return userData.name.trim() && userData.email.trim() && isValidEmail(userData.email) && currentInput.trim();
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -21,41 +28,32 @@ export default function ChatBot({ isDark }) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!currentInput.trim() || isSending) return;
+  useEffect(() => {
+    if (userData.email) {
+      if (!isValidEmail(userData.email)) {
+        setEmailError('Please enter a valid email address');
+      } else {
+        setEmailError('');
+      }
+    }
+  }, [userData.email]);
 
-    const userMessage = { role: 'user', content: currentInput.trim() };
+  const handleSend = async () => {
+    if (!canSendMessage() || isSending) return;
+
+    const userMessage = { role: 'user', content: currentInput.trim(), name: userData.name };
     setMessages(prev => [...prev, userMessage]);
+    const messageContent = currentInput.trim();
     setCurrentInput('');
     setIsSending(true);
 
     setTimeout(async () => {
-      if (step === 'name') {
-        setUserData(prev => ({ ...prev, name: currentInput.trim() }));
-        setMessages(prev => [...prev, { 
-          role: 'bot', 
-          content: `Nice to meet you, ${currentInput.trim()}! What's your email address?` 
-        }]);
-        setStep('email');
-        setIsSending(false);
-      } else if (step === 'email') {
-        setUserData(prev => ({ ...prev, email: currentInput.trim() }));
-        setMessages(prev => [...prev, { 
-          role: 'bot', 
-          content: "Great! Now, how can I help you today?" 
-        }]);
-        setStep('message');
-        setIsSending(false);
-      } else if (step === 'message') {
-        const messageContent = currentInput.trim();
-        setUserData(prev => ({ ...prev, message: messageContent }));
-
-        try {
-          await Promise.all([
-            base44.integrations.Core.SendEmail({
-              to: 'Arielshemesh1999@gmail.com',
-              subject: `New Website Message from ${userData.name}`,
-              body: `
+      try {
+        await Promise.all([
+          base44.integrations.Core.SendEmail({
+            to: 'Arielshemesh1999@gmail.com',
+            subject: `New Website Message from ${userData.name}`,
+            body: `
 You have received a new message through your portfolio website:
 
 Name: ${userData.name}
@@ -66,51 +64,48 @@ ${messageContent}
 
 ---
 Sent from portfolio chat
-              `
-            }),
-            base44.entities.ContactMessage.create({
-              name: userData.name,
-              email: userData.email,
-              message: messageContent,
-              status: 'new'
-            })
-          ]);
+            `
+          }),
+          base44.entities.ContactMessage.create({
+            name: userData.name,
+            email: userData.email,
+            message: messageContent,
+            status: 'new'
+          })
+        ]);
 
-          setMessages(prev => [...prev, { 
-            role: 'bot', 
-            content: "Your message has been sent.\nCan I help you with anything else?",
-            showOptions: true
-          }]);
-          setStep('followup');
-        } catch (error) {
-          setMessages(prev => [...prev, { 
-            role: 'bot', 
-            content: "Sorry, there was an error sending your message. Please try again." 
-          }]);
-        }
-        setIsSending(false);
-      } else if (step === 'followup') {
-        const response = currentInput.trim().toLowerCase();
-        if (response === 'yes') {
-          setMessages(prev => [...prev, { 
-            role: 'bot', 
-            content: "I'm currently an experimental bot and still in development.\nVery soon you'll be able to see my full capabilities!" 
-          }]);
-        } else {
-          setMessages(prev => [...prev, { 
-            role: 'bot', 
-            content: "Thank you for reaching out! Have a great day!" 
-          }]);
-        }
-        setStep('done');
-        setIsSending(false);
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          content: "Your message has been sent.\nCan I help you with anything else?",
+          showOptions: true
+        }]);
+      } catch (error) {
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          content: "Sorry, there was an error sending your message. Please try again." 
+        }]);
       }
+      setIsSending(false);
     }, 800);
   };
 
-  const handleOptionClick = (option) => {
-    setCurrentInput(option);
-    setTimeout(() => handleSend(), 100);
+  const handleOptionClick = async (option) => {
+    const userMessage = { role: 'user', content: option, name: userData.name };
+    setMessages(prev => [...prev, userMessage]);
+    
+    setTimeout(() => {
+      if (option.toLowerCase() === 'yes') {
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          content: "I'm currently an experimental bot and still in development.\nVery soon you'll be able to see my full capabilities!" 
+        }]);
+      } else {
+        setMessages(prev => [...prev, { 
+          role: 'bot', 
+          content: "Thank you for reaching out! Have a great day!" 
+        }]);
+      }
+    }, 800);
   };
 
   return (
@@ -126,7 +121,7 @@ Sent from portfolio chat
       }`} />
 
       <div className={`p-6 border-b ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mb-6">
           <motion.div 
             className="relative"
             animate={{ 
@@ -146,7 +141,8 @@ Sent from portfolio chat
               <div className={`text-2xl`}>🤖</div>
             </div>
             <motion.div 
-              className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"
+              className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 shadow-lg"
+              style={{ borderColor: isDark ? '#000' : '#fff' }}
               animate={{ 
                 scale: [1, 1.2, 1],
                 opacity: [1, 0.8, 1]
@@ -171,28 +167,88 @@ Sent from portfolio chat
             </div>
           </div>
         </div>
+
+        <div className="space-y-3">
+          <div>
+            <label className={`text-xs font-medium mb-1 block ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+              Name
+            </label>
+            <input
+              type="text"
+              value={userData.name}
+              onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))}
+              placeholder="Enter your name"
+              className={`w-full px-4 py-2.5 rounded-xl outline-none transition-all text-sm ${
+                isDark 
+                  ? 'bg-white/5 border border-white/10 text-white placeholder-white/40 focus:border-purple-500/50 focus:bg-white/10' 
+                  : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/40 focus:border-[#244270]/30 focus:bg-[#244270]/10'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label className={`text-xs font-medium mb-1 block ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+              Email
+            </label>
+            <input
+              type="email"
+              value={userData.email}
+              onChange={(e) => setUserData(prev => ({ ...prev, email: e.target.value }))}
+              placeholder="Enter your email"
+              className={`w-full px-4 py-2.5 rounded-xl outline-none transition-all text-sm ${
+                emailError && userData.email
+                  ? isDark 
+                    ? 'bg-red-500/10 border border-red-500/50 text-white placeholder-white/40 focus:border-red-500' 
+                    : 'bg-red-50 border border-red-300 text-[#141225] placeholder-[#141225]/40 focus:border-red-400'
+                  : isDark 
+                    ? 'bg-white/5 border border-white/10 text-white placeholder-white/40 focus:border-purple-500/50 focus:bg-white/10' 
+                    : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/40 focus:border-[#244270]/30 focus:bg-[#244270]/10'
+              }`}
+            />
+            {emailError && userData.email && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-1 mt-1.5"
+              >
+                <AlertCircle className="w-3 h-3 text-red-500" />
+                <span className="text-xs text-red-500">{emailError}</span>
+              </motion.div>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="h-96 overflow-y-auto p-6 space-y-4">
+      <div className="h-96 overflow-y-auto p-6 space-y-4">{messages.length === 0 && (
+          <div className={`text-center py-12 ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
+            <p className="text-sm">Fill in your details above to start chatting</p>
+          </div>
+        )}
         <AnimatePresence>
           {messages.map((msg, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+              <div className={`max-w-[75%] rounded-2xl px-4 py-3 shadow-lg ${
                 msg.role === 'user'
                   ? isDark 
-                    ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white' 
-                    : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white'
+                    ? 'bg-gradient-to-br from-purple-500 via-cyan-500 to-blue-500 text-white rounded-br-md' 
+                    : 'bg-gradient-to-br from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white rounded-br-md'
                   : isDark
-                    ? 'bg-white/10 text-white'
-                    : 'bg-[#244270]/5 text-[#141225]'
+                    ? 'bg-white/10 backdrop-blur-xl text-white border border-white/10 rounded-bl-md'
+                    : 'bg-white text-[#141225] border border-[#244270]/10 rounded-bl-md'
               }`}>
-                <p className="text-sm whitespace-pre-line">{msg.content}</p>
+                {msg.role === 'user' && msg.name && (
+                  <p className={`text-xs font-medium mb-1 ${isDark ? 'text-white/70' : 'text-white/90'}`}>
+                    {msg.name}
+                  </p>
+                )}
+                <p className="text-sm whitespace-pre-line leading-relaxed">{msg.content}</p>
                 
                 {msg.showOptions && (
                   <div className="flex gap-2 mt-3">
@@ -240,42 +296,40 @@ Sent from portfolio chat
         <div ref={messagesEndRef} />
       </div>
 
-      {step !== 'done' && (
-        <div className={`p-4 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
-          <div className="flex gap-2">
-            <input
-              type={step === 'email' ? 'email' : 'text'}
-              value={currentInput}
-              onChange={(e) => setCurrentInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder={
-                step === 'name' ? 'Type your name...' :
-                step === 'email' ? 'Type your email...' :
-                'Type your message...'
-              }
-              disabled={isSending}
-              className={`flex-1 px-4 py-3 rounded-xl outline-none transition-all ${
-                isDark 
-                  ? 'bg-white/5 border border-white/10 text-white placeholder-white/40 focus:border-purple-500/50 focus:bg-white/10' 
-                  : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/40 focus:border-[#244270]/30 focus:bg-[#244270]/10'
-              }`}
-            />
-            <motion.button
-              onClick={handleSend}
-              disabled={!currentInput.trim() || isSending}
-              className={`p-3 rounded-xl ${
-                isDark 
-                  ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' 
-                  : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'
-              } disabled:opacity-50 disabled:cursor-not-allowed transition-all`}
-              whileHover={!isSending ? { scale: 1.05 } : {}}
-              whileTap={!isSending ? { scale: 0.95 } : {}}
-            >
-              <Send className="w-5 h-5 text-white" />
-            </motion.button>
-          </div>
+      <div className={`p-4 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={currentInput}
+            onChange={(e) => setCurrentInput(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && canSendMessage() && handleSend()}
+            placeholder={
+              !userData.name.trim() ? 'Enter your name first...' :
+              !userData.email.trim() || !isValidEmail(userData.email) ? 'Enter a valid email first...' :
+              'Type your message...'
+            }
+            disabled={isSending || !userData.name.trim() || !isValidEmail(userData.email)}
+            className={`flex-1 px-4 py-3 rounded-xl outline-none transition-all ${
+              isDark 
+                ? 'bg-white/5 border border-white/10 text-white placeholder-white/40 focus:border-purple-500/50 focus:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed' 
+                : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/40 focus:border-[#244270]/30 focus:bg-[#244270]/10 disabled:opacity-50 disabled:cursor-not-allowed'
+            }`}
+          />
+          <motion.button
+            onClick={handleSend}
+            disabled={!canSendMessage() || isSending}
+            className={`p-3 rounded-xl ${
+              isDark 
+                ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' 
+                : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'
+            } disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg`}
+            whileHover={canSendMessage() && !isSending ? { scale: 1.05 } : {}}
+            whileTap={canSendMessage() && !isSending ? { scale: 0.95 } : {}}
+          >
+            <Send className="w-5 h-5 text-white" />
+          </motion.button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
