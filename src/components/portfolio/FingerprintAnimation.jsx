@@ -73,11 +73,18 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           border-radius: 40px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           display: flex;
-          height: 80px;
+          height: 60px;
           justify-content: center;
           position: relative;
-          width: 200px;
+          width: 150px;
           margin: 0 auto;
+        }
+        
+        @media (min-width: 640px) {
+          .fingerprint-container {
+            height: 80px;
+            width: 200px;
+          }
         }
         
         .text {
@@ -86,16 +93,31 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           transition: opacity 300ms;
           user-select: none;
           font-weight: 600;
-          font-size: 22px;
+          font-size: 16px;
+        }
+        
+        @media (min-width: 640px) {
+          .text {
+            font-size: 22px;
+          }
         }
         
         .fingerprint {
-          left: -8px;
+          left: -16px;
           opacity: 0;
           position: absolute;
           stroke: ${isDark ? 'rgba(52, 211, 153, 0.5)' : 'rgba(52, 211, 153, 0.7)'};
-          top: -9px;
+          top: -19px;
           transition: opacity 1ms;
+          transform: scale(0.75);
+        }
+        
+        @media (min-width: 640px) {
+          .fingerprint {
+            left: -8px;
+            top: -9px;
+            transform: scale(1);
+          }
         }
         
         .fingerprint-active {
@@ -158,13 +180,25 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         }
         
         @keyframes Container {
-          0% { width: 200px }
-          6% { width: 80px }
+          0% { width: 150px }
+          6% { width: 60px }
           71% { transform: scale(1); }
           75% { transform: scale(1.2); }
           77% { transform: scale(1); }
-          94% { width: 80px }
-          100% { width: 200px }
+          94% { width: 60px }
+          100% { width: 150px }
+        }
+        
+        @media (min-width: 640px) {
+          @keyframes Container {
+            0% { width: 200px }
+            6% { width: 80px }
+            71% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+            77% { transform: scale(1); }
+            94% { width: 80px }
+            100% { width: 200px }
+          }
         }
         
         @keyframes Text {
