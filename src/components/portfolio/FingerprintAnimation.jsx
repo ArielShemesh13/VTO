@@ -4,14 +4,12 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    // Trigger animation immediately
     setIsActive(true);
 
-    // Reset after animation completes (6 seconds)
     const timer = setTimeout(() => {
       setIsActive(false);
       if (onComplete) onComplete();
-    }, 6000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -121,12 +119,12 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         }
         
         .active.fingerprint-container {
-          animation: 6s Container;
+          animation: 2s Container;
         }
         
         .active .text {
           opacity: 0;
-          animation: 6s Text forwards;
+          animation: 2s Text forwards;
         }
         
         .active .fingerprint {
@@ -146,17 +144,17 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         
         .active .fingerprint-active .odd {
           stroke-dasharray: 50px 50px;
-          transition: stroke-dasharray 2000ms 1500ms;
+          transition: stroke-dasharray 500ms 400ms;
         }
         
         .active .fingerprint-active .even {
           stroke-dashoffset: 0px;
-          transition: stroke-dashoffset 2000ms 1300ms;
+          transition: stroke-dashoffset 500ms 300ms;
         }
         
         .active .fingerprint-out {
           opacity: 0;
-          transition: opacity 300ms 4100ms;
+          transition: opacity 300ms 1200ms;
         }
         
         @keyframes Container {
