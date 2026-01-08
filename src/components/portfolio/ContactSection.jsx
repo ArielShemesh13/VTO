@@ -82,68 +82,6 @@ Sent from your portfolio website contact form
 
         <div className="grid lg:grid-cols-2 gap-12">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className={`p-8 rounded-2xl h-full ${isDark ? 'bg-black/40 border border-white/10' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl`}>
-              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                Contact Information
-              </h3>
-
-              <div className="space-y-6 mb-8">
-                {contactInfo.map((item) => (
-                  <div key={item.label} className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isDark ? 'bg-purple-500/20' : 'bg-[#244270]/10'}`}>
-                      <item.icon className={`w-5 h-5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
-                    </div>
-                    <div>
-                      <p className={`text-sm ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>{item.label}</p>
-                      {item.href ? (
-                        <a href={item.href} className={`font-medium hover:underline ${isDark ? 'text-white hover:text-purple-400' : 'text-[#141225] hover:text-[#244270]'} transition-colors`}>
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className={`font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>{item.value}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className={`border-t pt-6 ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}>
-                <p className={`text-sm mb-4 ${isDark ? 'text-white/50' : 'text-[#141225]/50'}`}>Follow me</p>
-                <div className="flex gap-3">
-                  {socialLinks.map((social) => (
-                    <motion.a
-                      key={social.label}
-                      href={social.href}
-                      className={`p-3 rounded-xl ${isDark ? 'bg-purple-500/10 text-white hover:bg-purple-500/20 hover:text-purple-400 border border-purple-500/20 hover:border-purple-500/40' : 'bg-[#244270]/10 text-[#244270] hover:bg-[#244270]/20'} transition-all duration-300`}
-                      whileHover={{ scale: 1.1, y: -3 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <social.icon size={20} />
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
-
-              <div className={`mt-8 p-4 rounded-xl ${isDark ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-emerald-50 border border-emerald-200'}`}>
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <div className="w-3 h-3 bg-emerald-500 rounded-full" />
-                    <div className="absolute inset-0 w-3 h-3 bg-emerald-500 rounded-full animate-ping opacity-50" />
-                  </div>
-                  <p className={`text-sm font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-                    Available for new projects
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
