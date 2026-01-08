@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import FingerprintAnimation from './FingerprintAnimation';
-import { base44 } from '@/api/base44Client';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
