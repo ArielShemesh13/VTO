@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import RingAnimation from './RingAnimation';
+import FloatingBubbles from './FloatingBubbles';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -168,7 +168,7 @@ export default function ContactSection({ isDark }) {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <RingAnimation isDark={isDark} />
+                    <FloatingBubbles isDark={isDark} />
                     
                     <motion.button
                       type="submit"
