@@ -13,36 +13,65 @@ export default function HeroSection({ isDark, onNavigate }) {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-      <div className="max-w-6xl mx-auto w-full flex items-center justify-center gap-12">
+      <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-8 lg:gap-12">
         <motion.div
-          className="relative flex justify-center items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex-1 max-w-md"
         >
-          <div className="w-80 h-80 md:w-96 md:h-96">
+          <motion.h1
+            className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            Hi, I'm{' '}
+            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              Ariel Shemesh
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
+            raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
+            I transform complex datasets into clear, strategic decisions that drive business growth.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          className="relative flex justify-center items-center flex-shrink-0"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="w-72 h-72 md:w-80 md:h-80">
             <AnimatedLogo isDark={isDark} />
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex-1 max-w-sm"
         >
           <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl ${
             isDark 
               ? 'bg-black/40 border border-white/10' 
               : 'bg-white/80 border border-[#244270]/20 shadow-xl'
-          } max-w-sm w-full`}>
-            {/* Gradient glow effect */}
+          } w-full`}>
             <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-20 -z-10 ${
               isDark 
                 ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
                 : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
             }`} />
 
-            {/* Profile Image */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -62,7 +91,6 @@ export default function HeroSection({ isDark, onNavigate }) {
               </div>
             </motion.div>
 
-            {/* Name */}
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -74,7 +102,6 @@ export default function HeroSection({ isDark, onNavigate }) {
               Ariel Shemesh
             </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -88,7 +115,6 @@ export default function HeroSection({ isDark, onNavigate }) {
               Data Analyst · Web Developer
             </motion.p>
 
-            {/* Details */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -123,7 +149,6 @@ export default function HeroSection({ isDark, onNavigate }) {
               </div>
             </motion.div>
 
-            {/* Send Message Button */}
             <motion.button
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
