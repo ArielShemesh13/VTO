@@ -21,13 +21,13 @@ export default function HeroSection({ isDark, onNavigate }) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex justify-center lg:justify-start"
           >
-            <div className={`relative p-8 md:p-10 rounded-3xl backdrop-blur-xl ${
+            <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl ${
               isDark 
                 ? 'bg-black/40 border border-white/10' 
                 : 'bg-white/80 border border-[#244270]/20 shadow-xl'
-            } max-w-md w-full`}>
+            } max-w-sm w-full`}>
               {/* Gradient glow effect */}
-              <div className={`absolute -inset-1 rounded-3xl blur-xl opacity-20 -z-10 ${
+              <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-20 -z-10 ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
                   : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
@@ -38,9 +38,9 @@ export default function HeroSection({ isDark, onNavigate }) {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                className="flex justify-center mb-6"
+                className="flex justify-center mb-4"
               >
-                <div className={`relative w-32 h-32 md:w-36 md:h-36 rounded-full p-1 ${
+                <div className={`relative w-24 h-24 md:w-28 md:h-28 rounded-full p-1 ${
                   isDark 
                     ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
                     : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
@@ -58,7 +58,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className={`text-3xl md:text-4xl font-bold text-center mb-2 ${
+                className={`text-2xl md:text-3xl font-bold text-center mb-1 ${
                   isDark ? 'text-white' : 'text-[#141225]'
                 }`}
               >
@@ -70,7 +70,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.55 }}
-                className={`text-sm tracking-[0.2em] uppercase text-center mb-8 ${
+                className={`text-xs tracking-[0.2em] uppercase text-center mb-6 ${
                   isDark 
                     ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
                     : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
@@ -84,17 +84,17 @@ export default function HeroSection({ isDark, onNavigate }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="space-y-4 mb-8"
+                className="space-y-3 mb-6"
               >
-                <div className="flex items-center gap-3 justify-center">
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                <div className="flex items-center gap-2 justify-center">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                     isDark ? 'bg-purple-500/20' : 'bg-[#244270]/15'
                   }`}>
-                    <Mail className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                    <Mail className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
                   </div>
                   <a 
                     href="mailto:arielshemesh1999@gmail.com" 
-                    className={`text-sm hover:underline transition-colors ${
+                    className={`text-xs hover:underline transition-colors ${
                       isDark ? 'text-white/70 hover:text-purple-400' : 'text-[#244270]/80 hover:text-[#244270]'
                     }`}
                   >
@@ -102,13 +102,13 @@ export default function HeroSection({ isDark, onNavigate }) {
                   </a>
                 </div>
 
-                <div className="flex items-center gap-3 justify-center">
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                <div className="flex items-center gap-2 justify-center">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                     isDark ? 'bg-purple-500/20' : 'bg-[#244270]/15'
                   }`}>
-                    <MapPin className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                    <MapPin className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
                   </div>
-                  <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#244270]/80'}`}>
+                  <span className={`text-xs ${isDark ? 'text-white/70' : 'text-[#244270]/80'}`}>
                     Israel
                   </span>
                 </div>
@@ -120,7 +120,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65 }}
                 onClick={handleSendMessage}
-                className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${
+                className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 text-sm ${
                   isDark 
                     ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' 
                     : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'
@@ -128,7 +128,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Send size={18} />
+                <Send size={16} />
                 Send a Message
               </motion.button>
             </div>
