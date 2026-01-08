@@ -97,7 +97,9 @@ export default function Home() {
             <div id="hero">
               <HeroSection isDark={isDark} onNavigate={navigateToSection} />
             </div>
-            
+
+            <IntroTextSection isDark={isDark} />
+
             <div id="education">
               <EducationSection isDark={isDark} />
             </div>
