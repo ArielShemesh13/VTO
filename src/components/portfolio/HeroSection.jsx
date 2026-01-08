@@ -5,13 +5,13 @@ import AnimatedLogo from './AnimatedLogo';
 
 export default function HeroSection({ isDark, onNavigate }) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-      <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-8 lg:gap-12">
+    <section className="relative min-h-screen flex items-center justify-center px-4 md:px-6 pt-20">
+      <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex-1 max-w-md"
+          className="flex-1 max-w-md w-full lg:w-auto text-center lg:text-left"
         >
           <motion.h1
             className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
@@ -38,12 +38,12 @@ export default function HeroSection({ isDark, onNavigate }) {
         </motion.div>
 
         <motion.div
-          className="relative flex justify-center items-center flex-shrink-0"
+          className="relative flex justify-center items-center flex-shrink-0 hidden lg:flex"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <div className="w-72 h-72 md:w-80 md:h-80">
+          <div className="w-64 h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
             <AnimatedLogo isDark={isDark} />
           </div>
         </motion.div>
@@ -52,9 +52,9 @@ export default function HeroSection({ isDark, onNavigate }) {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex-1 max-w-sm"
+          className="flex-1 max-w-sm w-full"
         >
-          <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl ${
+          <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl overflow-hidden ${
             isDark 
               ? 'bg-black/40 border border-purple-500/20' 
               : 'bg-white border border-[#244270]/10 shadow-xl'
@@ -69,19 +69,20 @@ export default function HeroSection({ isDark, onNavigate }) {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex justify-center mb-4"
+              className="flex justify-center mb-4 relative z-10"
             >
               <div className={`relative w-24 h-24 md:w-28 md:h-28 rounded-full p-1 ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
                   : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
               }`}>
-                <img
-                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/0cc54a7e4_IMGARIEL.jpg"
-                  alt="Ariel Shemesh"
-                  className="w-full h-full rounded-full object-cover"
-                  style={{ imageRendering: 'high-quality' }}
-                />
+                <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                  <img
+                    src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/0cc54a7e4_IMGARIEL.jpg"
+                    alt="Ariel Shemesh"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </motion.div>
 
@@ -102,21 +103,21 @@ export default function HeroSection({ isDark, onNavigate }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="space-y-3"
+              className="space-y-3 relative z-10"
             >
-              <div className="flex items-start gap-2">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+              <div className="flex items-start gap-3">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                   isDark ? 'bg-purple-500/20' : 'bg-[#244270]/15'
                 }`}>
-                  <Mail className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                  <Mail className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
                 </div>
-                <div className="flex-1">
-                  <div className={`text-xs font-semibold mb-0.5 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
+                <div className="flex-1 min-w-0">
+                  <div className={`text-xs font-semibold mb-1 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
                     EMAIL
                   </div>
                   <a 
                     href="mailto:arielshemesh1999@gmail.com" 
-                    className={`text-xs hover:underline transition-colors break-all ${
+                    className={`text-xs hover:underline transition-colors block break-words ${
                       isDark ? 'text-white/70 hover:text-purple-400' : 'text-[#244270]/80 hover:text-[#244270]'
                     }`}
                   >
@@ -125,14 +126,14 @@ export default function HeroSection({ isDark, onNavigate }) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-2">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+              <div className="flex items-start gap-3">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                   isDark ? 'bg-purple-500/20' : 'bg-[#244270]/15'
                 }`}>
-                  <Briefcase className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                  <Briefcase className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
                 </div>
-                <div className="flex-1">
-                  <div className={`text-xs font-semibold mb-0.5 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
+                <div className="flex-1 min-w-0">
+                  <div className={`text-xs font-semibold mb-1 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
                     EXPERIENCE
                   </div>
                   <span className={`text-xs ${isDark ? 'text-white/70' : 'text-[#244270]/80'}`}>
@@ -141,14 +142,14 @@ export default function HeroSection({ isDark, onNavigate }) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-2">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+              <div className="flex items-start gap-3">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                   isDark ? 'bg-purple-500/20' : 'bg-[#244270]/15'
                 }`}>
-                  <MapPin className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
+                  <MapPin className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-[#244270]'}`} />
                 </div>
-                <div className="flex-1">
-                  <div className={`text-xs font-semibold mb-0.5 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
+                <div className="flex-1 min-w-0">
+                  <div className={`text-xs font-semibold mb-1 ${isDark ? 'text-white/90' : 'text-[#244270]'}`}>
                     LOCATION
                   </div>
                   <span className={`text-xs ${isDark ? 'text-white/70' : 'text-[#244270]/80'}`}>
