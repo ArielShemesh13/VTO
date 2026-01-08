@@ -56,8 +56,8 @@ export default function HeroSection({ isDark, onNavigate }) {
         >
           <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl ${
             isDark 
-              ? 'bg-black/40 border border-white/10' 
-              : 'bg-white/80 border border-[#244270]/20 shadow-xl'
+              ? 'bg-black/40 border border-purple-500/20' 
+              : 'bg-white border border-[#244270]/10 shadow-xl'
           } w-full`}>
             <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-20 -z-10 ${
               isDark 
@@ -74,7 +74,7 @@ export default function HeroSection({ isDark, onNavigate }) {
               <div className={`relative w-24 h-24 md:w-28 md:h-28 rounded-full p-1 ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
-                  : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'
+                  : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
               }`}>
                 <img
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69528804be3196607ce99b1a/0cc54a7e4_IMGARIEL.jpg"
@@ -85,21 +85,10 @@ export default function HeroSection({ isDark, onNavigate }) {
               </div>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className={`text-2xl md:text-3xl font-bold text-center mb-1 ${
-                isDark ? 'text-white' : 'text-[#141225]'
-              }`}
-            >
-              Ariel Shemesh
-            </motion.h1>
-
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75 }}
+              transition={{ delay: 0.7 }}
               className={`text-xs tracking-[0.2em] uppercase text-center mb-6 ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
