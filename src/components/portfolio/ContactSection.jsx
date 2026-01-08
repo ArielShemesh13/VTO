@@ -60,11 +60,12 @@ export default function ContactSection({ isDark }) {
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Get In Touch
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'} flex items-center justify-center gap-4`}>
-            <span>Let's</span>
-            <CubeGrid isDark={isDark} />
-            <span>Connect</span>
+          <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            Let's Connect
           </h2>
+          <div className="flex justify-center mb-6">
+            <CubeGrid isDark={isDark} />
+          </div>
           <div className="flex items-center justify-center gap-6">
             <motion.a
               href="https://github.com/arielSHEMESH1999"
