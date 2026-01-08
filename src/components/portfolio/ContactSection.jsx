@@ -60,8 +60,10 @@ export default function ContactSection({ isDark }) {
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Get In Touch
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            Let's Connect
+          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'} flex items-center justify-center gap-4`}>
+            <span>Let's</span>
+            <CubeGrid isDark={isDark} />
+            <span>Connect</span>
           </h2>
           <div className="flex items-center justify-center gap-6">
             <motion.a
@@ -167,16 +169,13 @@ export default function ContactSection({ isDark }) {
                     />
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <CubeGrid isDark={isDark} />
-                    
-                    <motion.button
+                  <motion.button
                       type="submit"
                       disabled={isSending}
-                      className={`flex-1 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 ${isSending ? 'opacity-90 cursor-not-allowed' : ''}`}
+                      className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 text-white hover:from-purple-400 hover:via-cyan-400 hover:to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7] text-white hover:from-[#3da8b8] hover:via-[#4f46e5] hover:to-[#9333ea]'} shadow-lg ${isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/25'} transition-all duration-300 ${isSending ? 'opacity-90 cursor-not-allowed' : ''}`}
                       whileHover={!isSending ? { scale: 1.02 } : {}}
                       whileTap={!isSending ? { scale: 0.98 } : {}}
-                    >
+                      >
                       <motion.div
                         animate={isSending ? { rotate: 360 } : {}}
                         transition={{ duration: 1, repeat: isSending ? Infinity : 0, ease: "linear" }}
@@ -184,8 +183,7 @@ export default function ContactSection({ isDark }) {
                         <Send size={18} />
                       </motion.div>
                       {isSending ? 'SENDING...' : 'Send Message'}
-                    </motion.button>
-                  </div>
+                      </motion.button>
                 </form>
               )}
             </div>
