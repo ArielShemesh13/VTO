@@ -13,11 +13,11 @@ export default function ContactSection({ isDark }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (isSending) return;
-    
+
     setIsSending(true);
-    
+
     try {
       const response = await base44.functions.invoke('sendContactEmail', {
         name: formData.name,
@@ -32,13 +32,13 @@ export default function ContactSection({ isDark }) {
           setSubmitted(true);
           setFormData({ name: '', email: '', message: '' });
           setTimeout(() => setSubmitted(false), 3000);
-        }, 4500);
+        }, 2500);
       } else {
         throw new Error(response.data.error || 'Failed to send message');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Failed to send message. Please try again or email directly at arielshemesh1999@gmail.com');
+      alert('שליחת ההודעה נכשלה. אנא נסה שוב או שלח ישירות למייל arielshemesh1999@gmail.com');
     } finally {
       setIsSending(false);
     }
