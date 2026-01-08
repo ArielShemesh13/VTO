@@ -4,7 +4,6 @@ import AnimatedBackground from '../components/portfolio/AnimatedBackground';
 import IntroAnimation from '../components/portfolio/IntroAnimation';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
-import IntroTextSection from '../components/portfolio/IntroTextSection';
 import EducationSection from '../components/portfolio/EducationSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
 
