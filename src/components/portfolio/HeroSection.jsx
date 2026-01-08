@@ -8,51 +8,10 @@ export default function HeroSection({ isDark, onNavigate }) {
     <section className="relative min-h-screen flex items-center justify-center px-4 md:px-6 pt-20">
       <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex-1 max-w-md w-full lg:w-auto text-center lg:text-left"
-        >
-          <motion.h1
-            className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            Hi, I'm{' '}
-            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
-              Ariel Shemesh
-            </span>
-          </motion.h1>
-
-          <motion.p
-            className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
-            raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
-            I transform complex datasets into clear, strategic decisions that drive business growth.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          className="relative flex justify-center items-center flex-shrink-0 hidden lg:flex"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <div className="w-64 h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
-            <AnimatedLogo isDark={isDark} />
-          </div>
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex-1 max-w-sm w-full"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex-1 max-w-sm w-full order-1 lg:order-3"
         >
           <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl overflow-hidden ${
             isDark 
@@ -158,6 +117,47 @@ export default function HeroSection({ isDark, onNavigate }) {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="flex-1 max-w-md w-full lg:w-auto text-center lg:text-left order-2 lg:order-1"
+        >
+          <motion.h1
+            className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${isDark ? 'text-white' : 'text-[#141225]'}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            Hi, I'm{' '}
+            <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
+              Ariel Shemesh
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
+            raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
+            I transform complex datasets into clear, strategic decisions that drive business growth.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          className="relative flex justify-center items-center flex-shrink-0 hidden lg:flex order-3 lg:order-2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="w-64 h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
+            <AnimatedLogo isDark={isDark} />
           </div>
         </motion.div>
       </div>

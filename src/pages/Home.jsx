@@ -7,7 +7,7 @@ import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
 
-import ContactSection from '../components/portfolio/ContactSection';
+import ChatSection from '../components/portfolio/ChatSection';
 
 
 const sections = ['hero', 'education', 'projects', 'contact'];
@@ -106,7 +106,7 @@ export default function Home() {
             </div>
 
             <div id="contact">
-              <ContactSection isDark={isDark} />
+              <ChatSection isDark={isDark} />
             </div>
           </motion.div>
         )}
