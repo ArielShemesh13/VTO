@@ -32,7 +32,7 @@ export default function ContactSection({ isDark }) {
           setSubmitted(true);
           setFormData({ name: '', email: '', message: '' });
           setTimeout(() => setSubmitted(false), 3000);
-        }, 6000);
+        }, 4500);
       } else {
         throw new Error(response.data.error || 'Failed to send message');
       }

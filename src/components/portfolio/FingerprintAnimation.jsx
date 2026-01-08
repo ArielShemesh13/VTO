@@ -66,9 +66,7 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         </g>
       </svg>
       
-      <svg className="ok" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-        <path d="M34.912 50.75l10.89 10.125L67 36.75" fill="none" stroke={isDark ? '#34d399' : '#10b981'} strokeWidth="6"/>
-      </svg>
+
 
       <style jsx>{`
         .fingerprint-container {
@@ -122,10 +120,6 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           transition: stroke-dashoffset 1ms;
         }
         
-        .ok {
-          opacity: 0;
-        }
-        
         .active.fingerprint-container {
           animation: 6s Container;
         }
@@ -165,11 +159,6 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           transition: opacity 300ms 4100ms;
         }
         
-        .active .ok {
-          opacity: 1;
-          animation: 6s Ok forwards;
-        }
-        
         @keyframes Container {
           0% { width: 200px }
           6% { width: 80px }
@@ -185,16 +174,6 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           6% { opacity: 0; transform: scale(0.5); }
           94% { opacity: 0; transform: scale(0.5); }
           100% { opacity: 0; transform: scale(0.5); }
-        }
-        
-        @keyframes Ok {
-          0% { opacity: 0 }
-          70% { opacity: 0; transform: scale(0); }
-          75% { opacity: 1; transform: scale(1.1); }
-          77% { opacity: 1; transform: scale(1); }
-          92% { opacity: 1; transform: scale(1); }
-          96% { opacity: 0; transform: scale(0.5); }
-          100% { opacity: 0 }
         }
       `}</style>
     </div>
