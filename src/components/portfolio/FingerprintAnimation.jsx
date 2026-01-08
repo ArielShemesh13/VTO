@@ -67,17 +67,15 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
       </svg>
       
       <svg className="ok" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-        <path d="M34.912 50.75l10.89 10.125L67 36.75" fill="none" stroke="#fff" strokeWidth="6"/>
+        <path d="M34.912 50.75l10.89 10.125L67 36.75" fill="none" stroke={isDark ? '#34d399' : '#10b981'} strokeWidth="6"/>
       </svg>
 
       <style jsx>{`
         .fingerprint-container {
           align-items: center;
-          background: ${isDark 
-            ? 'linear-gradient(135deg, #34d399, #10b981)' 
-            : 'linear-gradient(135deg, #6ee7b7, #34d399)'};
+          background: ${isDark ? 'rgba(52, 211, 153, 0.2)' : 'rgb(209, 250, 229)'};
           border-radius: 40px;
-          box-shadow: 0 14px 28px rgba(52, 211, 153, 0.4), 0 10px 10px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           display: flex;
           height: 80px;
           justify-content: center;
@@ -87,7 +85,7 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         }
         
         .text {
-          color: white;
+          color: ${isDark ? '#34d399' : '#10b981'};
           position: absolute;
           transition: opacity 300ms;
           user-select: none;
@@ -99,13 +97,13 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
           left: -8px;
           opacity: 0;
           position: absolute;
-          stroke: rgba(255, 255, 255, 0.5);
+          stroke: ${isDark ? 'rgba(52, 211, 153, 0.5)' : 'rgba(52, 211, 153, 0.7)'};
           top: -9px;
           transition: opacity 1ms;
         }
         
         .fingerprint-active {
-          stroke: #fff;
+          stroke: ${isDark ? '#34d399' : '#10b981'};
         }
         
         .fingerprint-out {
