@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import CubeGrid from './CubeGrid';
 import FingerprintAnimation from './FingerprintAnimation';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [showFingerprint, setShowFingerprint] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,13 +25,9 @@ export default function ContactSection({ isDark }) {
       });
 
       if (response.data.success) {
-        setShowFingerprint(true);
-        setTimeout(() => {
-          setShowFingerprint(false);
-          setSubmitted(true);
-          setFormData({ name: '', email: '', message: '' });
-          setTimeout(() => setSubmitted(false), 3000);
-        }, 2500);
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 3000);
       } else {
         throw new Error(response.data.error || 'Failed to send message');
       }
@@ -127,11 +122,7 @@ export default function ContactSection({ isDark }) {
                 Send a Message
               </h3>
 
-              {showFingerprint ? (
-                <div className="py-12">
-                  <FingerprintAnimation isDark={isDark} />
-                </div>
-              ) : submitted ? (
+              {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
                     <CheckCircle className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
@@ -205,11 +196,8 @@ export default function ContactSection({ isDark }) {
           transition={{ delay: 0.5 }}
           className={`text-center mt-20 pt-8 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}
         >
-          <div className="flex justify-center items-center gap-4 mb-4">
-            <CubeGrid isDark={isDark} />
-          </div>
           <p className={`text-sm ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
-            © {new Date().getFullYear()} Ariel Shemesh. Built with React & Framer Motion.
+            © 2024 Ariel Shemesh. Built with React & Framer Motion.
           </p>
         </motion.div>
       </div>

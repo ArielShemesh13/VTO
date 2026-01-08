@@ -9,7 +9,7 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
     const timer = setTimeout(() => {
       setIsActive(false);
       if (onComplete) onComplete();
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -119,12 +119,12 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         }
         
         .active.fingerprint-container {
-          animation: 2s Container;
+          animation: 3s Container;
         }
         
         .active .text {
           opacity: 0;
-          animation: 2s Text forwards;
+          animation: 3s Text forwards;
         }
         
         .active .fingerprint {
@@ -144,17 +144,17 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         
         .active .fingerprint-active .odd {
           stroke-dasharray: 50px 50px;
-          transition: stroke-dasharray 500ms 400ms;
+          transition: stroke-dasharray 800ms 600ms;
         }
         
         .active .fingerprint-active .even {
           stroke-dashoffset: 0px;
-          transition: stroke-dashoffset 500ms 300ms;
+          transition: stroke-dashoffset 800ms 500ms;
         }
         
         .active .fingerprint-out {
           opacity: 0;
-          transition: opacity 300ms 1200ms;
+          transition: opacity 300ms 2000ms;
         }
         
         @keyframes Container {
