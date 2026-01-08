@@ -9,22 +9,50 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        // Save to database - this will trigger the agent to send email
+        // Send email directly using Core integration
+        await base44.asServiceRole.integrations.Core.SendEmail({
+            to: 'arielshemesh1999@gmail.com',
+            subject: `הודעה חדשה מאתר הפורטפוליו מ-${name}`,
+            from_name: 'Portfolio Website',
+            body: `
+קיבלת הודעה חדשה מטופס יצירת הקשר באתר הפורטפוליו:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📧 פרטי השולח
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 שם: ${name}
+📧 מייל: ${email}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💬 תוכן ההודעה
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${message}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📅 נשלח ב: ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}
+🌐 מקור: אתר הפורטפוליו - טופס יצירת קשר
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            `
+        });
+
+        // Save to database
         await base44.asServiceRole.entities.ContactMessage.create({
             name,
             email,
             message,
-            status: 'new'
+            status: 'processed'
         });
 
         return Response.json({ 
             success: true, 
-            message: 'Message saved successfully' 
+            message: 'Email sent and saved successfully' 
         });
     } catch (error) {
-        console.error('Error saving message:', error);
+        console.error('Error sending email:', error);
         return Response.json({ 
-            error: error.message || 'Failed to save message',
+            error: error.message || 'Failed to send email',
             details: error.toString()
         }, { status: 500 });
     }
