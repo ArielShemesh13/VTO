@@ -33,7 +33,7 @@ export default function HeroSection({ isDark, onNavigate }) {
               <div className={`relative w-24 h-24 md:w-28 md:h-28 rounded-full p-1 ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
-                  : 'bg-gradient-to-r from-[#375bd2] via-[#2a5ada] to-[#1b4dde]'
+                  : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
               }`}>
                 <div className="w-full h-full rounded-full overflow-hidden bg-white">
                   <img
