@@ -71,13 +71,53 @@ Sent from your portfolio website contact form
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Get In Touch
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
             Let's Connect
           </h2>
-          <p className={`max-w-2xl mx-auto ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-            Looking for an entry-level data analyst? I'm actively seeking opportunities to bring fresh thinking, 
-            motivation, and a strong work ethic to a data-driven environment.
-          </p>
+          <div className="flex items-center justify-center gap-6">
+            <motion.a
+              href="https://github.com/arielSHEMESH1999"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+              }`}
+            >
+              <Github className="w-5 h-5" />
+            </motion.a>
+            
+            <motion.a
+              href="https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+              }`}
+            >
+              <Linkedin className="w-5 h-5" />
+            </motion.a>
+            
+            <motion.a
+              href="mailto:arielshemesh1999@gmail.com"
+              whileHover={{ scale: 1.1, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+              }`}
+            >
+              <Mail className="w-5 h-5" />
+            </motion.a>
+          </div>
         </motion.div>
 
         <div className="max-w-xl mx-auto">
