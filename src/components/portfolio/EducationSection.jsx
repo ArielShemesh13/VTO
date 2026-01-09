@@ -6,20 +6,20 @@ export default function EducationSection({ isDark }) {
   const skills = [
     {
       icon: GraduationCap,
-      title: 'Academic Degree',
-      items: ['BA in Business Administration', 'Specialization: Information Systems', 'Ono Academic College (2023-2026)', 'Focus: Analytical Thinking & Data-Driven Processes'],
+      title: '(B.A.) in Business Administration',
+      items: ['Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)'],
       color: 'from-emerald-500 to-green-500',
     },
     {
       icon: TrendingUp,
-      title: 'Mentorship & Excellence',
-      items: ['Mentored students on the autism spectrum', 'High emotional intelligence & sensitivity', 'Personal guidance and empowerment', 'Dean\'s List honoree for academic excellence'],
+      title: 'Volunteer Experience & Mentorship',
+      items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
       color: 'from-orange-500 to-amber-500',
     },
     {
       icon: Code,
       title: 'Professional Capabilities',
-      items: ['Web development & digital interfaces', 'Data analysis & business insights', 'Trend analysis & pattern recognition', 'AI agents & intelligent automation'],
+      items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
       color: 'from-blue-500 to-cyan-500',
     },
   ];
