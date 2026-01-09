@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
+import { Mail, MapPin, Send, Github, Linkedin } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import FingerprintAnimation from './FingerprintAnimation';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
-
+  const [showFingerprint, setShowFingerprint] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +25,13 @@ export default function ContactSection({ isDark }) {
         status: 'new'
       });
 
-      setSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setSubmitted(false), 4000);
+      setShowFingerprint(true);
+      setTimeout(() => {
+        setShowFingerprint(false);
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      }, 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
@@ -118,11 +123,12 @@ export default function ContactSection({ isDark }) {
                 Send a Message
               </h3>
 
-              {submitted ? (
+              {showFingerprint ? (
+                <div className="py-12">
+                  <FingerprintAnimation isDark={isDark} />
+                </div>
+              ) : submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
-                    <CheckCircle className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
-                  </div>
                   <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
                   <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
                 </motion.div>
