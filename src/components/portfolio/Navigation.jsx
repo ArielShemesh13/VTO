@@ -13,8 +13,8 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (sectionId) => {
-    onNavigate(sectionId);
     setMobileMenuOpen(false);
+    onNavigate(sectionId);
   };
 
   return (

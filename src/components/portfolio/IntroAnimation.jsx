@@ -15,22 +15,7 @@ export default function IntroAnimation({ onComplete, isDark }) {
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
-  const letterVariants = {
-    hidden: { opacity: 0, y: 50, rotateX: -90 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: {
-        delay: i * 0.08,
-        duration: 0.6,
-        ease: [0.6, -0.05, 0.01, 0.99],
-      },
-    }),
-  };
 
-  const name = "Welcome";
-  const title = "to my portfolio";
 
   return (
     <AnimatePresence>

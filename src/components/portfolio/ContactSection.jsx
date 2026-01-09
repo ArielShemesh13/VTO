@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, Github, Linkedin } from 'lucide-react';
+import { Mail, Send, Github, Linkedin } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import FingerprintAnimation from './FingerprintAnimation';
+import SuccessAnimation from './SuccessAnimation';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -12,7 +13,6 @@ export default function ContactSection({ isDark }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (isSending) return;
 
     setIsSending(true);
@@ -26,29 +26,27 @@ export default function ContactSection({ isDark }) {
       });
 
       setShowFingerprint(true);
-      setTimeout(() => {
+      const fingerprintTimer = setTimeout(() => {
         setShowFingerprint(false);
         setSubmitted(true);
         setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setSubmitted(false), 5000);
+        
+        const successTimer = setTimeout(() => {
+          setSubmitted(false);
+        }, 5000);
+        
+        return () => clearTimeout(successTimer);
       }, 3000);
+      
+      return () => clearTimeout(fingerprintTimer);
     } catch (error) {
-      console.error('Error submitting form:', error);
       alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
     } finally {
       setIsSending(false);
     }
   };
 
-  const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'arielshemesh1999@gmail.com', href: 'mailto:arielshemesh1999@gmail.com' },
-    { icon: MapPin, label: 'Location', value: 'Israel' },
-  ];
 
-  const socialLinks = [
-    { icon: Github, href: 'https://github.com/arielSHEMESH1999', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/', label: 'LinkedIn' },
-  ];
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
@@ -128,21 +126,7 @@ export default function ContactSection({ isDark }) {
                   <FingerprintAnimation isDark={isDark} />
                 </div>
               ) : submitted ? (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }} 
-                  animate={{ opacity: 1, scale: 1 }} 
-                  className="flex flex-col items-center justify-center py-12"
-                >
-                  <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${
-                    isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'
-                  }`}>
-                    <svg className={`w-10 h-10 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
-                  <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
-                </motion.div>
+                <SuccessAnimation isDark={isDark} />
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>

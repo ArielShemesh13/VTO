@@ -9,7 +9,7 @@ export default function ChatBot({ isDark }) {
   const [isSending, setIsSending] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '' });
   const [emailError, setEmailError] = useState('');
-  const [conversationId, setConversationId] = useState(null);
+
   const messagesEndRef = useRef(null);
 
   const isValidEmail = (email) => {
@@ -49,30 +49,12 @@ export default function ChatBot({ isDark }) {
 
     setTimeout(async () => {
       try {
-        await Promise.all([
-          base44.integrations.Core.SendEmail({
-            to: 'Arielshemesh1999@gmail.com',
-            subject: `New Website Message from ${userData.name}`,
-            body: `
-You have received a new message through your portfolio website:
-
-Name: ${userData.name}
-Email: ${userData.email}
-
-Message:
-${messageContent}
-
----
-Sent from portfolio chat
-            `
-          }),
-          base44.entities.ContactMessage.create({
-            name: userData.name,
-            email: userData.email,
-            message: messageContent,
-            status: 'new'
-          })
-        ]);
+        await base44.entities.ContactMessage.create({
+          name: userData.name,
+          email: userData.email,
+          message: messageContent,
+          status: 'new'
+        });
 
         setMessages(prev => [...prev, { 
           role: 'bot', 
@@ -84,8 +66,9 @@ Sent from portfolio chat
           role: 'bot', 
           content: "Sorry, there was an error sending your message. Please try again." 
         }]);
+      } finally {
+        setIsSending(false);
       }
-      setIsSending(false);
     }, 800);
   };
 

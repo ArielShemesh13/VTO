@@ -49,9 +49,11 @@ export default function Home() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (!showIntro) {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [showIntro]);
 
   const pageVariants = {
     initial: { opacity: 0 },
