@@ -96,7 +96,7 @@ export default function HeroSection({ isDark, onNavigate }) {
                     EXPERIENCE
                   </div>
                   <span className={`text-xs ${isDark ? 'text-white/70' : 'text-[#244270]/80'}`}>
-                    2+ Years
+                    3+ Years
                   </span>
                 </div>
               </div>
@@ -144,9 +144,10 @@ export default function HeroSection({ isDark, onNavigate }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Data Analyst</span> specializing in turning 
-            raw data into actionable business insights. Expert in SQL, Python, Power BI, and Advanced Excel. 
-            I transform complex datasets into clear, strategic decisions that drive business growth.
+            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>Third-year Business Administration and Information Systems student </span> 
+          I analyze data and build digital solutions that turn complex information into clear, actionable business insights.
+          Highly motivated and self-driven, with strong analytical thinking, creative problem-solving skills, and great attention to detail. Passionate about continuous learning, personal growth, and delivering high-quality results.
+          I enjoy collaborating with people, building meaningful relationships, traveling, sports, and exploring new technologies
           </motion.p>
         </motion.div>
 
