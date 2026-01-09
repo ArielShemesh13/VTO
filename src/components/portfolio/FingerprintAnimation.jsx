@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export default function FingerprintAnimation({ isDark, onComplete }) {
+export default function FingerprintAnimation({ isDark }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     setIsActive(true);
-
-    const timer = setTimeout(() => {
-      setIsActive(false);
-      if (onComplete) onComplete();
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, []);
 
   return (
     <div className={`fingerprint-container ${isActive ? 'active' : ''}`}>
@@ -64,7 +57,6 @@ export default function FingerprintAnimation({ isDark, onComplete }) {
         </g>
       </svg>
       
-
 
       <style jsx>{`
         .fingerprint-container {
