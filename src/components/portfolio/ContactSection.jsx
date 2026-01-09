@@ -137,7 +137,7 @@ export default function ContactSection({ isDark }) {
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-purple-500/20 text-white placeholder-white/30 focus:border-purple-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="John Doe"
+                      placeholder="Type here your name"
                     />
                   </div>
 
@@ -149,7 +149,7 @@ export default function ContactSection({ isDark }) {
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       className={`w-full px-4 py-3 rounded-xl outline-none transition-all duration-300 ${isDark ? 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-cyan-500/50 focus:bg-white/10' : 'bg-[#244270]/5 border border-[#244270]/10 text-[#141225] placeholder-[#141225]/30 focus:border-[#244270]/30 focus:bg-[#244270]/10'}`}
-                      placeholder="john@example.com"
+                      placeholder="Type here your email"
                     />
                   </div>
 
