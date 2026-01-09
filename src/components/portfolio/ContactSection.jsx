@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import FingerprintAnimation from './FingerprintAnimation';
 
 export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [showFingerprint, setShowFingerprint] = useState(false);
 
 
   const handleSubmit = async (e) => {
@@ -19,26 +17,19 @@ export default function ContactSection({ isDark }) {
     setIsSending(true);
 
     try {
-      const response = await base44.functions.invoke('sendContactEmail', {
+      await base44.entities.ContactMessage.create({
         name: formData.name,
         email: formData.email,
-        message: formData.message
+        message: formData.message,
+        status: 'new'
       });
 
-      if (response.data.success) {
-        setShowFingerprint(true);
-        setTimeout(() => {
-          setShowFingerprint(false);
-          setSubmitted(true);
-          setFormData({ name: '', email: '', message: '' });
-          setTimeout(() => setSubmitted(false), 4000);
-        }, 3000);
-      } else {
-        throw new Error(response.data.error || 'Failed to send message');
-      }
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setSubmitted(false), 4000);
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('שליחת ההודעה נכשלה. אנא נסה שוב או שלח ישירות למייל arielshemesh1999@gmail.com');
+      alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
     } finally {
       setIsSending(false);
     }
@@ -127,11 +118,7 @@ export default function ContactSection({ isDark }) {
                 Send a Message
               </h3>
 
-              {showFingerprint ? (
-                <div className="py-12">
-                  <FingerprintAnimation isDark={isDark} />
-                </div>
-              ) : submitted ? (
+              {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
                     <CheckCircle className={`w-8 h-8 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
