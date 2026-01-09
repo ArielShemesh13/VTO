@@ -4,7 +4,9 @@ export default function FingerprintAnimation({ isDark }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    setIsActive(true);
+    setIsActive(false);
+    const timer = setTimeout(() => setIsActive(true), 50);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
