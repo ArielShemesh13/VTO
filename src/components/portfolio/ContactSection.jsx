@@ -16,6 +16,7 @@ export default function ContactSection({ isDark }) {
     if (isSending) return;
 
     setIsSending(true);
+    setShowFingerprint(true);
 
     try {
       await base44.entities.ContactMessage.create({
@@ -25,24 +26,20 @@ export default function ContactSection({ isDark }) {
         status: 'new'
       });
 
-      setShowFingerprint(true);
-      const fingerprintTimer = setTimeout(() => {
+      setTimeout(() => {
         setShowFingerprint(false);
         setSubmitted(true);
         setFormData({ name: '', email: '', message: '' });
+        setIsSending(false);
         
-        const successTimer = setTimeout(() => {
+        setTimeout(() => {
           setSubmitted(false);
         }, 5000);
-        
-        return () => clearTimeout(successTimer);
       }, 3000);
-      
-      return () => clearTimeout(fingerprintTimer);
     } catch (error) {
-      alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
-    } finally {
+      setShowFingerprint(false);
       setIsSending(false);
+      alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
     }
   };
 
