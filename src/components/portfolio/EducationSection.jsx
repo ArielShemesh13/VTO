@@ -6,8 +6,8 @@ export default function EducationSection({ isDark }) {
   const skills = [
     {
       icon: GraduationCap,
-      title: '(B.A.) in Business Administration',
-      items: ['Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)'],
+      title: 'Academic Degree',
+      items: ['(B.A.) in Business Administration', 'Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)'],
       color: 'from-emerald-500 to-green-500',
     },
     {
