@@ -8,7 +8,6 @@ export default function ContactSection({ isDark }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [showFingerprint, setShowFingerprint] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,13 +24,9 @@ export default function ContactSection({ isDark }) {
         status: 'new'
       });
 
-      setShowFingerprint(true);
-      setTimeout(() => {
-        setShowFingerprint(false);
-        setSubmitted(true);
-        setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setSubmitted(false), 5000);
-      }, 3000);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send message. Please try again or email directly to arielshemesh3333@gmail.com');
@@ -123,14 +118,17 @@ export default function ContactSection({ isDark }) {
                 Send a Message
               </h3>
 
-              {showFingerprint ? (
-                <div className="py-12">
+              {submitted ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  className="flex flex-col items-center justify-center py-8 space-y-6"
+                >
                   <FingerprintAnimation isDark={isDark} />
-                </div>
-              ) : submitted ? (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12">
-                  <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
-                  <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
+                  <div className="text-center">
+                    <p className={`text-lg font-medium ${isDark ? 'text-white' : 'text-[#141225]'}`}>Message sent successfully!</p>
+                    <p className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>I'll get back to you soon.</p>
+                  </div>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">

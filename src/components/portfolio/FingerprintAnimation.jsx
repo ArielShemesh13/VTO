@@ -9,7 +9,6 @@ export default function FingerprintAnimation({ isDark }) {
 
   return (
     <div className={`fingerprint-container ${isActive ? 'active' : ''}`}>
-      <span className="text">SENT</span>
       
       <svg className="fingerprint fingerprint-base" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
         <g className="fingerprint-out" fill="none" strokeWidth="2" strokeLinecap="round">
@@ -79,20 +78,7 @@ export default function FingerprintAnimation({ isDark }) {
           }
         }
         
-        .text {
-          color: ${isDark ? '#34d399' : '#10b981'};
-          position: absolute;
-          transition: opacity 300ms;
-          user-select: none;
-          font-weight: 600;
-          font-size: 16px;
-        }
-        
-        @media (min-width: 640px) {
-          .text {
-            font-size: 22px;
-          }
-        }
+
         
         .fingerprint {
           left: -16px;
@@ -136,10 +122,7 @@ export default function FingerprintAnimation({ isDark }) {
           animation: 3s Container;
         }
         
-        .active .text {
-          opacity: 0;
-          animation: 3s Text forwards;
-        }
+
         
         .active .fingerprint {
           opacity: 1;
@@ -193,12 +176,7 @@ export default function FingerprintAnimation({ isDark }) {
           }
         }
         
-        @keyframes Text {
-          0% { opacity: 1; transform: scale(1); }
-          6% { opacity: 0; transform: scale(0.5); }
-          94% { opacity: 0; transform: scale(0.5); }
-          100% { opacity: 0; transform: scale(0.5); }
-        }
+
       `}</style>
     </div>
   );
