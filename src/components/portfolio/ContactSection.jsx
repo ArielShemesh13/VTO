@@ -114,10 +114,6 @@ export default function ContactSection({ isDark }) {
             transition={{ delay: 0.3 }}
           >
             <div className={`p-8 rounded-2xl ${isDark ? 'bg-black/40 border border-white/10' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl`}>
-              <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-                Send a Message
-              </h3>
-
               {showFingerprint ? (
                 <div className="py-12 flex items-center justify-center">
                   <FingerprintAnimation isDark={isDark} />
