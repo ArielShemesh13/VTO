@@ -87,6 +87,9 @@ export default function ProjectsSection({ isDark }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
+            Background
+          </p>
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
             Featured Projects
           </h2>

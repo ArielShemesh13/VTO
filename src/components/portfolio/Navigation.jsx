@@ -50,7 +50,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'/>'}</span>
           </motion.div>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center justify-center gap-8 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
               <motion.button
                 key={item.id}
@@ -77,7 +77,9 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                 )}
               </motion.button>
             ))}
+          </div>
 
+          <div className="hidden md:flex items-center gap-3">
             <motion.button
               onClick={() => handleNavClick('hero')}
               className={`p-2 rounded-full ${
