@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, Home } from 'lucide-react';
 
 const navItems = [
-  { id: 'hero', label: 'Home' },
   { id: 'projects', label: 'Projects' },
   { id: 'education', label: 'Education' },
-  { id: 'contact', label: 'Contact' },
 ];
 
 export default function Navigation({ activeSection, onNavigate, isDark, toggleTheme }) {
@@ -79,7 +77,20 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                 )}
               </motion.button>
             ))}
-            
+
+            <motion.button
+              onClick={() => handleNavClick('hero')}
+              className={`p-2 rounded-full ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Home size={18} />
+            </motion.button>
+
             <motion.button
               onClick={toggleTheme}
               className={`p-2 rounded-full ${
@@ -130,6 +141,19 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             transition={{ duration: 0.3 }}
           >
             <div className="flex flex-col items-center gap-8 pt-12">
+              <motion.button
+                onClick={() => handleNavClick('hero')}
+                className={`text-2xl font-medium ${
+                  activeSection === 'hero'
+                    ? isDark ? 'text-cyan-400' : 'text-[#244270]'
+                    : isDark ? 'text-white/70' : 'text-[#141225]/70'
+                }`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Home
+              </motion.button>
               {navItems.map((item, index) => (
                 <motion.button
                   key={item.id}
@@ -141,7 +165,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                   }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: (index + 1) * 0.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {item.label}
