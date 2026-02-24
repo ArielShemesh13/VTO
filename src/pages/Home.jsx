@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Linkedin, Github, Mail } from 'lucide-react';
 import AnimatedBackground from '../components/portfolio/AnimatedBackground';
 import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
@@ -73,6 +74,88 @@ export default function Home() {
         <div id="education">
           <EducationSection isDark={isDark} />
         </div>
+
+        <motion.section 
+          className="relative min-h-[40vh] flex items-center justify-center px-6 py-20"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="max-w-6xl mx-auto w-full text-center">
+            <p className={`text-sm tracking-[0.3em] uppercase mb-8 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
+              Let's Connect
+            </p>
+            
+            <div className="flex items-center justify-center gap-6">
+              <motion.a
+                href="https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.15, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20' 
+                    : 'bg-white/40 hover:bg-white/60 text-[#244270] border border-white/60 hover:border-[#244270]/50 hover:shadow-lg hover:shadow-[#244270]/20'
+                }`}
+                style={{
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)'
+                }}
+              >
+                <Linkedin className="w-6 h-6" />
+              </motion.a>
+              
+              <motion.a
+                href="https://github.com/arielSHEMESH1999"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.15, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20' 
+                    : 'bg-white/40 hover:bg-white/60 text-[#244270] border border-white/60 hover:border-[#244270]/50 hover:shadow-lg hover:shadow-[#244270]/20'
+                }`}
+                style={{
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)'
+                }}
+              >
+                <Github className="w-6 h-6" />
+              </motion.a>
+              
+              <motion.a
+                href="mailto:arielshemesh1999@gmail.com"
+                whileHover={{ scale: 1.15, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark 
+                    ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20' 
+                    : 'bg-white/40 hover:bg-white/60 text-[#244270] border border-white/60 hover:border-[#244270]/50 hover:shadow-lg hover:shadow-[#244270]/20'
+                }`}
+                style={{
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)'
+                }}
+              >
+                <Mail className="w-6 h-6" />
+              </motion.a>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className={`mt-16 pt-8 border-t ${isDark ? 'border-white/10' : 'border-[#244270]/10'}`}
+            >
+              <p className={`text-sm ${isDark ? 'text-white/40' : 'text-[#141225]/40'}`}>
+                © 2024 Ariel Shemesh. Built with React & Framer Motion.
+              </p>
+            </motion.div>
+          </div>
+        </motion.section>
       </motion.div>
 
       <style>{`
