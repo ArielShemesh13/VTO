@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
@@ -66,18 +66,6 @@ const projects = [
 ];
 
 export default function ProjectsSection({ isDark }) {
-  const scrollContainerRef = useRef(null);
-
-  const scroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 340;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
@@ -95,27 +83,12 @@ export default function ProjectsSection({ isDark }) {
           </h2>
         </motion.div>
 
-        <div className="relative">
-          <motion.button
-            onClick={() => scroll('left')}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full ${isDark ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white' : 'bg-[#244270]/30 hover:bg-[#244270]/50 text-white'} backdrop-blur-sm transition-all shadow-lg`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ChevronLeft size={28} />
-          </motion.button>
+        <div className="relative overflow-hidden">
+          <div className={`absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
+          <div className={`absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
 
-          <motion.button
-            onClick={() => scroll('right')}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full ${isDark ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white' : 'bg-[#244270]/30 hover:bg-[#244270]/50 text-white'} backdrop-blur-sm transition-all shadow-lg`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ChevronRight size={28} />
-          </motion.button>
-
-          <div ref={scrollContainerRef} className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide px-16">
-            <div className="flex gap-3 min-w-max py-2">
+          <div className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-6" style={{ scrollSnapType: 'x proximity' }}>
+            <div className="flex gap-6 py-2" style={{ paddingLeft: '10%', paddingRight: '10%' }}>
               {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -125,6 +98,7 @@ export default function ProjectsSection({ isDark }) {
                   transition={{ delay: index * 0.15 }}
                   whileHover={{ y: -8 }}
                   className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-80`}
+                  style={{ scrollSnapAlign: 'center' }}
                 >
                   <div className="relative h-40 overflow-hidden">
                     <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
@@ -209,6 +183,10 @@ export default function ProjectsSection({ isDark }) {
           .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
+            cursor: grab;
+          }
+          .scrollbar-hide:active {
+            cursor: grabbing;
           }
         `}</style>
       </div>
