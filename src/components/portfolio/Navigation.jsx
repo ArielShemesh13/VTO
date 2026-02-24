@@ -79,20 +79,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            <motion.button
-              onClick={() => handleNavClick('hero')}
-              className={`p-2 rounded-full ${
-                isDark 
-                  ? 'bg-white/10 hover:bg-white/20 text-white' 
-                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
-              } transition-colors`}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Home size={18} />
-            </motion.button>
-
+          <div className="hidden md:flex items-center gap-3 ml-auto">
             <motion.button
               onClick={toggleTheme}
               className={`p-2 rounded-full ${
@@ -104,6 +91,19 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
               whileTap={{ scale: 0.9 }}
             >
               {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </motion.button>
+
+            <motion.button
+              onClick={() => handleNavClick('hero')}
+              className={`p-2 rounded-full ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Home size={18} />
             </motion.button>
           </div>
 
