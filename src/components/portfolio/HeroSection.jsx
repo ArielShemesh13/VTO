@@ -14,9 +14,9 @@ export default function HeroSection({ isDark, onNavigate }) {
           className="flex-1 max-w-sm w-full order-1 lg:order-3"
         >
           <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl overflow-hidden ${
-          isDark 
-            ? 'bg-white/5 border border-white/10' 
-            : 'bg-white/20 border border-white/20'
+            isDark 
+              ? 'bg-purple-500/5 border border-purple-500/20' 
+              : 'bg-[#244270]/5 border border-[#244270]/10'
           } w-full`}>
             <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-20 -z-10 ${
               isDark 
