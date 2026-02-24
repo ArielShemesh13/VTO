@@ -13,15 +13,19 @@ export default function HeroSection({ isDark, onNavigate }) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex-1 max-w-sm w-full order-1 lg:order-3"
         >
-          <div className={`relative p-6 md:p-8 rounded-2xl backdrop-blur-xl overflow-hidden ${
+          <div className={`relative p-6 md:p-8 rounded-2xl overflow-hidden shadow-2xl w-full ${
             isDark 
-              ? 'bg-purple-500/5 border border-purple-500/20' 
-              : 'bg-[#244270]/5 border border-[#244270]/10'
-          } w-full`}>
-            <div className={`absolute -inset-1 rounded-2xl blur-xl opacity-20 -z-10 ${
+              ? 'bg-white/[0.03] border border-white/10' 
+              : 'bg-white/40 border border-white/60'
+          }`}
+          style={{
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)'
+          }}>
+            <div className={`absolute -inset-1 rounded-2xl blur-2xl opacity-30 -z-10 ${
               isDark 
-                ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' 
-                : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
+                ? 'bg-gradient-to-r from-purple-500/20 via-cyan-500/20 to-blue-500/20' 
+                : 'bg-gradient-to-r from-[#4dbdce]/10 via-[#6366f1]/10 to-[#a855f7]/10'
             }`} />
 
             <motion.div
