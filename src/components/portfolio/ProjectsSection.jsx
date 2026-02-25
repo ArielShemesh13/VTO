@@ -266,7 +266,7 @@ const ProjectsSection = memo(({ isDark }) => {
           <div 
             ref={scrollContainerRef}
             className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
-            style={{ scrollSnapType: 'x proximity' }}
+            style={{ scrollSnapType: 'x mandatory', scrollPaddingLeft: '1rem' }}
           >
             <div className="flex gap-6 py-2">
               {projects.map((project, index) => (
