@@ -69,6 +69,25 @@ const projects = [
 
 export default function ProjectsSection({ isDark }) {
   const scrollContainerRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = React.useState(false);
+  const [showRightArrow, setShowRightArrow] = React.useState(true);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      handleScroll();
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -92,52 +111,62 @@ export default function ProjectsSection({ isDark }) {
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Background
           </p>
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            Featured Projects
-          </h2>
-          
-          <Link to={createPageUrl('AllProjects')}>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl ${
-                isDark 
-                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
-                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
-              } backdrop-blur-sm transition-all mt-4`}
-            >
-              <LayoutGrid size={20} />
-              <span className="font-medium">View All Projects</span>
-            </motion.button>
-          </Link>
+          <div className="flex items-center justify-center gap-4">
+            <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+              Featured Projects
+            </h2>
+            <Link to={createPageUrl('AllProjects')}>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className={`p-2 rounded-lg ${
+                  isDark 
+                    ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
+                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+                } backdrop-blur-sm transition-all`}
+              >
+                <LayoutGrid size={24} />
+              </motion.button>
+            </Link>
+          </div>
         </motion.div>
 
         <div className="relative">
-          <motion.button
-            onClick={() => scroll('left')}
-            className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
-              isDark 
-                ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
-                : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
-            } backdrop-blur-lg transition-all shadow-lg`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ChevronLeft size={24} />
-          </motion.button>
+          {showLeftArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={() => scroll('left')}
+              className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft size={24} />
+            </motion.button>
+          )}
 
-          <motion.button
-            onClick={() => scroll('right')}
-            className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
-              isDark 
-                ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
-                : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
-            } backdrop-blur-lg transition-all shadow-lg`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ChevronRight size={24} />
-          </motion.button>
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={() => scroll('right')}
+              className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={24} />
+            </motion.button>
+          )}
 
           <div 
             ref={scrollContainerRef}

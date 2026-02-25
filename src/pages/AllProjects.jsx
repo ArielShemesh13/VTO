@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, Home, Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
@@ -78,20 +78,34 @@ export default function AllProjects() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <Link to={createPageUrl('Home')}>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <Link to={createPageUrl('Home')}>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className={`p-3 rounded-xl ${
+                  isDark 
+                    ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
+                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+                } backdrop-blur-sm transition-all`}
+              >
+                <Home size={24} />
+              </motion.button>
+            </Link>
+
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              onClick={() => setIsDark(!isDark)}
+              whileHover={{ scale: 1.1, rotate: 180 }}
               whileTap={{ scale: 0.95 }}
-              className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl mb-6 ${
+              className={`p-3 rounded-xl ${
                 isDark 
                   ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
                   : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
               } backdrop-blur-sm transition-all`}
             >
-              <ArrowRight size={20} className="rotate-180" />
-              <span className="font-medium">Back to Home</span>
+              {isDark ? <Sun size={24} /> : <Moon size={24} />}
             </motion.button>
-          </Link>
+          </div>
 
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             All Projects

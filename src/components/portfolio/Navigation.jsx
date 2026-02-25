@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Home } from 'lucide-react';
 
 const navItems = [
-  { id: 'projects', label: 'Projects' },
   { id: 'education', label: 'Education' },
+  { id: 'projects', label: 'Projects' },
 ];
 
 export default function Navigation({ activeSection, onNavigate, isDark, toggleTheme }) {

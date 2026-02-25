@@ -6,7 +6,7 @@ import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
-const sections = ['hero', 'projects', 'education'];
+const sections = ['hero', 'education', 'projects'];
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -67,12 +67,12 @@ export default function Home() {
           <HeroSection isDark={isDark} onNavigate={navigateToSection} />
         </div>
 
-        <div id="projects">
-          <ProjectsSection isDark={isDark} />
-        </div>
-        
         <div id="education">
           <EducationSection isDark={isDark} />
+        </div>
+        
+        <div id="projects">
+          <ProjectsSection isDark={isDark} />
         </div>
 
         <motion.section 
