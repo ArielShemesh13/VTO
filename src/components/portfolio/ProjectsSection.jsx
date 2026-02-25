@@ -128,93 +128,138 @@ const ProjectsSection = memo(({ isDark }) => {
           </Link>
         </motion.div>
 
-        <div className="hidden md:grid md:grid-cols-3 gap-6">
-          {projects.slice(0, 3).map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-              whileHover={{ y: -8 }}
-              className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500`}
+        <div className="hidden md:block relative">
+          {showLeftArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={() => scroll('left')}
+              className={`absolute left-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
+                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <div className="relative h-40 overflow-hidden">
-                <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
-                
-                <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
-                    {project.type}
-                  </span>
-                </div>
+              <ChevronLeft size={20} />
+            </motion.button>
+          )}
 
-                <div className={`absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDark ? 'bg-black/60' : 'bg-white/60'} backdrop-blur-sm`}>
-                  <motion.a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white hover:from-purple-400 hover:to-cyan-400' : 'bg-[#244270] text-white hover:bg-[#1a3255]'} transition-colors shadow-lg`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <ExternalLink size={20} />
-                  </motion.a>
-                  <motion.a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${isDark ? 'bg-white/20 text-white hover:bg-white/30' : 'bg-[#244270]/20 text-[#244270] hover:bg-[#244270]/30'} transition-colors`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Github size={20} />
-                  </motion.a>
-                </div>
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={() => scroll('right')}
+              className={`absolute right-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
+                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={20} />
+            </motion.button>
+          )}
 
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
-                    {project.icon}
-                  </span>
-                </div>
-              </div>
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
+            style={{ scrollSnapType: 'x proximity' }}
+          >
+            <div className="flex gap-6 py-2">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.15 }}
+                  whileHover={{ y: -8 }}
+                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-80`}
+                  style={{ scrollSnapAlign: 'center' }}
+                >
+                  <div className="relative h-40 overflow-hidden">
+                    <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
+                    
+                    <div className="absolute top-4 left-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
+                        {project.type}
+                      </span>
+                    </div>
 
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className={`text-xl font-bold transition-colors duration-300 ${
-                    isDark 
-                      ? 'text-white group-hover:text-cyan-400' 
-                      : 'text-[#141225] group-hover:text-[#4dbdce]'
-                  }`}>
-                    {project.title}
-                  </h3>
-                  <motion.div
-                    className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
-                    animate={{ x: [0, 3, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowUpRight size={20} />
-                  </motion.div>
-                </div>
-                
-                <p className={`text-sm mb-4 line-clamp-3 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
-                  {project.description}
-                </p>
+                    <div className={`absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDark ? 'bg-black/60' : 'bg-white/60'} backdrop-blur-sm`}>
+                      <motion.a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`p-3 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white hover:from-purple-400 hover:to-cyan-400' : 'bg-[#244270] text-white hover:bg-[#1a3255]'} transition-colors shadow-lg`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ExternalLink size={20} />
+                      </motion.a>
+                      <motion.a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`p-3 rounded-full ${isDark ? 'bg-white/20 text-white hover:bg-white/30' : 'bg-[#244270]/20 text-[#244270] hover:bg-[#244270]/30'} transition-colors`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Github size={20} />
+                      </motion.a>
+                    </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/5 text-white/70' : 'bg-[#244270]/5 text-[#141225]/70'}`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
+                        {project.icon}
+                      </span>
+                    </div>
+                  </div>
 
-              <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
-            </motion.div>
-          ))}
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                        isDark 
+                          ? 'text-white group-hover:text-cyan-400' 
+                          : 'text-[#141225] group-hover:text-[#4dbdce]'
+                      }`}>
+                        {project.title}
+                      </h3>
+                      <motion.div
+                        className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowUpRight size={20} />
+                      </motion.div>
+                    </div>
+                    
+                    <p className={`text-sm mb-4 line-clamp-3 ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((tech) => (
+                        <span
+                          key={tech}
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/5 text-white/70' : 'bg-[#244270]/5 text-[#141225]/70'}`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="md:hidden relative">
