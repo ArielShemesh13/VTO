@@ -1,6 +1,5 @@
 import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const skills = [
   {
@@ -25,35 +24,6 @@ const skills = [
 
 const EducationSection = memo(({ isDark }) => {
   const scrollContainerRef = useRef(null);
-  const [showLeftArrow, setShowLeftArrow] = React.useState(false);
-  const [showRightArrow, setShowRightArrow] = React.useState(true);
-
-  const handleScroll = useCallback(() => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 20);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, [handleScroll]);
-
-  const scroll = useCallback((direction) => {
-    if (scrollContainerRef.current) {
-      const cardWidth = 320 + 24;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -cardWidth : cardWidth,
-        behavior: 'smooth'
-      });
-    }
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
@@ -80,8 +50,7 @@ const EducationSection = memo(({ isDark }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -8 }}
-              className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
+              className={`relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl`}
             >
               <div className="relative h-40 overflow-hidden">
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
@@ -94,11 +63,7 @@ const EducationSection = memo(({ isDark }) => {
               </div>
 
               <div className="p-6">
-                <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
-                  isDark 
-                    ? 'text-white group-hover:text-cyan-400' 
-                    : 'text-[#141225] group-hover:text-[#4dbdce]'
-                }`}>
+                <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
                   {skill.title}
                 </h3>
                 
@@ -114,7 +79,6 @@ const EducationSection = memo(({ isDark }) => {
                 </div>
               </div>
 
-              <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
             </motion.div>
           ))}
         </div>
@@ -133,8 +97,7 @@ const EducationSection = memo(({ isDark }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -8 }}
-                className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[75vw] max-w-sm`}
+                className={`relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white/60 border border-[#244270]/10'} backdrop-blur-xl flex-shrink-0 w-[65vw] max-w-sm`}
                 style={{ scrollSnapAlign: 'center', willChange: 'transform' }}
               >
                 <div className="relative h-40 overflow-hidden">
@@ -200,8 +163,6 @@ const EducationSection = memo(({ isDark }) => {
                     ))}
                   </div>
                 </div>
-
-                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
             </div>
