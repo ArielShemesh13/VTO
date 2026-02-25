@@ -277,43 +277,11 @@ const ProjectsSection = memo(({ isDark }) => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[80vw] max-w-sm`}
+                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[75vw] max-w-sm`}
                   style={{ scrollSnapAlign: 'center', willChange: 'transform' }}
                 >
                   <div className="relative h-40 overflow-hidden">
-                   {index > 0 && (
-                     <motion.button
-                       initial={{ opacity: 0, scale: 0.8 }}
-                       animate={{ opacity: 1, scale: 1 }}
-                       onClick={() => scroll('left')}
-                       className={`flex absolute left-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
-                         isDark 
-                           ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                           : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                       } backdrop-blur-lg transition-all shadow-lg`}
-                       whileHover={{ scale: 1.1 }}
-                       whileTap={{ scale: 0.95 }}
-                     >
-                       <ChevronLeft size={20} />
-                     </motion.button>
-                   )}
 
-                   {index < projects.length - 1 && (
-                     <motion.button
-                       initial={{ opacity: 0, scale: 0.8 }}
-                       animate={{ opacity: 1, scale: 1 }}
-                       onClick={() => scroll('right')}
-                       className={`flex absolute right-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
-                         isDark 
-                           ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                           : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                       } backdrop-blur-lg transition-all shadow-lg`}
-                       whileHover={{ scale: 1.1 }}
-                       whileTap={{ scale: 0.95 }}
-                     >
-                       <ChevronRight size={20} />
-                     </motion.button>
-                   )}
                    <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                     
                     <div className="absolute top-4 left-4">
