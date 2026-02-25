@@ -277,7 +277,7 @@ const ProjectsSection = memo(({ isDark }) => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-80`}
+                  className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[85vw] max-w-sm`}
                   style={{ scrollSnapAlign: 'center', willChange: 'transform' }}
                 >
                   <div className="relative h-40 overflow-hidden">
