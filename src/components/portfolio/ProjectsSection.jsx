@@ -111,24 +111,24 @@ export default function ProjectsSection({ isDark }) {
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Background
           </p>
-          <div className="flex items-center justify-center gap-4">
-            <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-              Featured Projects
-            </h2>
-            <Link to={createPageUrl('AllProjects')}>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`p-2 rounded-lg ${
-                  isDark 
-                    ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
-                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
-                } backdrop-blur-sm transition-all`}
-              >
-                <LayoutGrid size={24} />
-              </motion.button>
-            </Link>
-          </div>
+          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+            Featured Projects
+          </h2>
+          
+          <Link to={createPageUrl('AllProjects')}>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl ${
+                isDark 
+                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-sm transition-all mt-4`}
+            >
+              <LayoutGrid size={20} />
+              <span className="font-medium">View All Projects</span>
+            </motion.button>
+          </Link>
         </motion.div>
 
         <div className="relative">
@@ -170,9 +170,11 @@ export default function ProjectsSection({ isDark }) {
 
           <div 
             ref={scrollContainerRef}
-            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
+            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16 relative" 
             style={{ scrollSnapType: 'x proximity' }}
           >
+            <div className={`md:hidden absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
+            <div className={`md:hidden absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
             <div className="flex gap-6 py-2">
               {projects.map((project, index) => (
                 <motion.div

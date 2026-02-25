@@ -78,18 +78,18 @@ export default function AllProjects() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex items-center justify-center gap-4">
             <Link to={createPageUrl('Home')}>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-3 rounded-xl ${
+                className={`p-2 rounded-full ${
                   isDark 
-                    ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
-                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
-                } backdrop-blur-sm transition-all`}
+                    ? 'bg-white/10 hover:bg-white/20 text-white' 
+                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+                } transition-colors`}
               >
-                <Home size={24} />
+                <Home size={18} />
               </motion.button>
             </Link>
 
@@ -97,22 +97,15 @@ export default function AllProjects() {
               onClick={() => setIsDark(!isDark)}
               whileHover={{ scale: 1.1, rotate: 180 }}
               whileTap={{ scale: 0.95 }}
-              className={`p-3 rounded-xl ${
+              className={`p-2 rounded-full ${
                 isDark 
-                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
-                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
-              } backdrop-blur-sm transition-all`}
+                  ? 'bg-white/10 hover:bg-white/20 text-white' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
             >
-              {isDark ? <Sun size={24} /> : <Moon size={24} />}
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
             </motion.button>
           </div>
-
-          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
-            All Projects
-          </p>
-          <h1 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
-            My Portfolio
-          </h1>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

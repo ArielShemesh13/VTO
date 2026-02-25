@@ -33,6 +33,9 @@ export default function EducationSection({ isDark }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
+            Background
+          </p>
           <h2 className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
             Academic Background
           </h2>
@@ -86,7 +89,9 @@ export default function EducationSection({ isDark }) {
           ))}
         </div>
 
-        <div className="md:hidden overflow-x-auto scrollbar-hide pb-4">
+        <div className="md:hidden overflow-x-auto scrollbar-hide pb-4 relative">
+          <div className={`absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
+          <div className={`absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
           <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
             {skills.map((skill, index) => (
               <motion.div
