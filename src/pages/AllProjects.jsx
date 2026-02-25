@@ -87,26 +87,17 @@ export default function AllProjects() {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-[#0a0118]' : 'bg-[#f5f7ff]'} transition-colors duration-300`}>
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <div className="flex items-center justify-center gap-4">
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.95 }}
-              className={`p-2 rounded-full ${
-                isDark 
-                  ? 'bg-white/10 hover:bg-white/20 text-white' 
-                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
-              } transition-colors`}
-            >
-              {isDark ? <Sun size={21} /> : <Moon size={21} />}
-            </motion.button>
-
+      <motion.header 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 ${
+          isDark 
+            ? 'bg-black/40 border-b border-purple-500/20' 
+            : 'bg-white/60 border-b border-[#244270]/10'
+        } backdrop-blur-xl`}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
             <Link to={createPageUrl('Home')}>
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -120,8 +111,28 @@ export default function AllProjects() {
                 <Home size={21} />
               </motion.button>
             </Link>
+
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1, rotate: 180 }}
+              whileTap={{ scale: 0.95 }}
+              className={`p-2 rounded-full ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
+            >
+              {isDark ? <Sun size={21} /> : <Moon size={21} />}
+            </motion.button>
           </div>
-        </motion.div>
+
+          <div className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#244270]'}`}>
+            AS
+          </div>
+        </div>
+      </motion.header>
+
+      <div className="max-w-7xl mx-auto px-6 pt-32 pb-20">
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (

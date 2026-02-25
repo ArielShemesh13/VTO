@@ -125,7 +125,7 @@ const EducationSection = memo(({ isDark }) => {
           <div 
             ref={scrollContainerRef}
             className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16"
-            style={{ scrollSnapType: 'x mandatory' }}
+            style={{ scrollSnapType: 'x mandatory', scrollPaddingLeft: '1rem' }}
           >
             <div className="flex gap-6 py-2">
             {skills.map((skill, index) => (
