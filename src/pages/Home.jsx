@@ -10,10 +10,17 @@ const sections = ['hero', 'education', 'projects'];
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    setIsDark(prev => {
+      const newTheme = !prev;
+      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      return newTheme;
+    });
   };
 
   const navigateToSection = (sectionId) => {

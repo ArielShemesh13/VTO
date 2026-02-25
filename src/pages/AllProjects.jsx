@@ -68,7 +68,22 @@ const projects = [
 ];
 
 export default function AllProjects() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDark(prev => {
+      const newTheme = !prev;
+      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      return newTheme;
+    });
+  };
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-[#0a0118]' : 'bg-[#f5f7ff]'} transition-colors duration-300`}>
@@ -79,6 +94,19 @@ export default function AllProjects() {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4">
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1, rotate: 180 }}
+              whileTap={{ scale: 0.95 }}
+              className={`p-2 rounded-full ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-white' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+              } transition-colors`}
+            >
+              {isDark ? <Sun size={21} /> : <Moon size={21} />}
+            </motion.button>
+
             <Link to={createPageUrl('Home')}>
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -89,22 +117,9 @@ export default function AllProjects() {
                     : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
                 } transition-colors`}
               >
-                <Home size={18} />
+                <Home size={21} />
               </motion.button>
             </Link>
-
-            <motion.button
-              onClick={() => setIsDark(!isDark)}
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.95 }}
-              className={`p-2 rounded-full ${
-                isDark 
-                  ? 'bg-white/10 hover:bg-white/20 text-white' 
-                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
-              } transition-colors`}
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </motion.button>
           </div>
         </motion.div>
 
