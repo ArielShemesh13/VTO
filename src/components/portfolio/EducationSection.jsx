@@ -49,7 +49,8 @@ export default function EducationSection({ isDark }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className={`luminous-card group relative rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-300`}
+              className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-300`}
+              style={{ transform: 'translateZ(0)' }}
             >
               <div className="light-effect">
                 <div className="slit"></div>
@@ -89,7 +90,7 @@ export default function EducationSection({ isDark }) {
           ))}
         </div>
 
-        <div className="md:hidden overflow-x-auto scrollbar-hide pb-4 relative">
+        <div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide pb-4 relative">
           <div className={`absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
           <div className={`absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
           <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
@@ -100,8 +101,8 @@ export default function EducationSection({ isDark }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className={`luminous-card group relative rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-[85vw]`}
-                style={{ scrollSnapAlign: 'center' }}
+                className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-[85vw]`}
+                style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)' }}
               >
                 <div className="light-effect">
                   <div className="slit"></div>
@@ -146,6 +147,7 @@ export default function EducationSection({ isDark }) {
       <style jsx>{`
         .luminous-card {
           position: relative;
+          contain: layout style paint;
         }
 
         .light-effect {
@@ -157,7 +159,8 @@ export default function EducationSection({ isDark }) {
           pointer-events: none;
           opacity: 0;
           transition: opacity 0.3s ease-in-out;
-          will-change: opacity;
+          overflow: hidden;
+          border-radius: 1rem;
         }
 
         .luminous-card:hover .light-effect {
@@ -175,7 +178,6 @@ export default function EducationSection({ isDark }) {
           transform: rotateX(-76deg);
           background: ${isDark ? '#a855f7' : '#4dbdce'};
           box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
-          will-change: transform;
         }
 
         .light-glow {
@@ -188,6 +190,7 @@ export default function EducationSection({ isDark }) {
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
         }
       `}</style>
     </section>
