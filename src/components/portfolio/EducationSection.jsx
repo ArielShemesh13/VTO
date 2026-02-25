@@ -187,7 +187,7 @@ const EducationSection = memo(({ isDark }) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .luminous-card {
           position: relative;
           contain: layout style paint;
