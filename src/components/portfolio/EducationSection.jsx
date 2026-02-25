@@ -72,97 +72,53 @@ const EducationSection = memo(({ isDark }) => {
           </h2>
         </motion.div>
 
-        <div className="hidden md:block relative">
-          {showLeftArrow && (
-            <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              onClick={() => scroll('left')}
-              className={`absolute left-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
-                isDark 
-                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-              } backdrop-blur-lg transition-all shadow-lg`}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+        <div className="hidden md:grid md:grid-cols-3 gap-6">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={skill.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-300`}
+              style={{ transform: 'translateZ(0)' }}
             >
-              <ChevronLeft size={20} />
-            </motion.button>
-          )}
-
-          {showRightArrow && (
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              onClick={() => scroll('right')}
-              className={`absolute right-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
-                isDark 
-                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-              } backdrop-blur-lg transition-all shadow-lg`}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <ChevronRight size={20} />
-            </motion.button>
-          )}
-
-          <div 
-            ref={scrollContainerRef}
-            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16"
-            style={{ scrollSnapType: 'x proximity' }}
-          >
-            <div className="flex gap-6 py-2">
-            {skills.map((skill, index) => (
-              <motion.div
-                key={skill.title}
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-80`}
-                style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)' }}
-              >
-                <div className="light-effect">
-                  <div className="slit"></div>
-                  <div className="light-glow"></div>
+              <div className="light-effect">
+                <div className="slit"></div>
+                <div className="light-glow"></div>
+              </div>
+              <div className="relative h-32 overflow-hidden">
+                <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
+                
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110`}>
+                    <skill.icon className="text-white" size={28} />
+                  </div>
                 </div>
-                <div className="relative h-32 overflow-hidden">
-                  <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
-                  
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}>
-                      <skill.icon className="text-white" size={28} />
+              </div>
+
+              <div className="p-6">
+                <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
+                  isDark 
+                    ? 'text-white group-hover:text-cyan-400' 
+                    : 'text-[#141225] group-hover:text-[#4dbdce]'
+                }`}>
+                  {skill.title}
+                </h3>
+                
+                <div className="space-y-2">
+                  {skill.items.map((item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
+                      <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                        {item}
+                      </span>
                     </div>
-                  </div>
+                  ))}
                 </div>
-
-                <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
-                    isDark 
-                      ? 'text-white group-hover:text-cyan-400' 
-                      : 'text-[#141225] group-hover:text-[#4dbdce]'
-                  }`}>
-                    {skill.title}
-                  </h3>
-                  
-                  <div className="space-y-2">
-                    {skill.items.map((item) => (
-                      <div key={item} className="flex items-center gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
-                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            </div>
-          </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         <div className="md:hidden relative">
@@ -187,12 +143,12 @@ const EducationSection = memo(({ isDark }) => {
                   <div className="light-glow"></div>
                 </div>
                 <div className="relative h-32 overflow-hidden">
-                  {index > 0 && (
+                  {showLeftArrow && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       onClick={() => scroll('left')}
-                      className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ${
+                      className={`flex absolute left-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
                         isDark 
                           ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
                           : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
@@ -204,12 +160,12 @@ const EducationSection = memo(({ isDark }) => {
                     </motion.button>
                   )}
 
-                  {index < skills.length - 1 && (
+                  {showRightArrow && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       onClick={() => scroll('right')}
-                      className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ${
+                      className={`flex absolute right-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
                         isDark 
                           ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
                           : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
