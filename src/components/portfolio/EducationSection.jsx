@@ -46,27 +46,8 @@ const EducationSection = memo(({ isDark }) => {
     const nextIndex = Math.min(currentIndex + 1, skills.length - 1);
     scrollToCard(nextIndex);
   }, [currentIndex, scrollToCard]);
-    {
-      icon: GraduationCap,
-      title: 'Academic Degree',
-      items: ['(B.A.) in Business Administration', 'Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)', 'GPA: 90'],
-      color: 'from-emerald-500 to-green-500',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Volunteer Experience & Mentorship',
-      items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
-      color: 'from-orange-500 to-amber-500',
-    },
-    {
-      icon: Code,
-      title: 'Professional Capabilities',
-      items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
-      color: 'from-blue-500 to-cyan-500',
-      },
-      ];*/
 
-      return (
+  return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
