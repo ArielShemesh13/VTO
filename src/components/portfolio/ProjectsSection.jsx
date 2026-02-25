@@ -135,7 +135,7 @@ const ProjectsSection = memo(({ isDark }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               onClick={() => scroll('left')}
-              className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+              className={`absolute left-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
                 isDark 
                   ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
                   : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
@@ -153,7 +153,7 @@ const ProjectsSection = memo(({ isDark }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               onClick={() => scroll('right')}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+              className={`absolute right-6 top-20 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
                 isDark 
                   ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
                   : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
