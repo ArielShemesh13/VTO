@@ -132,23 +132,6 @@ export default function Home() {
               >
                 <Github className="w-6 h-6" />
               </motion.a>
-              
-              <motion.a
-                href="mailto:arielshemesh1999@gmail.com"
-                whileHover={{ scale: 1.15, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isDark 
-                    ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/20' 
-                    : 'bg-white/40 hover:bg-white/60 text-[#244270] border border-white/60 hover:border-[#244270]/50 hover:shadow-lg hover:shadow-[#244270]/20'
-                }`}
-                style={{
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)'
-                }}
-              >
-                <Mail className="w-6 h-6" />
-              </motion.a>
             </div>
 
             <motion.div
