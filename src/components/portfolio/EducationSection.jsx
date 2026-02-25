@@ -1,6 +1,6 @@
 import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, TrendingUp, Code, ChevronRight } from 'lucide-react';
+import { GraduationCap, TrendingUp, Code, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const skills = [
   {
@@ -25,27 +25,35 @@ const skills = [
 
 const EducationSection = memo(({ isDark }) => {
   const scrollContainerRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [showLeftArrow, setShowLeftArrow] = React.useState(false);
+  const [showRightArrow, setShowRightArrow] = React.useState(true);
 
-  const scrollToCard = useCallback((index) => {
+  const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current.children[0];
-      if (!container) return;
-      
-      const cardWidth = container.children[index]?.offsetWidth || 0;
-      const gap = 16;
-      scrollContainerRef.current.scrollTo({
-        left: index * (cardWidth + gap),
-        behavior: 'smooth'
-      });
-      setCurrentIndex(index);
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
     }
   }, []);
 
-  const handleNext = useCallback(() => {
-    const nextIndex = Math.min(currentIndex + 1, skills.length - 1);
-    scrollToCard(nextIndex);
-  }, [currentIndex, scrollToCard]);
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
+
+  const scroll = useCallback((direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
@@ -114,28 +122,48 @@ const EducationSection = memo(({ isDark }) => {
         </div>
 
         <div className="md:hidden relative">
-          {currentIndex < skills.length - 1 && (
+          {showLeftArrow && (
             <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              onClick={handleNext}
-              className={`absolute right-4 bottom-6 z-20 w-12 h-12 flex items-center justify-center rounded-full ${
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={() => scroll('left')}
+              className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
                 isDark 
-                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-              } backdrop-blur-lg transition-all shadow-xl`}
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.9 }}
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <ChevronRight size={24} strokeWidth={2.5} />
+              <ChevronLeft size={24} />
+            </motion.button>
+          )}
+
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={() => scroll('right')}
+              className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={24} />
             </motion.button>
           )}
 
           <div 
             ref={scrollContainerRef}
-            className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4 scroll-smooth"
+            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16"
+            style={{ scrollSnapType: 'x proximity' }}
           >
-            <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}>
+            <div className="flex gap-6 py-2">
             {skills.map((skill, index) => (
               <motion.div
                 key={skill.title}
@@ -143,7 +171,7 @@ const EducationSection = memo(({ isDark }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-[85vw]`}
+                className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-80`}
                 style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)' }}
               >
                 <div className="light-effect">
@@ -233,7 +261,10 @@ const EducationSection = memo(({ isDark }) => {
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
-          -webkit-overflow-scrolling: touch;
+          cursor: grab;
+        }
+        .scrollbar-hide:active {
+          cursor: grabbing;
         }
       `}</style>
     </section>
