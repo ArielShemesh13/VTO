@@ -91,9 +91,9 @@ const ProjectsSection = memo(({ isDark }) => {
 
   const scroll = useCallback((direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400;
+      const cardWidth = 320 + 24;
       scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        left: direction === 'left' ? -cardWidth : cardWidth,
         behavior: 'smooth'
       });
     }

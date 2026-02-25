@@ -47,9 +47,9 @@ const EducationSection = memo(({ isDark }) => {
 
   const scroll = useCallback((direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400;
+      const cardWidth = 320 + 24;
       scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        left: direction === 'left' ? -cardWidth : cardWidth,
         behavior: 'smooth'
       });
     }
@@ -125,7 +125,7 @@ const EducationSection = memo(({ isDark }) => {
           <div 
             ref={scrollContainerRef}
             className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16"
-            style={{ scrollSnapType: 'x proximity' }}
+            style={{ scrollSnapType: 'x mandatory' }}
           >
             <div className="flex gap-6 py-2">
             {skills.map((skill, index) => (
