@@ -1,6 +1,6 @@
 import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const skills = [
   {
@@ -85,12 +85,6 @@ const EducationSection = memo(({ isDark }) => {
             >
               <div className="relative h-40 overflow-hidden">
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
-                
-                <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
-                    {skill.type}
-                  </span>
-                </div>
 
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
@@ -100,22 +94,13 @@ const EducationSection = memo(({ isDark }) => {
               </div>
 
               <div className="p-6">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className={`text-xl font-bold transition-colors duration-300 ${
-                    isDark 
-                      ? 'text-white group-hover:text-cyan-400' 
-                      : 'text-[#141225] group-hover:text-[#4dbdce]'
-                  }`}>
-                    {skill.title}
-                  </h3>
-                  <motion.div
-                    className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
-                    animate={{ x: [0, 3, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowUpRight size={20} />
-                  </motion.div>
-                </div>
+                <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
+                  isDark 
+                    ? 'text-white group-hover:text-cyan-400' 
+                    : 'text-[#141225] group-hover:text-[#4dbdce]'
+                }`}>
+                  {skill.title}
+                </h3>
                 
                 <div className="space-y-2">
                   {skill.items.map((item) => (
@@ -187,12 +172,6 @@ const EducationSection = memo(({ isDark }) => {
                     </motion.button>
                   )}
                   <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
-                  
-                  <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
-                      {skill.type}
-                    </span>
-                  </div>
 
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
@@ -202,22 +181,13 @@ const EducationSection = memo(({ isDark }) => {
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className={`text-xl font-bold transition-colors duration-300 ${
-                      isDark 
-                        ? 'text-white group-hover:text-cyan-400' 
-                        : 'text-[#141225] group-hover:text-[#4dbdce]'
-                    }`}>
-                      {skill.title}
-                    </h3>
-                    <motion.div
-                      className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <ArrowUpRight size={20} />
-                    </motion.div>
-                  </div>
+                  <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
+                    isDark 
+                      ? 'text-white group-hover:text-cyan-400' 
+                      : 'text-[#141225] group-hover:text-[#4dbdce]'
+                  }`}>
+                    {skill.title}
+                  </h3>
                   
                   <div className="space-y-2">
                     {skill.items.map((item) => (
