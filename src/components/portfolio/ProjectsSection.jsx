@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 const projects = [
   {
@@ -66,6 +68,18 @@ const projects = [
 ];
 
 export default function ProjectsSection({ isDark }) {
+  const scrollContainerRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
@@ -73,7 +87,7 @@ export default function ProjectsSection({ isDark }) {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <p className={`text-sm tracking-[0.3em] uppercase mb-4 ${isDark ? 'text-purple-400' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270] bg-clip-text text-transparent'}`}>
             Background
@@ -81,14 +95,56 @@ export default function ProjectsSection({ isDark }) {
           <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
             Featured Projects
           </h2>
+          
+          <Link to={createPageUrl('AllProjects')}>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl ${
+                isDark 
+                  ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30' 
+                  : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-sm transition-all mt-4`}
+            >
+              <LayoutGrid size={20} />
+              <span className="font-medium">View All Projects</span>
+            </motion.button>
+          </Link>
         </motion.div>
 
-        <div className="relative overflow-hidden">
-          <div className={`absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
-          <div className={`absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
+        <div className="relative">
+          <motion.button
+            onClick={() => scroll('left')}
+            className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+              isDark 
+                ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+            } backdrop-blur-lg transition-all shadow-lg`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronLeft size={24} />
+          </motion.button>
 
-          <div className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-6" style={{ scrollSnapType: 'x proximity' }}>
-            <div className="flex gap-6 py-2" style={{ paddingLeft: '10%', paddingRight: '10%' }}>
+          <motion.button
+            onClick={() => scroll('right')}
+            className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+              isDark 
+                ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+            } backdrop-blur-lg transition-all shadow-lg`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronRight size={24} />
+          </motion.button>
+
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
+            style={{ scrollSnapType: 'x proximity' }}
+          >
+            <div className="flex gap-6 py-2">
               {projects.map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -141,7 +197,11 @@ export default function ProjectsSection({ isDark }) {
 
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                      <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                        isDark 
+                          ? 'text-white group-hover:text-cyan-400' 
+                          : 'text-[#141225] group-hover:text-[#4dbdce]'
+                      }`}>
                         {project.title}
                       </h3>
                       <motion.div
