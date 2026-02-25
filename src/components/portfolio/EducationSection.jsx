@@ -101,39 +101,6 @@ const EducationSection = memo(({ isDark }) => {
                 style={{ scrollSnapAlign: 'center', willChange: 'transform' }}
               >
                 <div className="relative h-40 overflow-hidden">
-                  {index > 0 && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      onClick={() => scroll('left')}
-                      className={`flex absolute left-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
-                        isDark 
-                          ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                          : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                      } backdrop-blur-lg transition-all shadow-lg`}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <ChevronLeft size={20} />
-                    </motion.button>
-                  )}
-
-                  {index < skills.length - 1 && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      onClick={() => scroll('right')}
-                      className={`flex absolute right-2 bottom-0 z-30 w-10 h-10 items-center justify-center rounded-full ${
-                        isDark 
-                          ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                          : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                      } backdrop-blur-lg transition-all shadow-lg`}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <ChevronRight size={20} />
-                    </motion.button>
-                  )}
                   <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
 
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -144,11 +111,7 @@ const EducationSection = memo(({ isDark }) => {
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
-                    isDark 
-                      ? 'text-white group-hover:text-cyan-400' 
-                      : 'text-[#141225] group-hover:text-[#4dbdce]'
-                  }`}>
+                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-[#141225]'}`}>
                     {skill.title}
                   </h3>
                   
