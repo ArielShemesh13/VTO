@@ -135,7 +135,7 @@ export default function ProjectsSection({ isDark }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               onClick={() => scroll('left')}
-              className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+              className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
                 isDark 
                   ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
                   : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
@@ -153,7 +153,7 @@ export default function ProjectsSection({ isDark }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               onClick={() => scroll('right')}
-              className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
+              className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center rounded-full ${
                 isDark 
                   ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
                   : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'

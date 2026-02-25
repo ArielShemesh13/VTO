@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, TrendingUp, Code } from 'lucide-react';
+import { GraduationCap, TrendingUp, Code, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function EducationSection({ isDark }) {
+  const scrollContainerRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = React.useState(false);
+  const [showRightArrow, setShowRightArrow] = React.useState(true);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      handleScroll();
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const skills = [
     {
       icon: GraduationCap,
@@ -90,8 +121,48 @@ export default function EducationSection({ isDark }) {
           ))}
         </div>
 
-        <div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide pb-4">
-          <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
+        <div className="md:hidden relative">
+          {showLeftArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={() => scroll('left')}
+              className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft size={20} />
+            </motion.button>
+          )}
+
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={() => scroll('right')}
+              className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-500/50' 
+                  : 'bg-white/80 hover:bg-white text-[#244270] border border-[#244270]/20'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={20} />
+            </motion.button>
+          )}
+
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4"
+          >
+            <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
             {skills.map((skill, index) => (
               <motion.div
                 key={skill.title}
@@ -138,6 +209,7 @@ export default function EducationSection({ isDark }) {
                 </div>
               </motion.div>
             ))}
+            </div>
           </div>
         </div>
       </div>
