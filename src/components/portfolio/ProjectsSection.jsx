@@ -129,6 +129,42 @@ const ProjectsSection = memo(({ isDark }) => {
         </motion.div>
 
         <div className="relative">
+          {showLeftArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              onClick={() => scroll('left')}
+              className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
+                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft size={20} />
+            </motion.button>
+          )}
+
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onClick={() => scroll('right')}
+              className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center rounded-full ${
+                isDark 
+                  ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
+                  : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
+              } backdrop-blur-lg transition-all shadow-lg`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight size={20} />
+            </motion.button>
+          )}
+
           <div 
             ref={scrollContainerRef}
             className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
@@ -147,39 +183,6 @@ const ProjectsSection = memo(({ isDark }) => {
                   style={{ scrollSnapAlign: 'center' }}
                 >
                   <div className="relative h-40 overflow-hidden">
-                    {index > 0 && (
-                      <motion.button
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        onClick={() => scroll('left')}
-                        className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ${
-                          isDark 
-                            ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                            : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                        } backdrop-blur-lg transition-all shadow-lg`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <ChevronLeft size={20} />
-                      </motion.button>
-                    )}
-
-                    {index < projects.length - 1 && (
-                      <motion.button
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        onClick={() => scroll('right')}
-                        className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 ${
-                          isDark 
-                            ? 'bg-purple-500/40 hover:bg-purple-500/60 text-white border border-purple-500/60' 
-                            : 'bg-white/90 hover:bg-white text-[#244270] border border-[#244270]/30'
-                        } backdrop-blur-lg transition-all shadow-lg`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <ChevronRight size={20} />
-                      </motion.button>
-                    )}
                     <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                     
                     <div className="absolute top-4 left-4">
