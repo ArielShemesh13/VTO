@@ -1,25 +1,25 @@
 import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, TrendingUp, Code, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 
 const skills = [
   {
-    icon: GraduationCap,
+    icon: '🎓',
     title: 'Academic Degree',
     items: ['(B.A.) in Business Administration', 'Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)', 'GPA: 90'],
-    color: 'from-emerald-500 to-green-500',
+    type: 'Education',
   },
   {
-    icon: TrendingUp,
+    icon: '📈',
     title: 'Volunteer Experience & Mentorship',
     items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
-    color: 'from-orange-500 to-amber-500',
+    type: 'Leadership',
   },
   {
-    icon: Code,
+    icon: '💻',
     title: 'Professional Capabilities',
     items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
-    color: 'from-blue-500 to-cyan-500',
+    type: 'Technical Skills',
   },
 ];
 
@@ -80,43 +80,56 @@ const EducationSection = memo(({ isDark }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-300`}
-              style={{ transform: 'translateZ(0)' }}
+              whileHover={{ y: -8 }}
+              className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500`}
             >
-              <div className="light-effect">
-                <div className="slit"></div>
-                <div className="light-glow"></div>
-              </div>
-              <div className="relative h-32 overflow-hidden">
+              <div className="relative h-40 overflow-hidden">
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                 
+                <div className="absolute top-4 left-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
+                    {skill.type}
+                  </span>
+                </div>
+
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-110`}>
-                    <skill.icon className="text-white" size={28} />
-                  </div>
+                  <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
+                    {skill.icon}
+                  </span>
                 </div>
               </div>
 
               <div className="p-6">
-                <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
-                  isDark 
-                    ? 'text-white group-hover:text-cyan-400' 
-                    : 'text-[#141225] group-hover:text-[#4dbdce]'
-                }`}>
-                  {skill.title}
-                </h3>
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                    isDark 
+                      ? 'text-white group-hover:text-cyan-400' 
+                      : 'text-[#141225] group-hover:text-[#4dbdce]'
+                  }`}>
+                    {skill.title}
+                  </h3>
+                  <motion.div
+                    className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowUpRight size={20} />
+                  </motion.div>
+                </div>
                 
                 <div className="space-y-2">
                   {skill.items.map((item) => (
                     <div key={item} className="flex items-center gap-2">
                       <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
-                      <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                      <span className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
                         {item}
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
+
+              <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
             </motion.div>
           ))}
         </div>
@@ -135,14 +148,11 @@ const EducationSection = memo(({ isDark }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-[80vw] max-w-sm`}
-                style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)', willChange: 'transform' }}
+                whileHover={{ y: -8 }}
+                className={`group relative overflow-hidden rounded-2xl ${isDark ? 'bg-black/40 border border-purple-500/20 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20' : 'bg-white/60 border border-[#244270]/10 hover:border-[#244270]/30 hover:shadow-lg'} backdrop-blur-xl transition-all duration-500 flex-shrink-0 w-[80vw] max-w-sm`}
+                style={{ scrollSnapAlign: 'center', willChange: 'transform' }}
               >
-                <div className="light-effect">
-                  <div className="slit"></div>
-                  <div className="light-glow"></div>
-                </div>
-                <div className="relative h-32 overflow-hidden">
+                <div className="relative h-40 overflow-hidden">
                   {index > 0 && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -178,33 +188,50 @@ const EducationSection = memo(({ isDark }) => {
                   )}
                   <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
                   
+                  <div className="absolute top-4 left-4">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-white/80 text-[#244270] border border-[#244270]/20'} backdrop-blur-sm`}>
+                      {skill.type}
+                    </span>
+                  </div>
+
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${skill.color} flex items-center justify-center shadow-lg`}>
-                      <skill.icon className="text-white" size={28} />
-                    </div>
+                    <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
+                      {skill.icon}
+                    </span>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-4 transition-colors duration-300 ${
-                    isDark 
-                      ? 'text-white group-hover:text-cyan-400' 
-                      : 'text-[#141225] group-hover:text-[#4dbdce]'
-                  }`}>
-                    {skill.title}
-                  </h3>
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className={`text-xl font-bold transition-colors duration-300 ${
+                      isDark 
+                        ? 'text-white group-hover:text-cyan-400' 
+                        : 'text-[#141225] group-hover:text-[#4dbdce]'
+                    }`}>
+                      {skill.title}
+                    </h3>
+                    <motion.div
+                      className={`${isDark ? 'text-cyan-400' : 'text-[#244270]'} opacity-0 group-hover:opacity-100 transition-opacity`}
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <ArrowUpRight size={20} />
+                    </motion.div>
+                  </div>
                   
                   <div className="space-y-2">
                     {skill.items.map((item) => (
                       <div key={item} className="flex items-center gap-2">
                         <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-gradient-to-r from-purple-400 to-cyan-400' : 'bg-gradient-to-r from-[#4dbdce] to-[#a855f7]'}`} />
-                        <span className={`text-sm ${isDark ? 'text-white/70' : 'text-[#141225]/70'}`}>
+                        <span className={`text-sm ${isDark ? 'text-white/60' : 'text-[#141225]/60'}`}>
                           {item}
                         </span>
                       </div>
                     ))}
                   </div>
                 </div>
+
+                <div className={`absolute bottom-0 left-0 right-0 h-1 ${isDark ? 'bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500' : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#244270]'} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
               </motion.div>
             ))}
             </div>
@@ -213,45 +240,6 @@ const EducationSection = memo(({ isDark }) => {
       </div>
 
       <style>{`
-        .luminous-card {
-          position: relative;
-          contain: layout style paint;
-        }
-
-        .light-effect {
-          position: absolute;
-          left: 0;
-          top: 0;
-          height: 100%;
-          width: 100%;
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease-in-out;
-          overflow: hidden;
-          border-radius: 1rem;
-        }
-
-        .luminous-card:hover .light-effect {
-          opacity: 1;
-        }
-
-        .slit {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-          width: 64%;
-          height: 1.2rem;
-          transform: rotateX(-76deg);
-          background: ${isDark ? '#a855f7' : '#4dbdce'};
-          box-shadow: 0 0 8px 0 ${isDark ? '#a855f7' : '#4dbdce'};
-        }
-
-        .light-glow {
-          display: none;
-        }
-
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
