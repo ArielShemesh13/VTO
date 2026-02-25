@@ -9,16 +9,16 @@ const skills = [
     type: 'Education',
   },
   {
-    icon: '📈',
-    title: 'Volunteer Experience & Mentorship',
-    items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
-    type: 'Leadership',
-  },
-  {
     icon: '💻',
     title: 'Professional Capabilities',
     items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
     type: 'Technical Skills',
+  },
+  {
+    icon: '📈',
+    title: 'Volunteer Experience & Mentorship',
+    items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
+    type: 'Leadership',
   },
 ];
 
