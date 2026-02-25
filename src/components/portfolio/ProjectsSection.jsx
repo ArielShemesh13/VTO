@@ -167,11 +167,9 @@ export default function ProjectsSection({ isDark }) {
 
           <div 
             ref={scrollContainerRef}
-            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16 relative" 
+            className="overflow-x-auto overflow-y-visible pb-4 scrollbar-hide scroll-smooth px-4 md:px-16" 
             style={{ scrollSnapType: 'x proximity' }}
           >
-            <div className={`md:hidden absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
-            <div className={`md:hidden absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
             <div className="flex gap-6 py-2">
               {projects.map((project, index) => (
                 <motion.div

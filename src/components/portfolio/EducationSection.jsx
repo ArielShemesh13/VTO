@@ -90,9 +90,7 @@ export default function EducationSection({ isDark }) {
           ))}
         </div>
 
-        <div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide pb-4 relative">
-          <div className={`absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-r from-[#0a0118] to-transparent' : 'bg-gradient-to-r from-[#f5f7ff] to-transparent'}`} />
-          <div className={`absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none ${isDark ? 'bg-gradient-to-l from-[#0a0118] to-transparent' : 'bg-gradient-to-l from-[#f5f7ff] to-transparent'}`} />
+        <div className="md:hidden overflow-x-auto overflow-y-hidden scrollbar-hide pb-4">
           <div className="flex gap-4 px-4" style={{ scrollSnapType: 'x mandatory' }}>
             {skills.map((skill, index) => (
               <motion.div
