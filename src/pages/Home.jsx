@@ -96,7 +96,7 @@ export default function Home() {
             
             <div className="flex items-center justify-center gap-6">
               <motion.a
-                href="https://www.linkedin.com/in/ariel-shemesh-7ba0322a5/"
+                href="https://www.linkedin.com/in/ariel-shemesh"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.15, y: -5 }}
@@ -115,7 +115,7 @@ export default function Home() {
               </motion.a>
               
               <motion.a
-                href="https://github.com/arielSHEMESH1999"
+                href="https://github.com/ArielShemesh13"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.15, y: -5 }}
