@@ -147,11 +147,10 @@ const ProjectsSection = memo(({ isDark }) => {
                   style={{ scrollSnapAlign: 'center' }}
                 >
                   <div className="relative h-40 overflow-hidden">
-                    {showLeftArrow && index === 0 && (
+                    {index > 0 && (
                       <motion.button
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         onClick={() => scroll('left')}
                         className={`flex absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full ${
                           isDark 
@@ -165,11 +164,10 @@ const ProjectsSection = memo(({ isDark }) => {
                       </motion.button>
                     )}
 
-                    {showRightArrow && index === 0 && (
+                    {index < projects.length - 1 && (
                       <motion.button
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         onClick={() => scroll('right')}
                         className={`flex absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 items-center justify-center rounded-full ${
                           isDark 
