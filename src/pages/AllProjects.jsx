@@ -92,42 +92,59 @@ export default function AllProjects() {
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 ${
           isDark 
-            ? 'bg-black/40 border-b border-purple-500/20' 
-            : 'bg-white/60 border-b border-[#244270]/10'
-        } backdrop-blur-xl`}
+            ? 'bg-[#141225]/80 border-b border-white/10' 
+            : 'bg-white/80 border-b border-[#244270]/10'
+        } backdrop-blur-lg`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to={createPageUrl('Home')}>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`p-2 rounded-full ${
-                  isDark 
-                    ? 'bg-white/10 hover:bg-white/20 text-white' 
-                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
-                } transition-colors`}
+          <motion.div
+            className="flex items-center gap-1 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link to={createPageUrl('Home')} className="flex items-center gap-1">
+              <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'<'}</span>
+              <span className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#141225]'}`}>
+                AS
+              </span>
+              <motion.span
+                className={`text-xl font-bold ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
               >
-                <Home size={21} />
-              </motion.button>
+                |
+              </motion.span>
+              <span className={`text-2xl ${isDark ? 'text-purple-400' : 'text-[#244270]'}`}>{'/>'}</span>
             </Link>
+          </motion.div>
 
+          <div className="flex items-center gap-3">
             <motion.button
               onClick={toggleTheme}
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.95 }}
               className={`p-2 rounded-full ${
                 isDark 
                   ? 'bg-white/10 hover:bg-white/20 text-white' 
                   : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
               } transition-colors`}
+              whileHover={{ scale: 1.1, rotate: 180 }}
+              whileTap={{ scale: 0.9 }}
             >
-              {isDark ? <Sun size={21} /> : <Moon size={21} />}
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
             </motion.button>
-          </div>
 
-          <div className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-[#244270]'}`}>
-            AS
+            <Link to={createPageUrl('Home')}>
+              <motion.button
+                className={`p-2 rounded-full ${
+                  isDark 
+                    ? 'bg-white/10 hover:bg-white/20 text-white' 
+                    : 'bg-[#244270]/10 hover:bg-[#244270]/20 text-[#244270]'
+                } transition-colors`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Home size={18} />
+              </motion.button>
+            </Link>
           </div>
         </div>
       </motion.header>

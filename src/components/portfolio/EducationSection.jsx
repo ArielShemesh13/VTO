@@ -136,7 +136,7 @@ const EducationSection = memo(({ isDark }) => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 className={`luminous-card group relative overflow-hidden rounded-2xl isolate ${isDark ? 'bg-black/40 border border-purple-500/20' : 'bg-white border border-[#244270]/10'} backdrop-blur-xl transition-all duration-300 flex-shrink-0 w-80`}
-                style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)' }}
+                style={{ scrollSnapAlign: 'center', transform: 'translateZ(0)', willChange: 'transform' }}
               >
                 <div className="light-effect">
                   <div className="slit"></div>
