@@ -143,7 +143,7 @@ const EducationSection = memo(({ isDark }) => {
                   <div className="light-glow"></div>
                 </div>
                 <div className="relative h-32 overflow-hidden">
-                  {showLeftArrow && (
+                  {index > 0 && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -160,7 +160,7 @@ const EducationSection = memo(({ isDark }) => {
                     </motion.button>
                   )}
 
-                  {showRightArrow && (
+                  {index < skills.length - 1 && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
