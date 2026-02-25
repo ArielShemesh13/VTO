@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Github, Mail } from 'lucide-react';
 import AnimatedBackground from '../components/portfolio/AnimatedBackground';
@@ -6,6 +6,7 @@ import Navigation from '../components/portfolio/Navigation';
 import HeroSection from '../components/portfolio/HeroSection';
 import EducationSection from '../components/portfolio/EducationSection';
 import ProjectsSection from '../components/portfolio/ProjectsSection';
+
 const sections = ['hero', 'education', 'projects'];
 
 export default function Home() {
@@ -15,21 +16,21 @@ export default function Home() {
     return saved ? saved === 'dark' : true;
   });
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setIsDark(prev => {
       const newTheme = !prev;
       localStorage.setItem('theme', newTheme ? 'dark' : 'light');
       return newTheme;
     });
-  };
+  }, []);
 
-  const navigateToSection = (sectionId) => {
+  const navigateToSection = useCallback((sectionId) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +48,7 @@ export default function Home() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -71,7 +72,7 @@ export default function Home() {
         />
 
         <div id="hero">
-          <HeroSection isDark={isDark} onNavigate={navigateToSection} />
+          <HeroSection isDark={isDark} />
         </div>
 
         <div id="education">

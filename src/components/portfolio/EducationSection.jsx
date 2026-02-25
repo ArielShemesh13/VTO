@@ -1,29 +1,51 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, TrendingUp, Code, ChevronRight } from 'lucide-react';
 
-export default function EducationSection({ isDark }) {
+const skills = [
+  {
+    icon: GraduationCap,
+    title: 'Academic Degree',
+    items: ['(B.A.) in Business Administration', 'Specialization: Information Systems','Dean\'s List honoree for academic excellence', 'Ono Academic College (2023-2026)', 'GPA: 90'],
+    color: 'from-emerald-500 to-green-500',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Volunteer Experience & Mentorship',
+    items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
+    color: 'from-orange-500 to-amber-500',
+  },
+  {
+    icon: Code,
+    title: 'Professional Capabilities',
+    items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
+    color: 'from-blue-500 to-cyan-500',
+  },
+];
+
+const EducationSection = memo(({ isDark }) => {
   const scrollContainerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
-  const scrollToCard = (index) => {
+  const scrollToCard = useCallback((index) => {
     if (scrollContainerRef.current) {
-      const cardWidth = scrollContainerRef.current.children[0]?.offsetWidth || 0;
-      const gap = 16; // gap-4 = 16px
+      const container = scrollContainerRef.current.children[0];
+      if (!container) return;
+      
+      const cardWidth = container.children[index]?.offsetWidth || 0;
+      const gap = 16;
       scrollContainerRef.current.scrollTo({
         left: index * (cardWidth + gap),
         behavior: 'smooth'
       });
       setCurrentIndex(index);
     }
-  };
+  }, []);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const nextIndex = Math.min(currentIndex + 1, skills.length - 1);
     scrollToCard(nextIndex);
-  };
-
-  const skills = [
+  }, [currentIndex, scrollToCard]);
     {
       icon: GraduationCap,
       title: 'Academic Degree',
@@ -41,10 +63,10 @@ export default function EducationSection({ isDark }) {
       title: 'Professional Capabilities',
       items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
       color: 'from-blue-500 to-cyan-500',
-    },
-  ];
+      },
+      ];*/
 
-  return (
+      return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
@@ -235,4 +257,8 @@ export default function EducationSection({ isDark }) {
       `}</style>
     </section>
   );
-}
+});
+
+EducationSection.displayName = 'EducationSection';
+
+export default EducationSection;

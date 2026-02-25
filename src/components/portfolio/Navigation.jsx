@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Home } from 'lucide-react';
 
@@ -7,13 +7,17 @@ const navItems = [
   { id: 'projects', label: 'Projects' },
 ];
 
-export default function Navigation({ activeSection, onNavigate, isDark, toggleTheme }) {
+const NAV_ANIMATION = { duration: 0.6, ease: "easeOut" };
+const MENU_ANIMATION = { duration: 0.3 };
+const LAYOUT_TRANSITION = { type: "spring", stiffness: 380, damping: 30 };
+
+const Navigation = memo(({ activeSection, onNavigate, isDark, toggleTheme }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleNavClick = (sectionId) => {
+  const handleNavClick = useCallback((sectionId) => {
     setMobileMenuOpen(false);
     onNavigate(sectionId);
-  };
+  }, [onNavigate]);
 
   return (
     <>
@@ -27,7 +31,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={NAV_ANIMATION}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <motion.div
@@ -72,7 +76,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
                         : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'
                     }`}
                     layoutId="activeNav"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    transition={LAYOUT_TRANSITION}
                   />
                 )}
               </motion.button>
@@ -140,7 +144,7 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            transition={MENU_ANIMATION}
           >
             <div className="flex flex-col items-center gap-8 pt-12">
               <motion.button
@@ -179,4 +183,8 @@ export default function Navigation({ activeSection, onNavigate, isDark, toggleTh
       </AnimatePresence>
     </>
   );
-}
+});
+
+Navigation.displayName = 'Navigation';
+
+export default Navigation;

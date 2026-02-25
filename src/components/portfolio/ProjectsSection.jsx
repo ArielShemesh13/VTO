@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -67,29 +67,29 @@ const projects = [
   },
 ];
 
-export default function ProjectsSection({ isDark }) {
+const ProjectsSection = memo(({ isDark }) => {
   const scrollContainerRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = React.useState(false);
   const [showRightArrow, setShowRightArrow] = React.useState(true);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setShowLeftArrow(scrollLeft > 10);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
     }
-  };
+  }, []);
 
   React.useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
-      container.addEventListener('scroll', handleScroll);
+      container.addEventListener('scroll', handleScroll, { passive: true });
       handleScroll();
       return () => container.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [handleScroll]);
 
-  const scroll = (direction) => {
+  const scroll = useCallback((direction) => {
     if (scrollContainerRef.current) {
       const scrollAmount = 400;
       scrollContainerRef.current.scrollBy({
@@ -97,7 +97,7 @@ export default function ProjectsSection({ isDark }) {
         behavior: 'smooth'
       });
     }
-  };
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
@@ -278,4 +278,8 @@ export default function ProjectsSection({ isDark }) {
       </div>
     </section>
   );
-}
+});
+
+ProjectsSection.displayName = 'ProjectsSection';
+
+export default ProjectsSection;
