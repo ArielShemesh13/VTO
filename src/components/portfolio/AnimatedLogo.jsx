@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AnimatedLogo({ isDark }) {
+export default function AnimatedLogo() {
   return (
     <div style={{
       position: 'relative',
