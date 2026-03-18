@@ -59,18 +59,27 @@ const HeroSection = memo(({ isDark }) => {
               </div>
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={ANIMATION_CONFIG.title}
-              className={`text-xs tracking-[0.2em] uppercase text-center mb-6 ${
+              className="text-center mb-6"
+            >
+              <p className={`text-xl font-bold tracking-widest ${
                 isDark 
                   ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
                   : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
-              } font-medium`}
-            >
-              Data Analyst · Web Developer
-            </motion.p>
+              }`}>
+                ARIEL
+              </p>
+              <p className={`text-xl font-bold tracking-widest ${
+                isDark 
+                  ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
+                  : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
+              }`}>
+                SHEMESH
+              </p>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -146,9 +155,8 @@ const HeroSection = memo(({ isDark }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={ANIMATION_CONFIG.text}
           >
-            Hi, I'm{' '}
             <span className={`${isDark ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400' : 'bg-gradient-to-r from-[#4dbdce] via-[#6366f1] to-[#a855f7]'} bg-clip-text text-transparent`}>
-              Ariel Shemesh
+              About Me
             </span>
           </motion.h1>
 
