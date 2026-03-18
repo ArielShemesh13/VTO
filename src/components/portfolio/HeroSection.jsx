@@ -157,10 +157,9 @@ const HeroSection = memo(({ isDark }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={ANIMATION_CONFIG.textLarge}
           >
-            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}> I analyze </span> 
-          data and build digital solutions that turn complex information into clear, actionable business insights.
-          Highly motivated and self-driven, with strong analytical thinking, creative problem-solving skills, and great attention to detail. Passionate about continuous learning, personal growth, and delivering high-quality results.
-          I enjoy collaborating with people, building meaningful relationships, traveling, sports, and exploring new technologies
+            <span className={isDark ? 'text-purple-400' : 'text-[#244270]'}>I analyze </span>
+            data and build digital solutions that turn complex information into clear, actionable business insights.
+            Highly motivated and self-driven, with strong analytical thinking, creative problem-solving skills, and great attention to detail.
           </motion.p>
         </motion.div>
 
