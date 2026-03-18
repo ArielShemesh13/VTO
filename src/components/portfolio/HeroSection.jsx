@@ -59,27 +59,18 @@ const HeroSection = memo(({ isDark }) => {
               </div>
             </motion.div>
 
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={ANIMATION_CONFIG.title}
-              className="text-center mb-6"
+              className={`text-xs tracking-[0.2em] uppercase text-center mb-6 ${
+                isDark 
+                  ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
+                  : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
+              } font-medium`}
             >
-              <p className={`text-xl font-bold tracking-widest ${
-                isDark 
-                  ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
-                  : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
-              }`}>
-                ARIEL
-              </p>
-              <p className={`text-xl font-bold tracking-widest ${
-                isDark 
-                  ? 'bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent' 
-                  : 'bg-gradient-to-r from-[#244270] via-[#4dbdce] to-[#6366f1] bg-clip-text text-transparent'
-              }`}>
-                SHEMESH
-              </p>
-            </motion.div>
+              Ariel · Shemesh
+            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 10 }}
