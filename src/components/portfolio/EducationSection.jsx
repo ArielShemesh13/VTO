@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 const skills = [
   {
     icon: '🎓',
-    title: 'B.A. in Business Administration and Information Systems',
-    items: ['Dean\'s List honoree for academic excellence', 'GPA: 90','Ono Academic College (2023-2026)'],
+    title: 'Education',
+    items: ['B.A. in Business Administration and Information Systems','Dean\'s List honoree for academic excellence', 'GPA: 90','Ono Academic College (2023-2026)'],
     type: 'Education',
   },
   {
@@ -19,7 +19,7 @@ const skills = [
   },
   {
     icon: '📈',
-    title: 'Volunteer & Mentorship',
+    title: 'Mentorship',
     items: ['Mentored junior students as part of the Academic Honors Program',
   'Guided exam preparation, assignments, and subject comprehension',
   'Improved the group\'s average final grade by 10–15%',],
