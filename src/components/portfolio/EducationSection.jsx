@@ -10,7 +10,7 @@ const skills = [
   },
   {
     icon: '💻',
-    title: 'Professional Capabilities',
+    title: 'Experience',
     items: ['Specialized in data analysis – from raw data to actionable business insights',
   'Experienced in building modern web & AI-powered applications',
   'Extensive hands-on experience with data analysis & development tools',
