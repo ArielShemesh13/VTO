@@ -19,7 +19,7 @@ const skills = [
   },
   {
     icon: '📈',
-    title: 'Volunteer Experience & Mentorship',
+    title: 'Volunteer & Mentorship',
     items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
     type: 'Leadership',
   },
