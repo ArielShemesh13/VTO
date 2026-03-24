@@ -60,9 +60,11 @@ const EducationSection = memo(({ isDark }) => {
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-purple-600/20 via-cyan-500/20 to-blue-600/20' : 'bg-gradient-to-br from-[#244270]/20 to-[#4dbdce]/20'}`} />
 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>
-                    {skill.icon}
-                  </span>
+                  {skill.icon.startsWith('http') ? (
+                    <img src={skill.icon} alt={skill.title} className={`w-20 h-20 opacity-15 ${isDark ? 'invert' : ''}`} />
+                  ) : (
+                    <span className={`text-8xl opacity-10 ${isDark ? 'text-white' : 'text-[#244270]'}`}>{skill.icon}</span>
+                  )}
                 </div>
               </div>
 
