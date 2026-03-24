@@ -17,7 +17,7 @@ const skills = [
     type: 'Technical Skills',
   },
   {
-    icon: '📈',
+    icon: 'https://media.base44.com/images/public/69528804be3196607ce99b1a/54eda222c_image.png',
     title: 'Mentorship',
     items: ['Mentored junior students as part of the Academic Honors Program',
   'Guided exam preparation, assignments, and subject comprehension',
