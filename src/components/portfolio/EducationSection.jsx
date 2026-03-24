@@ -11,7 +11,10 @@ const skills = [
   {
     icon: '💻',
     title: 'Professional Capabilities',
-    items: ['Web Development & User-Centered Interfaces', 'Data Analysis, Visualization & Business Insights', 'Trend Analysis, Pattern Recognition & Forecasting', 'AI agents & intelligent automation'],
+    items: ['Specialized in data analysis – from raw data to actionable business insights',
+  'Experienced in building modern web & AI-powered applications',
+  'Extensive hands-on experience with data analysis & development tools',
+  'Focused on turning complex problems into clean, scalable solutions',],
     type: 'Technical Skills',
   },
   {
