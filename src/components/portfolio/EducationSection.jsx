@@ -9,7 +9,7 @@ const skills = [
     type: 'Education',
   },
   {
-    icon: '💻',
+    icon: 'https://media.base44.com/images/public/69528804be3196607ce99b1a/560e8189a_image.png',
     title: 'Experience',
     items: ['Specialized in data analysis – from raw data to actionable business insights',
   'Experienced in building modern web & AI-powered applications',
