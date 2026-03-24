@@ -20,7 +20,9 @@ const skills = [
   {
     icon: '📈',
     title: 'Volunteer & Mentorship',
-    items: ['Mentored students in React, UX/UI, Power BI, and Economics','Personal guidance and empowerment','Volunteer supervisor managing food distribution operations for families in need','High emotional intelligence & sensitivity'],
+    items: ['Mentored junior students as part of the Academic Honors Program',
+  'Guided exam preparation, assignments, and subject comprehension',
+  'Improved the group\'s average final grade by 10–15%',],
     type: 'Leadership',
   },
 ];
