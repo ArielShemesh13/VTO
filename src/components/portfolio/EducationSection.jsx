@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const skills = [
   {
-    icon: '🎓',
+    icon: 'https://media.base44.com/images/public/69528804be3196607ce99b1a/e509e1023_image.png',
     title: 'Education',
     items: ['B.A. in Business Administration and Information Systems','Dean\'s List honoree for academic excellence', 'GPA: 90','Ono Academic College (2023-2026)'],
     type: 'Education',
