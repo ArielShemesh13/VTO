@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 const skills = [
   {
     icon: '🎓',
-    title: 'B.A.',
-    items: ['Business Administration Specialization in Information Systems','Dean\'s List honoree for academic excellence', 'GPA: 90','Ono Academic College (2023-2026)'],
+    title: 'B.A. in Business Administration and Information Systems',
+    items: ['Dean\'s List honoree for academic excellence', 'GPA: 90','Ono Academic College (2023-2026)'],
     type: 'Education',
   },
   {
