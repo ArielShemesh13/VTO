@@ -1,0 +1,50 @@
+{
+  "name": "ContactMessage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the person sending the message"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address of the sender"
+    },
+    "message": {
+      "type": "string",
+      "description": "The message content"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "processed"
+      ],
+      "default": "new",
+      "description": "Message processing status"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "message"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
